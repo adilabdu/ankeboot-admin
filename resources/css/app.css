@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+    @font-face {
+        font-family: -apple-system, 'Inter', sans-serif;
+    }
+
+}
+
+* {
+    @apply select-none focus:outline focus:outline-brand-primary focus:outline-offset-2 focus:outline-2 font-basic;
+}
+
+body {
+    @apply bg-wallpaper text-sm;
+}
