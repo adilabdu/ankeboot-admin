@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\CSVController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +26,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('auth')->group(function () {
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/register', [RegisterController::class, 'register']);
+    Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+});
+
+Route::prefix('books')->group(function () {
+    Route::get('/', [BookController::class, 'index']);
+    Route::post('/csv', [CSVController::class, 'insertBooks']);
+});
+
+Route::prefix('transactions')->group(function () {
+    Route::get('/', [TransactionController::class, 'index']);
 });
