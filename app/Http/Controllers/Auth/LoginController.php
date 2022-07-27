@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
@@ -36,5 +38,30 @@ class LoginController extends Controller
                     'user' => auth()->user()
                 ],
             ], 200);
+    }
+
+    public function logout()
+    {
+
+        try {
+
+            Auth::user()->tokens()->delete();
+            Auth::guard('web')->logout();
+
+            return response()
+                ->json([
+                    'message' => 'ok',
+                    'data' => []
+                ], 200);
+
+        } catch (Exception $exception) {
+
+            return response()
+                ->json([
+                    'message' => 'error',
+                    'data' => $exception
+                ], 500);
+
+        }
     }
 }
