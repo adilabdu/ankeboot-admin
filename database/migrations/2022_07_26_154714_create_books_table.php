@@ -21,8 +21,12 @@ return new class extends Migration
             $table->string('author')->nullable();
             $table->string('category')->nullable();
             $table->integer('balance');
-//            $table->float('cost_price');
+            $table->foreignId('supplier_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

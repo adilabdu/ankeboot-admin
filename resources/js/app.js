@@ -1,9 +1,10 @@
 import './bootstrap';
 import '../css/app.css';
-
 import { createApp } from "vue"
-
+import store from "./store";
 import App from "./App.vue"
 
-createApp(App).mount('#app')
-
+store.dispatch('getAuthenticatedUser').then(() => {})
+createApp(App)
+    .use(store)
+    .mount('#app')

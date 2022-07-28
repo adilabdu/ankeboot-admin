@@ -18,13 +18,13 @@ return new class extends Migration
             $table->string('invoice');
             $table->foreignId('book_id')
                 ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+                ->cascadeOnDelete();
             $table->date('transaction_on');
             $table->enum('type', ['sale', 'purchase']);
             $table->integer('quantity');
             $table->float('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
