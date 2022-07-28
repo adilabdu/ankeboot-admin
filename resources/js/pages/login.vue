@@ -29,9 +29,8 @@
 
             </form>
 
-            <div class="flex flex-col w-full gap-2 items-center">
-                <button v-if="authenticated" @click="fetchUser" class="capitalize bg-brand-secondary text-brand-primary rounded-md shadow-sm h-10 w-80">Fetch Logged in User</button>
-                <button v-if="authenticated" @click="attemptLogout" class="capitalize bg-brand-secondary text-brand-primary rounded-md shadow-sm h-10 w-80 border border-brand-primary">Log out User</button>
+            <div v-if="authenticated" class="flex flex-col w-full gap-2 items-center">
+                Authenticated
             </div>
 
         </div>
@@ -57,15 +56,12 @@
 
     function attemptLogin() {
 
-        loading.value = true
-
         axios.get('/sanctum/csrf-cookie').then(response => {
 
             axios.post('/api/auth/login', credentials.value).then(res => {
 
                 console.log('Log in success ', res)
-                store.dispatch('toggleAuthentication')
-                fetchUser()
+                store.dispatch('setUser', res.data.data.user)
 
             }).catch((error) => {
 
@@ -74,38 +70,6 @@
             })
 
         }).finally(() => { loading.value = false })
-
-    }
-
-    async function fetchUser() {
-
-        axios.get('/api/user').then(response => {
-
-            console.table(response.data)
-            store.dispatch('setUser', response.data)
-
-        }).catch(error => {
-
-            console.log('User fetch fail ', error)
-            store.dispatch('destroyUser')
-
-        })
-
-    }
-
-    function attemptLogout() {
-
-        axios.post('/api/auth/logout').then(response => {
-
-            console.log('Log out success ', response)
-            fetchUser()
-            store.dispatch('destroyUser')
-
-        }).catch(error => {
-
-            console.log('Log out fail ', error)
-
-        })
 
     }
 
