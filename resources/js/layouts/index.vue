@@ -4,6 +4,12 @@
 
         <Navigation v-if="authenticated">
 
+            <NavigationLink v-slot="props" label="dashboard" route="/">
+                <svg width="18" height="18" viewBox="0 0 18 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 10H7C7.26522 10 7.51957 9.89464 7.70711 9.70711C7.89464 9.51957 8 9.26522 8 9V1C8 0.734784 7.89464 0.48043 7.70711 0.292893C7.51957 0.105357 7.26522 0 7 0H1C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1V9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10ZM0 17C0 17.2652 0.105357 17.5196 0.292893 17.7071C0.48043 17.8946 0.734784 18 1 18H7C7.26522 18 7.51957 17.8946 7.70711 17.7071C7.89464 17.5196 8 17.2652 8 17V13C8 12.7348 7.89464 12.4804 7.70711 12.2929C7.51957 12.1054 7.26522 12 7 12H1C0.734784 12 0.48043 12.1054 0.292893 12.2929C0.105357 12.4804 0 12.7348 0 13V17ZM10 17C10 17.2652 10.1054 17.5196 10.2929 17.7071C10.4804 17.8946 10.7348 18 11 18H17C17.2652 18 17.5196 17.8946 17.7071 17.7071C17.8946 17.5196 18 17.2652 18 17V10C18 9.73478 17.8946 9.48043 17.7071 9.29289C17.5196 9.10536 17.2652 9 17 9H11C10.7348 9 10.4804 9.10536 10.2929 9.29289C10.1054 9.48043 10 9.73478 10 10V17ZM11 7H17C17.2652 7 17.5196 6.89464 17.7071 6.70711C17.8946 6.51957 18 6.26522 18 6V1C18 0.734784 17.8946 0.48043 17.7071 0.292893C17.5196 0.105357 17.2652 0 17 0H11C10.7348 0 10.4804 0.105357 10.2929 0.292893C10.1054 0.48043 10 0.734784 10 1V6C10 6.26522 10.1054 6.51957 10.2929 6.70711C10.4804 6.89464 10.7348 7 11 7Z" />
+                </svg>
+            </NavigationLink>
+
             <NavigationLink v-slot="props" label="books">
                 <svg width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                     <path d="M3 20H18V18H3.012C2.55 17.988 2 17.805 2 17C2 16.195 2.55 16.012 3.012 16H18V2C18 0.897 17.103 0 16 0H3C1.794 0 0 0.799 0 3V17C0 19.201 1.794 20 3 20ZM2 6V3C2 2.195 2.55 2.012 3 2H16V14H2V6Z" />
@@ -17,7 +23,7 @@
                 </svg>
             </NavigationLink>
 
-            <NavigationLink v-slot="props" label="stock records">
+            <NavigationLink v-slot="props" label="stock records" route="stocks">
                 <svg width="18" height="18" viewBox="0 0 18 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 2C18 0.897 17.103 0 16 0H2C0.897 0 0 0.897 0 2V16C0 17.103 0.897 18 2 18H16C17.103 18 18 17.103 18 16V2ZM2 16V2H16L16.002 16H2Z" />
                     <path d="M4 4H5.998V6H4V4ZM8 4H14V6H8V4ZM4 8H5.998V10H4V8ZM8 8H14V10H8V8ZM4 12H5.998V14H4V12ZM8 12H14V14H8V12Z" />
@@ -38,9 +44,7 @@
 
             <div class="grow overflow-auto w-full relative flex flex-col">
 
-                <div class="grow px-12 pt-8 sm:px-4 xs:px-2 gap-4 flex flex-col w-full">
-                    <slot />
-                </div>
+                <slot />
 
                 <p class="text-xs text-subtitle text-center pt-8 pb-1">&copy; Ankeboot Admin Portal. 2022</p>
 
@@ -54,13 +58,13 @@
 
 <script setup>
 
-    import { computed } from "vue";
+    import { computed } from "vue"
 
     import Navigation from "../components/Navigation.vue"
     import Header from "../components/Header.vue"
     import NavigationLink from "../components/NavigationLink.vue"
-
-    import store from "../store/index"
+    import ContentPage from "./content-page.vue"
+    import store from "../store"
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
 

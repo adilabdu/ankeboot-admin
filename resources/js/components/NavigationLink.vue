@@ -1,9 +1,11 @@
 <template>
 
-    <li
+    <router-link
+        :to="route || label"
+        v-slot="{ isActive }"
         @click="navigate"
-        :class="[isActive ? 'bg-brand-primary' : 'bg-white hover:bg-brand-secondary']"
-        class="cursor-pointer grid grid-cols-12 px-2 py-3 rounded-md capitalize flex items-center gap-4"
+        active-class="!hover:bg-brand-primary !bg-brand-primary"
+        class="bg-white hover:bg-brand-secondary focus:outline-none cursor-pointer grid grid-cols-12 px-2 py-3 rounded-md capitalize flex items-center gap-4"
     >
 
         <div class="col-span-2">
@@ -14,28 +16,37 @@
             <label :class="[isActive ? 'text-white font-medium' : 'text-black']" class="">{{ label }}</label>
         </div>
 
-    </li>
+    </router-link>
 
 </template>
 
 <script setup>
 
-    import { computed } from "vue";
+    import {computed, onMounted} from "vue";
+    import router from "../router"
 
     const props = defineProps({
 
         label: {
             type: String,
             required: true,
+        },
+        route: {
+            type: String,
+            default: null
         }
 
     })
 
-    const isActive = computed(() => props.label === 'books')
+    const active = computed(() => router)
 
     function navigate() {
 
     }
+
+    onMounted(() => {
+        console.log('has route james? ', active.value)
+    })
 
 </script>
 
