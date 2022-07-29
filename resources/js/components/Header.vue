@@ -14,7 +14,7 @@
             <div @click="toggleView" class="z-10 cursor-pointer relative border border-brand-primary font-medium w-12 h-12 rounded-full bg-brand-secondary shadow-sm flex items-center justify-center">
                 <h1 class="text-brand-primary text-base">{{ user.name[0] }}</h1>
 
-                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="text-subtitle font-medium right-0 -mb-3 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 w-[12rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
+                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="text-subtitle font-medium right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 w-[12rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
                     <li @click="settings" class="hover:bg-brand-secondary hover:text-brand flex justify-start gap-4 items-center h-10 px-4 group cursor-pointer">
                         <svg class="" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.42188 14C11.6279 14 13.4219 12.206 13.4219 10C13.4219 7.794 11.6279 6 9.42188 6C7.21587 6 5.42188 7.794 5.42188 10C5.42188 12.206 7.21587 14 9.42188 14ZM9.42188 8C10.5059 8 11.4219 8.916 11.4219 10C11.4219 11.084 10.5059 12 9.42188 12C8.33788 12 7.42188 11.084 7.42188 10C7.42188 8.916 8.33788 8 9.42188 8Z" fill="#6A727F"/>
@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <a v-if="!authenticated" href="#" class="text-subtitle px-4 py-2 rounded-md hover:bg-wallpaper capitalize">request new password</a>
+        <button v-if="!authenticated" class="text-subtitle px-4 py-2 rounded-md hover:bg-wallpaper capitalize">request new password</button>
 
     </header>
   </div>
@@ -45,9 +45,8 @@
 
     import { ref, computed } from "vue"
     import { onClickOutside } from "@vueuse/core"
-
-    import store from "../store/index"
-    import axios from "axios";
+    import store from "../store"
+    import router from "../router"
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const user = computed(() => store.state.auth.user)
@@ -67,23 +66,13 @@
 
     function settings() {
 
-
-
     }
 
     function attemptLogout() {
-
-        axios.post('/api/auth/logout').then(response => {
-
-            console.log('Log out success ', response)
-            store.dispatch('destroyUser')
-
-        }).catch(error => {
-
-            console.log('Log out fail ', error)
-
-        })
-
+        store.dispatch("logout")
+            .then(() => {
+                router.push({ name: "Login" })
+            })
     }
 
 </script>

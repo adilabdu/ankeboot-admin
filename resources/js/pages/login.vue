@@ -1,12 +1,10 @@
 <template>
 
-    <div class="w-full grid grid-cols-12">
-
-        <div class="col-span-3"></div>
+    <div class="w-full">
 
         <div class="flex flex-col items-center h-full w-full col-span-6 py-12 gap-4">
 
-            <div v-if="!authenticated" class="px-4 flex items-center justify-start gap-2">
+            <div class="flex items-center justify-start gap-2">
 
                 <div class="leading-none text-left">
                     <h1 class="font-semibold text-lg text-brand-primary">Ankeboot</h1>
@@ -15,7 +13,7 @@
 
             </div>
 
-            <form @submit.prevent="attemptLogin" method="POST" v-if="!authenticated" class="flex flex-col gap-2 relative">
+            <form @submit.prevent="attemptLogin" method="POST" class="flex flex-col gap-2 relative">
 
                 <div v-if="loading" class="flex items-center justify-center w-full h-full bg-white/75 absolute rounded-md">
 
@@ -29,13 +27,7 @@
 
             </form>
 
-            <div v-if="authenticated" class="flex flex-col w-full gap-2 items-center">
-                Authenticated
-            </div>
-
         </div>
-
-        <div class="col-span-3"></div>
 
     </div>
 
@@ -43,34 +35,23 @@
 
 <script setup>
 
-    import axios from "axios";
     import { ref, onMounted, computed } from "vue";
     import store from "../store"
+    import router from "../router"
 
     const credentials = ref({
         credential: '',
         password: ''
     })
     const loading = ref(false)
-    const authenticated = computed(() => store.state.auth.isAuthenticated)
 
     function attemptLogin() {
-
-        axios.get('/sanctum/csrf-cookie').then(response => {
-
-            axios.post('/api/auth/login', credentials.value).then(res => {
-
-                console.log('Log in success ', res)
-                store.dispatch('setUser', res.data.data.user)
-
-            }).catch((error) => {
-
-                console.log('Log in fail ', error)
-
-            })
-
-        }).finally(() => { loading.value = false })
-
+        store.dispatch('login', {
+            credential: credentials.value.credential,
+            password: credentials.value.password
+        }).then(() => {
+            router.push({ name: "Dashboard" })
+        })
     }
 
 </script>

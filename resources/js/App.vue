@@ -1,7 +1,7 @@
 <template>
 
     <Layout>
-        <Login />
+        <router-view></router-view>
     </Layout>
 
 </template>
