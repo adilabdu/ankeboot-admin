@@ -5,6 +5,13 @@ import ContentPage from '../layouts/content-page.vue'
 import Dashboard from '../pages/dashboard.vue'
 import Login from '../pages/login.vue'
 
+import BookLayout from "../pages/books/index.vue";
+import Books from "../pages/books/all.vue";
+import Book from "../pages/books/single.vue";
+
+import TransactionLayout from "../pages/transactions/index.vue"
+import Transactions from "../pages/transactions/all.vue"
+
 const routes = [
     {
         path: '/',
@@ -24,23 +31,50 @@ const routes = [
     },
     {
         path: '/books',
-        name: 'Books',
-        component: ContentPage,
+        name: 'BookLayout',
+        component: BookLayout,
         meta: {
             requiresLogin: true
-        }
+        },
+        children: [
+            {
+                path: '',
+                name: 'Books',
+                component: Books
+            },
+            {
+                path: ':id',
+                name: 'Book',
+                component: Book
+            }
+        ],
     },
     {
         path: '/transactions',
-        name: 'Transactions',
-        component: ContentPage,
+        name: 'TransactionLayout',
+        component: TransactionLayout,
         meta: {
             requiresLogin: true
-        }
+        },
+        children: [
+            {
+                path: '',
+                name: 'Transactions',
+                component: Transactions
+            },
+        ],
     },
     {
         path: '/stocks',
         name: 'Stocks',
+        component: ContentPage,
+        meta: {
+            requiresLogin: true
+        }
+    },
+    {
+        path: '/daily-sales',
+        name: 'DailySales',
         component: ContentPage,
         meta: {
             requiresLogin: true
