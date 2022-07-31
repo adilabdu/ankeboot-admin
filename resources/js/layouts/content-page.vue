@@ -1,6 +1,6 @@
 <template>
 
-    <div class="grow px-12 pt-8 sm:px-4 xs:px-2 gap-4 flex flex-col w-full">
+    <div class="grow px-12 pt-8 sm:px-4 xs:px-2 gap-8 flex flex-col w-full max-w-[1920px]">
         <slot />
     </div>
 
