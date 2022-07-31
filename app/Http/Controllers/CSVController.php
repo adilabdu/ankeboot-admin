@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enums\PurchaseType;
+use App\Enums\TransactionType;
 use App\Models\Book;
+use App\Models\Transaction;
 use App\Traits\ReadsCSV;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -93,10 +96,79 @@ class CSVController extends Controller
 
     }
 
-    public function insertTransactions(Request $request)
+    public function insertTransactions(Request $request): Response|Application|ResponseFactory
     {
 
         // TODO: insert transaction records from CSV input
+
+        $request->validate([
+            'file' => [
+                'required',
+                File::types(['csv'])
+            ],
+            'transaction_date' => 'date'
+        ]);
+
+        try {
+
+            $records = $this->arrayFromCSV($request->file('file'));
+
+            Validator::validate($records, [
+                '*.code' => 'required|exists:books,code',
+                '*.quantity' => 'required|integer',
+                '*.type' => [
+                    'required',
+                    new Enum(TransactionType::class)
+                ],
+                '*.invoice' => 'required|string',
+                '*.transaction_date' => [
+                    $request->has('transaction_date') ? '' : 'required'
+                ]
+            ], [
+                '*.code.required' => 'The code field at #:position is required',
+                '*.quantity.required' => 'The quantity field at #:position is required',
+                '*.type.required' => 'The type field at #:position is required',
+                '*.invoice.required' => 'The invoice field at #:position is required',
+                '*.transaction_date.required' => 'The transaction_on field at #:position is required',
+                '*.quantity.integer' => 'The quantity field at #:position must be a natural number',
+                '*.code.exists:books,code' => 'A book with the code field at #:position does not exist',
+                '*.type.Illuminate\Validation\Rules\Enum' =>
+                    'Invalid type field at #:position specified. Valid types are `purchase` or `sale`'
+            ]);
+
+            DB::beginTransaction();
+
+            foreach ($records as $record) {
+
+                Transaction::create([
+                    'invoice' => $record['invoice'],
+                    'book_id' => Book::where('code', $record['code'])->first()->id,
+                    'transaction_on' => $request->input('transaction_date') ?
+                        $request->input('transaction_date') :
+                        new Carbon($record['transaction_date']),
+                    'type' => $record['type'],
+                    'quantity' => $record['quantity']
+                ]);
+
+            }
+
+            DB::commit();
+
+        } catch (Exception $exception) {
+
+            DB::rollBack();
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => count($records) . ' transaction records inserted'
+        ], 200);
 
     }
 

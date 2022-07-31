@@ -23,7 +23,7 @@ class TransactionController extends Controller
             if ($request->has('id')) {
                 $books = Transaction::find($request->input('id'));
             } else {
-                $books = Transaction::all();
+                $books = Transaction::with('book')->get();
             }
 
             return response([
