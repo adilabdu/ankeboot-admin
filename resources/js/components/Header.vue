@@ -1,7 +1,7 @@
 <template>
 
-  <div class="flex flex-col w-full">
-    <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="w-full min-h-[4rem] bg-white shadow-sm border-b border-border-light flex items-center px-8">
+  <div class="flex flex-col w-full bg-white shadow-sm border-b border-border-light">
+    <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="w-full min-h-[4rem] flex items-center px-8">
 
         <div v-if="authenticated" class="flex items-center justify-center gap-4 h-full">
             <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">

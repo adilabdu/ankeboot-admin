@@ -1,7 +1,7 @@
 <template>
 
     <router-link
-        :to="route || label"
+        :to="'/' + route"
         v-slot="{ isActive }"
         @click="navigate"
         active-class="!hover:bg-brand-primary !bg-brand-primary"
@@ -33,7 +33,7 @@
         },
         route: {
             type: String,
-            default: null
+            default: (props) => props.label
         }
 
     })
