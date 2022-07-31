@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,9 +32,11 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('books')->group(function () {
     Route::get('/', [BookController::class, 'index']);
+    Route::get('/stats', [StatisticsController::class, 'books']);
     Route::post('/csv', [CSVController::class, 'insertBooks']);
 });
 
 Route::prefix('transactions')->group(function () {
     Route::get('/', [TransactionController::class, 'index']);
+    Route::post('/csv', [CSVController::class, 'insertTransactions']);
 });
