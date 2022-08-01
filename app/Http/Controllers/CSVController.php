@@ -140,15 +140,25 @@ class CSVController extends Controller
 
             foreach ($records as $record) {
 
+                $book = Book::where('code', $record['code'])->first();
+
                 Transaction::create([
                     'invoice' => $record['invoice'],
-                    'book_id' => Book::where('code', $record['code'])->first()->id,
+                    'book_id' => $book->id,
                     'transaction_on' => $request->input('transaction_date') ?
                         $request->input('transaction_date') :
                         new Carbon($record['transaction_date']),
                     'type' => $record['type'],
                     'quantity' => $record['quantity']
                 ]);
+
+                // Update book balance
+                if ($record['type'] === TransactionType::PURCHASE->value) {
+                    $book->balance += $record['quantity'];
+                } else {
+                    $book->balance += ($record['quantity'] * -1);
+                }
+                $book->save();
 
             }
 
