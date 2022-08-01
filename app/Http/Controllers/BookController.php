@@ -21,7 +21,9 @@ class BookController extends Controller
 
         try {
             if ($request->has('id')) {
-                $books = Book::with('supplier')->where('id', $request->input('id'))->first();
+                $books = Book::with('supplier')
+                    ->with('transactions')
+                    ->where('id', $request->input('id'))->first();
             } else {
                 $books = Book::all();
             }
