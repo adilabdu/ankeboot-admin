@@ -42,6 +42,10 @@ const actions = {
             commit('getBooksStats', response.data.data)
         })
 
+    },
+
+    destroyBook({ commit }) {
+        commit('destroyBook')
     }
 
 }
@@ -67,7 +71,25 @@ const mutations = {
 
     getBook(state, payload) {
 
-        state.book = payload
+        state.book = {
+            code: payload.code,
+            type: payload.type,
+            title: payload.title,
+            author: payload.author,
+            category: payload.category,
+            balance: payload.balance,
+            supplier: payload.supplier,
+            transactions: payload.transactions.map((transaction) => {
+                return {
+                    invoice: transaction.invoice,
+                    quantity: transaction.quantity,
+                    type: transaction.type,
+                    date: new Date(transaction['transaction_on']),
+                }
+            }),
+            created_at: payload['created_at'],
+            updated_at: payload['updated_at']
+        }
 
     },
 
@@ -75,6 +97,10 @@ const mutations = {
 
         state.statistics = payload
 
+    },
+
+    destroyBook(state, payload) {
+        state.book = null
     }
 
 }
