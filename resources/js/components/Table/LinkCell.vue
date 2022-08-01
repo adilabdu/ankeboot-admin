@@ -41,10 +41,8 @@
 
 <template>
 
-    <Cell :name="name" :hide="hide">
-        <a ref="anchor" :href="href" :target="newTab ? '_blank' : ''" class="hover:underline hover:text-brand-primary">
-            {{ value }}
-        </a>
+    <Cell :name="name" :hide="hide" class="hover:underline hover:text-brand-primary">
+        <slot />
     </Cell>
 
 </template>
