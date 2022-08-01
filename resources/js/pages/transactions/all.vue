@@ -45,7 +45,11 @@
 
             <Cell name="invoice" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['invoice'].toLowerCase() }} </Cell>
             <Cell name="book_code" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['book_code'].toLowerCase() }} </Cell>
-            <LinkCell class="w-[90%]" name="book_title" :main="true" :hide="data.hide" :value="data['record']['book_title']" :to="'books/' + data['record']['book_id']" />
+            <LinkCell class="w-[90%]" name="book_title" :main="true" :hide="data.hide" :value="data['record']['book_title']" :to="'books/' + data['record']['book_id']">
+                <RouterLink :to="'books/' + data['record']['book_id']">
+                    {{ data['record']['book_title'] }}
+                </RouterLink>
+            </LinkCell>
             <EnumCell class="w-[2%]" name="transaction_type" :hide="data.hide" :colors="['red', 'green']" :options="['sale', 'purchase']" :value="data['record']['transaction_type']" />
             <Cell name="quantity" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['quantity'] }} </Cell>
             <DateCell class="w-[2%] text-center" name="transaction_date" :hide="data.hide" :value="data['record']['transaction_date']" />
