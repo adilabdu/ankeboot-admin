@@ -30,13 +30,19 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 });
 
-Route::prefix('books')->group(function () {
-    Route::get('/', [BookController::class, 'index']);
-    Route::get('/stats', [StatisticsController::class, 'books']);
-    Route::post('/csv', [CSVController::class, 'insertBooks']);
-});
+Route::middleware('auth:sanctum')->group(function () {
 
-Route::prefix('transactions')->group(function () {
-    Route::get('/', [TransactionController::class, 'index']);
-    Route::post('/csv', [CSVController::class, 'insertTransactions']);
+    Route::prefix('books')->group(function () {
+        Route::get('/', [BookController::class, 'index']);
+        Route::get('/categories', [BookController::class, 'categories']);
+        Route::get('/stats', [StatisticsController::class, 'books']);
+        Route::post('/', [BookController::class, 'post']);
+        Route::post('/csv', [CSVController::class, 'insertBooks']);
+    });
+
+    Route::prefix('transactions')->group(function () {
+        Route::get('/', [TransactionController::class, 'index']);
+        Route::post('/csv', [CSVController::class, 'insertTransactions']);
+    });
+
 });

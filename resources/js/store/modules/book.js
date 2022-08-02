@@ -23,6 +23,26 @@ const actions = {
 
     },
 
+    async postBook(context, payload) {
+
+        console.table(payload)
+
+        await axios.post('/api/books', {
+            title: payload.title,
+            alternate_title: payload['alternate_title'],
+            author: payload.author,
+            category: payload.category,
+            type: payload.type ? 'consignment' : 'cash',
+            code: payload.code,
+            balance: payload.balance
+        }).then((response) => {
+
+            context.commit('getBook', response.data.data)
+
+        })
+
+    },
+
     async getBook({ commit }, payload) {
 
         await axios.get('/api/books/', {

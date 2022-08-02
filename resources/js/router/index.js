@@ -4,6 +4,7 @@ import store from "../store"
 import ContentPage from '../layouts/content-page.vue'
 import Dashboard from '../pages/dashboard.vue'
 import Login from '../pages/login.vue'
+import CreateNew from '../pages/new.vue'
 
 import BookLayout from "../pages/books/index.vue";
 import Books from "../pages/books/all.vue";
@@ -28,6 +29,14 @@ const routes = [
         meta: {
             requiresGuest: true
         }
+    },
+    {
+        path: '/new',
+        name: 'CreateNew',
+        component: CreateNew,
+        meta: {
+            requiresLogin: true
+        },
     },
     {
         path: '/books',
