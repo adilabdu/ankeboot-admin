@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->enum('type', ['cash', 'consignment']);
             $table->string('title');
+            $table->string('alternate_title')->nullable();
             $table->string('author')->nullable();
             $table->string('category')->nullable();
             $table->integer('balance');
