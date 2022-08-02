@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Book;
+use App\Models\Transaction;
+use App\Observers\BookObserver;
+use App\Observers\TransactionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,7 +31,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Book::observe(BookObserver::class);
+        Transaction::observe(TransactionObserver::class);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Address extends Model
 {
@@ -18,6 +19,12 @@ class Address extends Model
     public function supplier(): HasOne
     {
         return $this->hasOne(Supplier::class);
+    }
+
+
+    public function logs(): MorphMany
+    {
+        return $this->morphMany(Log::class, 'loggable');
     }
 
 }
