@@ -311,7 +311,7 @@
     <div class="flex flex-col gap-4">
 
       <!-- Filter Actions -->
-      <div class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
+      <div v-if="stringSearchable || dateSearchable || hideable" class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
 
         <!-- TODO: figure a valid method to pass non Date type columns to the placeholder -->
         <!-- Search -->
