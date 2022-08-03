@@ -64,7 +64,6 @@ const actions = {
         await axios.get("/api/user")
             .then(response => {
                 context.commit("login", response.data)
-                console.log('getUser', response.data)
             })
             .catch(error => {
                 // context.commit("error", error)
