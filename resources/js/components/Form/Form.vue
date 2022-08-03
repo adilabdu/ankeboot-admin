@@ -3,7 +3,7 @@
     <div class="w-full grid grid-cols-12 gap-2">
 
         <div class="col-span-4 py-2 flex flex-col gap-1">
-            <h1 class="text-lg">{{ title }}</h1>
+            <h1 class="text-base">{{ title }}</h1>
             <slot name="subtitle">
                 <h2 class="text-subtitle">
                     {{ subtitle }}
@@ -15,8 +15,8 @@
 
             <slot />
 
-            <div class="w-full flex justify-end items-center">
-                <button type="submit" class="px-4 bg-brand-primary w-fit text-white rounded-md py-2">Save</button>
+            <div v-if="showSubmit" class="w-full flex justify-end items-center">
+                <button type="submit" class="px-4 bg-brand-primary w-fit text-white rounded-md py-2">{{ submitTitle }}</button>
             </div>
 
         </form>
@@ -39,6 +39,14 @@
         submit: {
             type: Function,
             required: true
+        },
+        submitTitle: {
+            type: String,
+            default: 'Submit'
+        },
+        showSubmit: {
+            type: Boolean,
+            default: true
         }
     })
 

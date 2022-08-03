@@ -45,7 +45,6 @@
     }
 
     onMounted(() => {
-        console.log('has route james? ', active.value)
     })
 
 </script>

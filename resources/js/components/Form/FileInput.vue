@@ -5,7 +5,7 @@
       @drop="getFileFromDrop"
       @dragover="(event) => event.preventDefault()"
       @dragleave="toggleRegionActivation($event, false)"
-      class="dropzone relative flex flex-col items-center justify-center gap-4 h-36 w-full border-2 border-dashed border-border-light rounded-md p-4"
+      class="bg-wallpaper dropzone relative flex flex-col items-center justify-center gap-4 h-36 w-full border-2 border-dashed border-border-light rounded-md p-4"
   >
 
     <div :class="[ dragRegionActivated ? 'bg-white/75' : 'bg-white/0 z-0' ]" class="absolute flex flex-row-reverse rounded-md h-full w-full transition duration-300">

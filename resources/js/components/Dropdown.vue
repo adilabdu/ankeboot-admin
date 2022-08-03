@@ -3,7 +3,7 @@
   <!-- Dropdown List -->
   <div ref="dropdown" class="sm:w-full w-fit flex gap-4 items-center justify-end">
 
-    <div tabindex="0" class="flex flex-col items-end gap-2 relative sm:w-full">
+    <div tabindex="0" class="flex flex-col items-end gap-2 relative sm:w-full rounded-md">
 
       <div @keyup.enter="toggleHideList" @click="toggleHideList" class="border-[0.5px] border-border-light rounded-md sm:w-full w-fit bg-white h-10 shadow-sm flex items-center justify-between">
 

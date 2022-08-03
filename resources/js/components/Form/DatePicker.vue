@@ -2,11 +2,14 @@
 
 <!--  <div class="w-36 h-10 bg-white rounded-md border border-border-light shadow-sm outline-2 outline outline-offset-2 outline-lime-500"></div>-->
 
-  <div class="flex flex-col items-end gap-2 relative sm:w-full">
+  <div class="flex flex-col items-end gap-1 relative sm:w-full h-fit">
 
-    <div ref="form" tabindex="0" @keyup.enter="togglePicker" @click="togglePicker" class="focus:outline-2 focus:outline-brand-primary focus:outline-offset-2 border-[0.5px] border-border-light rounded-md sm:w-full w-48 bg-white h-10 shadow-sm flex items-center justify-between">
+    <label v-if="!! label" for="" class="text-subtitle font-medium text-left inline w-full">{{ label }}</label>
 
-      <p class="px-3" :class="[selectedDate.date ? 'text-brand-primary' : 'text-subtitle']">{{ visibleDate }}</p>
+    <div ref="form" tabindex="0" @keyup.enter="togglePicker" @click="togglePicker" class="w-full focus:outline-2 focus:outline-brand-primary focus:outline-offset-2 border-[0.5px] border-border-light rounded-md sm:w-full bg-white h-10 shadow-sm flex items-center justify-between">
+
+      <p class="px-3" :class="[modelValue.date ? 'text-brand-primary' : 'text-subtitle']">{{ visibleDate }}</p>
+      <input :value="visibleDate === 'dd MM YYYY' ? null : visibleDate" :required="required" class="sr-only" />
 
       <div class="flex items-center justify-center h-full pr-3 gap-1 cursor-pointer">
         <div class="h-full w-1 blur-lg bg-white" />
@@ -19,12 +22,12 @@
     </div>
 
     <!-- TODO: Consider if min-w-[347px] is necessary -->
-    <div :class="[align === 'left' ? 'left-0' : '']" ref="datepicker" v-if="showPicker" class="z-50 mt-12 absolute min-w-[304.2px] overflow-hidden bg-white rounded-md shadow-md border-[0.5px] border-border-dark flex flex-col">
+    <div :class="[align === 'left' ? 'left-0' : '']" ref="datepicker" v-if="showPicker" class="z-50 translate-y-full -mb-2 bottom-0 absolute min-w-[304.2px] overflow-hidden bg-white rounded-md shadow-md border-[0.5px] border-border-dark flex flex-col">
 
       <div class="w-full flex justify-between items-center bg-[#F9FAFB] border-b border-border-dark shadow-sm">
 
         <div @click="displayDatePicker ? previous() : () => {}" class="cursor-pointer p-4 flex items-center">
-          <button>
+          <button type="button">
             <svg :class="[!displayDatePicker ? 'opacity-25' : '']" class="fill-subtitle rotate-180" width="11" height="16" viewBox="0 0 11 16" xmlns="http://www.w3.org/2000/svg">
               <path d="M3.06096 15.061L10.121 7.99996L3.06096 0.938965L0.938965 3.06096L5.87896 7.99996L0.938965 12.939L3.06096 15.061Z" />
             </svg>
@@ -36,7 +39,7 @@
           <span class="cursor-pointer" :class="[displayYearPicker ? 'text-subtitle/50' : '', displayMonthPicker ? 'text-subtitle/50' : '']" @click="toggleWhichPicker('year')">{{ year }}</span>
         </label>
         <div @click="displayDatePicker ? next() : () => {}" class="cursor-pointer p-4 flex items-center">
-          <button>
+          <button type="button">
             <svg :class="[!displayDatePicker ? 'opacity-25' : '']" class="fill-subtitle" width="11" height="16" viewBox="0 0 11 16" xmlns="http://www.w3.org/2000/svg">
               <path d="M3.06096 15.061L10.121 7.99996L3.06096 0.938965L0.938965 3.06096L5.87896 7.99996L0.938965 12.939L3.06096 15.061Z" />
             </svg>
@@ -45,7 +48,7 @@
 
       </div>
 
-      <button @click="setToToday" :class="[isSetToToday ? 'bg-brand-secondary border-brand-primary' : 'border-border-light', displayDatePicker ? '' : 'hidden']" class="flex justify-between items-center focus:outline-brand-primary focus:outline-offset-2 px-4 py-2 mx-3 rounded-md my-2 border-[1px] shadow-sm">
+      <button type="button" @click="setToToday" :class="[isSetToToday ? 'bg-brand-secondary border-brand-primary' : 'border-border-light', displayDatePicker ? '' : 'hidden']" class="flex justify-between items-center focus:outline-brand-primary focus:outline-offset-2 px-4 py-2 mx-3 rounded-md my-2 border-[1px] shadow-sm">
         <span :class="[isSetToToday ? 'text-brand-primary' : 'text-subtitle']" class="font-medium">Today&nbsp;</span>
         <span :class="isSetToToday ? 'text-brand-primary' : 'text-subtitle'" class="font-medium">{{ today }}</span>
       </button>
@@ -60,7 +63,7 @@
           {{   }}
         </label>
 
-        <label tabindex="0" @keyup.enter="toggleSelectedDate(i, month, year)" @click="toggleSelectedDate(i, month, year)" v-for="i in numberOfDays" :class="[ i === selectedDate.date && month === selectedDate.month && year === selectedDate.year ? 'hover:bg-brand-primary font-medium text-white bg-brand-primary' : '' ]" class="font-medium cursor-pointer p-2 border-2 border-transparent flex items-center justify-center hover:bg-brand-secondary rounded-lg transition duration-150">
+        <label tabindex="0" @keyup.enter="toggleSelectedDate(i, month, year)" @click="toggleSelectedDate(i, month, year)" v-for="i in numberOfDays" :class="[ i === modelValue.date && month === modelValue.month && year === modelValue.year ? 'hover:bg-brand-primary font-medium text-white bg-brand-primary' : '' ]" class="font-medium cursor-pointer p-2 border-2 border-transparent flex items-center justify-center hover:bg-brand-secondary rounded-lg transition duration-150">
           {{ i }}
         </label>
 
@@ -94,6 +97,10 @@
   import { onClickOutside } from "@vueuse/core";
 
   const props = defineProps({
+    label: {
+      type: String,
+      default: ''
+    },
     year: {
       type: Number,
       default: new Date().getFullYear(),
@@ -110,22 +117,32 @@
       type: String,
       default: "right",
     },
+    modelValue: {
+      type: Object,
+    },
+    required: {
+      type: Boolean,
+      default: false
+    }
   })
 
-  const emit = defineEmits([
-      'select'
-  ])
+  const emit = defineEmits(['update:modelValue'])
 
   const isSetToToday = computed(() => {
     const today = new Date();
-    return today.getFullYear() === selectedDate.value.year &&
-        today.getMonth() === selectedDate.value.month &&
-        today.getDate() === selectedDate.value.date;
+    return today.getFullYear() === props.modelValue.year &&
+        today.getMonth() === props.modelValue.month &&
+        today.getDate() === props.modelValue.date;
   })
   function setToToday() {
 
-    toggleSelectedDate(new Date().getDate(), new Date().getMonth(), new Date().getFullYear());
-    isSetToToday.value = true;
+    emit('update:modelValue', {
+        date: new Date().getDate(),
+        month: new Date().getMonth(),
+        year: new Date().getFullYear()
+    })
+    year.value = new Date().getFullYear()
+    month.value = new Date().getMonth()
 
   }
 
@@ -140,14 +157,9 @@
   const dateOffset = computed(() => new Date(year.value, month.value).getDay())
   const numberOfDays = computed(() => 35 - (new Date(year.value, month.value, 35).getDate()))
 
-  const selectedDate = ref({
-    date: null,
-    month: null,
-    year: null,
-  })
   const visibleDate = computed(() => {
-    return selectedDate.value.date ?
-      `${selectedDate.value.date} ${months[selectedDate.value.month]} ${selectedDate.value.year}` :
+    return props.modelValue.date ?
+      `${props.modelValue.date} ${months[props.modelValue.month]} ${props.modelValue.year}` :
       `dd MM YYYY`
   })
 
@@ -172,27 +184,11 @@
   }
 
   function toggleSelectedDate(date, month, year) {
-
-    if (
-        selectedDate.value.date === date &&
-        selectedDate.value.month === month &&
-        selectedDate.value.year === year
-    ) {
-      selectedDate.value = {
-        date: null,
-        month: null,
-        year: null,
+      if (props.modelValue.date === date) {
+          emit('update:modelValue', { date: '', month: '', year: '' })
+      } else {
+          emit('update:modelValue', { date, month, year })
       }
-    } else {
-      selectedDate.value = {
-        date,
-        month,
-        year,
-      }
-    }
-
-    emit('select', selectedDate.value)
-
   }
 
   const displayDatePicker = ref(true)

@@ -121,21 +121,17 @@
   }
 
   const dateQuery = ref({
-    start: null,
-    end: null,
+    start: {
+        date: '',
+        month: '',
+        year: ''
+    },
+    end: {
+        date: '',
+        month: '',
+        year: ''
+    },
   })
-  function setDateQuery(query, range) {
-
-    if (!query.date) {
-      query = null
-    }
-
-    if (range === 'start') {
-      dateQuery.value.start = query
-    } else {
-      dateQuery.value.end = query
-    }
-  }
 
   // Watch for search query changes to update the data
   watch([stringQuery, dateQuery.value], () => {
@@ -143,11 +139,11 @@
     // Start from string search
     filteredData.value = searchString(stringQuery.value)
 
-    if (dateQuery.value.start) {
+    if (!! dateQuery.value.start.date) {
       filteredData.value = searchDate(dateQuery.value.start, 'start')
     }
 
-    if (dateQuery.value.end) {
+    if (!! dateQuery.value.end.date) {
       filteredData.value = searchDate(dateQuery.value.end, 'end')
     }
 
@@ -330,9 +326,9 @@
 
         <!-- Date search -->
         <div v-if="dateSearchable" class="flex items-center gap-4">
-          <DatePicker align="left" @select="setDateQuery($event, 'start')" />
+          <DatePicker class="w-48" align="left" v-model="dateQuery.start" />
           <label class="font-medium text-subtitle"> to </label>
-          <DatePicker @select="setDateQuery($event, 'end')" />
+          <DatePicker class="w-48" v-model="dateQuery.end" />
         </div>
 
       </div>
