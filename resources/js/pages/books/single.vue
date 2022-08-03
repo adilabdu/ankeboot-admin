@@ -9,14 +9,15 @@
         >
 
             <template #rows>
+                <ItemDescription :description="book.code" label="code" />
                 <ItemDescription :description="book.title" label="title" />
+                <ItemDescription :description="book.author" label="author" />
                 <ItemDescription :description="book.category" label="category" />
                 <ItemDescription
                     label="balance"
                     :description="book.balance + ' copies'"
                     class="tabular-nums font-medium"
                 />
-                <ItemDescription :description="book.code" label="code" />
                 <ItemDescription :description="book.type" label="purchase type" />
                 <ItemDescription label="supplier">
                     <div v-if="book['supplier']">
