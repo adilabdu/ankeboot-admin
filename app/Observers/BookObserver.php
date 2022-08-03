@@ -22,7 +22,8 @@ class BookObserver
     {
         $book->logs()->save(new Log([
             'type' => ActivityType::CREATE,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+//            'user_id' => 1
         ]));
     }
 
@@ -36,7 +37,8 @@ class BookObserver
     {
         $book->logs()->save(new Log([
             'type' => ActivityType::UPDATE,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+//            'user_id' => 1
         ]));
     }
 

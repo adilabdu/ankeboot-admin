@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Enums\ActivityType;
+use App\Enums\TransactionType;
 use App\Models\Log;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +20,18 @@ class TransactionObserver
     {
         $transaction->logs()->save(new Log([
             'type' => ActivityType::CREATE,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+//            'user_id' => 1
         ]));
+
+        if ($transaction->type === TransactionType::PURCHASE) {
+            $transaction->book->balance += $transaction->quantity;
+            $transaction->book->save();
+        } else {
+            $transaction->book->balance += ($transaction->quantity * -1);
+            $transaction->book->save();
+        }
+
     }
 
     /**
@@ -33,7 +44,8 @@ class TransactionObserver
     {
         $transaction->logs()->save(new Log([
             'type' => ActivityType::UPDATE,
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+//            'user_id' => 1
         ]));
     }
 
