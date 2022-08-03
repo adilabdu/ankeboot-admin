@@ -152,13 +152,14 @@ class CSVController extends Controller
                     'quantity' => $record['quantity']
                 ]);
 
-                // Update book balance
-                if ($record['type'] === TransactionType::PURCHASE->value) {
-                    $book->balance += $record['quantity'];
-                } else {
-                    $book->balance += ($record['quantity'] * -1);
-                }
-                $book->save();
+                // Implementation taken to TransactionObserver class instead
+//                // Update book balance
+//                if ($record['type'] === TransactionType::PURCHASE->value) {
+//                    $book->balance += $record['quantity'];
+//                } else {
+//                    $book->balance += ($record['quantity'] * -1);
+//                }
+//                $book->save();
 
             }
 
