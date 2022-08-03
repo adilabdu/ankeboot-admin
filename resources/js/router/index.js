@@ -4,11 +4,13 @@ import store from "../store"
 import ContentPage from '../layouts/content-page.vue'
 import Dashboard from '../pages/dashboard.vue'
 import Login from '../pages/login.vue'
-import CreateNew from '../pages/new.vue'
 
 import BookLayout from "../pages/books/index.vue";
 import Books from "../pages/books/all.vue";
 import Book from "../pages/books/single.vue";
+
+import FormLayout from "../pages/new/index.vue";
+import CreateBook from "../pages/new/books.vue";
 
 import TransactionLayout from "../pages/transactions/index.vue"
 import Transactions from "../pages/transactions/all.vue"
@@ -32,11 +34,18 @@ const routes = [
     },
     {
         path: '/new',
-        name: 'CreateNew',
-        component: CreateNew,
+        name: 'FormLayout',
+        component: FormLayout,
         meta: {
             requiresLogin: true
         },
+        children: [
+            {
+                path: 'books',
+                name: 'CreateBook',
+                component: CreateBook
+            }
+        ]
     },
     {
         path: '/books',
