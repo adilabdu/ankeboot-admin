@@ -4,7 +4,10 @@
 
   <div class="flex flex-col items-end gap-1 relative sm:w-full h-fit">
 
-    <label v-if="!! label" for="" class="text-subtitle font-medium text-left inline w-full">{{ label }}</label>
+    <label v-if="!! label" class="text-subtitle font-medium text-left inline w-full">
+        {{ label }}
+        <span v-if="required" class="text-red-600">*</span>
+    </label>
 
     <div ref="form" tabindex="0" @keyup.enter="togglePicker" @click="togglePicker" class="w-full focus:outline-2 focus:outline-brand-primary focus:outline-offset-2 border-[0.5px] border-border-light rounded-md sm:w-full bg-white h-10 shadow-sm flex items-center justify-between">
 
