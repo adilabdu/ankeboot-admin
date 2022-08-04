@@ -68,6 +68,24 @@ const actions = {
 
     },
 
+    async postMultipleBooks(context, payload) {
+
+        console.table(payload)
+
+        return axios.post('/api/books/csv', {
+            file: payload.file
+        }, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+            .then((response) => {
+                return response.data.message
+            }).catch((error) => {
+                return error.response.data.message
+            })
+    },
+
     async getBook({ commit }, payload) {
 
         await axios.get('/api/books/', {
