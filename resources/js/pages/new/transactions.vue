@@ -1,5 +1,18 @@
 <template>
 
+<!--    <p class="text-subtitle font-medium">Make a new Transaction Form</p>-->
+
+    <Form
+        :show-submit="false"
+        submit-title="Upload"
+        subtitle="Upload an excel or comma separated value (CSV) file to register multiple book records at once. Make sure to include all the necessary columns and follow the template to insert the data successfully."
+        title="Insert multiple Book records from CSV"
+        :submit="createNewBook"
+    >
+
+        <FileInput />
+
+    </Form>
     <Form title="Register new Book" :submit="createNewBook">
 
         <TextInput required label="Book title" placeholder="Insert new book title" v-model="bookData.title"/>
@@ -46,17 +59,6 @@
         </Collapsable>
 
     </Form>
-    <Form
-        :show-submit="false"
-        submit-title="Upload"
-        subtitle="Upload an excel or comma separated value (CSV) file to register multiple book records at once. Make sure to include all the necessary columns and follow the template to insert the data successfully."
-        title="Insert multiple Book records from CSV"
-        :submit="createNewBook"
-    >
-
-        <FileInput />
-
-</Form>
 
 </template>
 
@@ -76,22 +78,22 @@
     import { useRoute } from "vue-router";
 
     const bookData = ref({
-        title: '',
+        title: 'A Book',
         alternate_title: '',
-        author: '',
-        category: '',
+        author: 'An Author',
+        category: 'Fake',
         type: true,
-        code: '',
+        code: 'fake2000',
     })
 
     const transaction_type = { transaction_type: true }
     const transactionData = ref({
-        transaction_invoice: '',
-        transaction_quantity: '',
+        transaction_invoice: 'fake2000',
+        transaction_quantity: '2000',
         transaction_on: {
-            date: '',
-            month: '',
-            year: ''
+            date: '20',
+            month: '11',
+            year: '2022'
         }
     })
 

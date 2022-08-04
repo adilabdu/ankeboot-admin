@@ -24,7 +24,7 @@
         :data="books"
         :center="['code', 'balance']"
         :right="[]"
-        :sortable="['category', 'code', 'balance', 'title', 'purchase_type']"
+        :sortable="['category', 'code', 'balance', 'title', 'purchase_type', 'added_on']"
         :searchable="['title', 'added_on']"
         :hideable="false"
         :hide="[]"
