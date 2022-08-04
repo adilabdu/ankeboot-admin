@@ -83,7 +83,7 @@ const actions = {
 
     async getBooksStats({ commit }) {
 
-        await axios.get('/api/books/stats').then((response) => {
+        await axios.get('/api/books/statistics').then((response) => {
             commit('getBooksStats', response.data.data)
         })
 

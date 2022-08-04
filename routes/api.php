@@ -35,7 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
         Route::get('/categories', [BookController::class, 'categories']);
-        Route::get('/stats', [StatisticsController::class, 'books']);
+        Route::get('/statistics', [StatisticsController::class, 'books']);
         Route::post('/', [BookController::class, 'post']);
         Route::post('/csv', [CSVController::class, 'insertBooks']);
     });
