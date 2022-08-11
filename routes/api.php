@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CSVController;
+use App\Http\Controllers\DailySaleController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
@@ -36,13 +38,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [BookController::class, 'index']);
         Route::get('/categories', [BookController::class, 'categories']);
         Route::get('/statistics', [StatisticsController::class, 'books']);
+        Route::get('/search', [SearchController::class, 'books']);
         Route::post('/', [BookController::class, 'post']);
         Route::post('/csv', [CSVController::class, 'insertBooks']);
     });
 
     Route::prefix('transactions')->group(function () {
         Route::get('/', [TransactionController::class, 'index']);
+        Route::post('/', [TransactionController::class, 'post']);
         Route::post('/csv', [CSVController::class, 'insertTransactions']);
+    });
+
+    Route::prefix('daily-sales')->group(function () {
+        Route::get('/', [DailySaleController::class, 'index']);
+        Route::post('/', [DailySaleController::class, 'create']);
+        Route::post('/update', [DailySaleController::class, 'update']);
     });
 
 });

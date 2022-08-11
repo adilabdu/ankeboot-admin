@@ -10,7 +10,7 @@
       <div class="border-[0.5px] border-border-light rounded-md sm:w-full w-64 bg-white h-10 shadow-sm flex items-center justify-between">
 
         <!-- Hidden Columns Labels -->
-        <div @click="choices.length < 1 ? toggleHideList() : console.log('name')" :class="[choices.length < 1 ? 'cursor-pointer' : '']" class="custom-scroll overflow-auto px-3 flex gap-2 items-center justify-start">
+        <div @click="choices.length < 1 ? toggleHideList() : () => {}" :class="[choices.length < 1 ? 'cursor-pointer' : '']" class="custom-scroll overflow-auto px-3 flex gap-2 items-center justify-start">
           <div v-for="name in items" class="px-3 bg-brand-secondary text-brand-primary rounded-xl flex gap-2 items-center justify-between">
             <p class="whitespace-nowrap text-xs inline">{{ name }}</p>
             <p @click.stop="toggleHide(name)" class="cursor-pointer font-medium rotate-45 text-lg">+</p>

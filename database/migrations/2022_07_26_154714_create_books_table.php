@@ -28,6 +28,8 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->fullText(['title', 'alternate_title', 'author', 'category']);
         });
     }
 

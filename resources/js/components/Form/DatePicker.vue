@@ -244,15 +244,6 @@
     }
   }
 
-  console.log('year is ', [year.value])
-
-  // const form = ref(null)
-  // onMounted(() => {
-  //
-  //   form.value.addEventListener('keydown')
-  //
-  // })
-
 </script>
 
 <style scoped>

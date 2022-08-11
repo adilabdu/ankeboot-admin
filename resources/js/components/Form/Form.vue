@@ -4,18 +4,22 @@
 
         <div class="col-span-4 py-2 flex flex-col gap-1">
             <h1 class="text-base">{{ title }}</h1>
-            <slot name="subtitle">
-                <h2 class="text-subtitle">
+            <h2 class="text-subtitle">
+                <slot name="subtitle">
                     {{ subtitle }}
-                </h2>
-            </slot>
+                </slot>
+            </h2>
         </div>
 
-        <form @submit.prevent="submit" class="p-6 col-span-8 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" title="Form" submit="">
+        <form @submit.prevent="submit" class="p-6 col-span-8 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
 
             <slot />
 
-            <div v-if="showSubmit" class="w-full flex justify-end items-center">
+            <div v-if="showSubmit" class="w-full flex justify-between items-center">
+                <p class="text-subtitle text-xs px-2">
+                    <span class="text-red-600 text-sm">*</span>
+                    Required fields
+                </p>
                 <button type="submit" class="px-4 bg-brand-primary w-fit text-white rounded-md py-2">{{ submitTitle }}</button>
             </div>
 

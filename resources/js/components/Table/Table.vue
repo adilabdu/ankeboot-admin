@@ -280,7 +280,7 @@
 
 <template>
 
-  <div class="flex flex-col sm:gap-4" :class="[title ? 'gap-4' : '']">
+  <div class="w-full flex flex-col sm:gap-4" :class="[title ? 'gap-4' : '']">
 
     <div class="flex gap-8 sm:flex-col sm:items-start justify-between items-start sm:gap-3">
       <div class="flex flex-col justify-between sm:gap-1">
@@ -337,7 +337,7 @@
       <div class="rounded-md overflow-auto border-[0.5px] border-border-light">
 
         <!-- Table -->
-        <table class="w-full bg-white shadow-sm">
+        <table class="w-full     bg-white shadow-sm">
           <tr class="h-11 text-left bg-[#F9FAFB] border-border-dark border-b-[1px] uppercase text-subtitle font-medium text-xs">
             <slot name="headers">
 

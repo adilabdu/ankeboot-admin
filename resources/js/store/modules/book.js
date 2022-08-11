@@ -4,7 +4,8 @@ const state = {
 
     books: null,
     book: null,
-    statistics: null
+    statistics: null,
+    loading: false,
 
 }
 
@@ -14,9 +15,12 @@ const getters = {
 
 const actions = {
 
+    setLoadingState(context, payload) {
+        context.commit('setLoadingState', payload)
+    },
+
     async getBooks({ commit }) {
 
-        console.log('Running getBooks actions from book store')
         await axios.get('/api/books').then((response) => {
             commit('getBooks', response.data.data)
         })
@@ -24,8 +28,6 @@ const actions = {
     },
 
     async postBook(context, payload) {
-
-        console.table(payload)
 
         const transaction_on = !! payload.transaction_on ?
             `${parseInt(payload.transaction_on.date).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${(parseInt(payload.transaction_on.month) + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${payload.transaction_on.year}` :
@@ -48,8 +50,6 @@ const actions = {
             })
         }
 
-        console.log('transaction_on ', transaction_on)
-
         return axios.post('/api/books', {
             title: payload.title,
             alternate_title: payload['alternate_title'],
@@ -60,17 +60,16 @@ const actions = {
             balance: payload.balance,
             ... transaction_data
         }).then((response) => {
-            context.commit('getBook', response.data.data)
-            return response.data.message
+            return response.data
         }).catch((error) => {
             return error.response.data.message
         })
 
     },
 
-    async postMultipleBooks(context, payload) {
+    async postMultipleBooks({ commit, dispatch }, payload) {
 
-        console.table(payload)
+        dispatch('setLoadingState', true)
 
         return axios.post('/api/books/csv', {
             file: payload.file
@@ -80,9 +79,11 @@ const actions = {
             }
         })
             .then((response) => {
-                return response.data.message
+                return response.data
             }).catch((error) => {
                 return error.response.data.message
+            }).finally(() => {
+                dispatch('setLoadingState', false)
             })
     },
 
@@ -93,7 +94,6 @@ const actions = {
                 id: payload
             }
         }).then((response) => {
-            console.log('response from getBook actions ', response.data.data)
             commit('getBook', response.data.data)
         })
 
@@ -114,6 +114,10 @@ const actions = {
 }
 
 const mutations = {
+
+    setLoadingState(state, payload) {
+        state.loading = payload
+    },
 
     getBooks(state, payload) {
 

@@ -25,7 +25,7 @@
         :center="['code', 'balance']"
         :right="[]"
         :sortable="['category', 'code', 'balance', 'title', 'purchase_type', 'added_on']"
-        :searchable="['title', 'added_on']"
+        :searchable="['title', 'added_on', 'code']"
         :hideable="false"
         :hide="[]"
         :hide-labels="[]"
@@ -106,7 +106,6 @@
     async function fetchBooks() {
 
         if (!! ! store.state.book.books) {
-            console.log('Run getBooks dispatch')
             await store.dispatch('getBooks')
                 .then()
                 .finally(() => {

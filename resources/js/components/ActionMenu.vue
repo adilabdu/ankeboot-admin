@@ -10,7 +10,7 @@
                 book category.
             </p>
         </RouterLink>
-        <RouterLink to="/" class="cursor-pointer p-8 col-span-1 row-span-1 border-b border-r border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
+        <RouterLink to="new/books" class="cursor-pointer p-8 col-span-1 row-span-1 border-b border-r border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
             <h1 class="group-hover:text-brand-primary font-medium text-base">Insert Book records from Data Source</h1>
             <p class="text-subtitle group-hover:text-black overflow-hidden">
                 If you have a bulk of item records that need registration, insert these

@@ -24,6 +24,35 @@ module.exports = {
             fontSize: {
                 'xs': '0.75rem',
                 '2xs': '0.7rem',
+            },
+            animation: {
+                'rotate': 'rotate 2s linear infinite',
+                'slide-in': 'slideIn 150ms linear',
+                'slide-up': 'slideUp 100ms linear',
+                'slide-out': 'slideOut 150ms linear',
+                'slide-in-from-left': 'slideInFromLeft 150ms linear'
+            },
+            keyframes: {
+                rotate: {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                },
+                slideIn: {
+                    '0%': { transform: 'translateX(100%)' },
+                    '100%': { transform: 'translateX(0%)' }
+                },
+                slideUp: {
+                    '0%': { transform: 'translateY(100%)' },
+                    '100%': { transform: 'translateY(0%)' }
+                },
+                slideOut: {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(100%)' }
+                },
+                slideInFromLeft: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0%)' }
+                }
             }
         },
         screens: {

@@ -18,6 +18,8 @@ import UpdateTransaction from "../pages/update/transactions.vue"
 import TransactionLayout from "../pages/transactions/index.vue"
 import Transactions from "../pages/transactions/all.vue"
 
+import DailySaleLayout from "../pages/daily-sales/index.vue"
+
 const routes = [
     {
         path: '/',
@@ -120,8 +122,8 @@ const routes = [
     },
     {
         path: '/daily-sales',
-        name: 'DailySales',
-        component: ContentPage,
+        name: 'DailySaleLayout',
+        component: DailySaleLayout,
         meta: {
             requiresLogin: true
         }

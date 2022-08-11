@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex flex-row w-full relative">
+    <div class="flex flex-row max-w-full relative">
 
         <Navigation v-if="authenticated">
 
@@ -29,7 +29,7 @@
                             <path d="M4 4H5.998V6H4V4ZM8 4H14V6H8V4ZM4 8H5.998V10H4V8ZM8 8H14V10H8V8ZM4 12H5.998V14H4V12ZM8 12H14V14H8V12Z" />
                         </svg>
                     </NavigationLink>
-                    <NavigationLink v-slot="props" label="daily sales" route="daily-sales">
+                    <NavigationLink :number="store.state.daily_sale.unsubmitted" v-slot="props" label="daily sales" route="daily-sales">
                         <svg width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 18V4C18 2.897 17.103 2 16 2H14V0H12V2H6V0H4V2H2C0.897 2 0 2.897 0 4V18C0 19.103 0.897 20 2 20H16C17.103 20 18 19.103 18 18ZM6 16H4V14H6V16ZM6 12H4V10H6V12ZM10 16H8V14H10V16ZM10 12H8V10H10V12ZM14 16H12V14H14V16ZM14 12H12V10H14V12ZM16 7H2V5H16V7Z" />
                         </svg>
@@ -49,11 +49,19 @@
 
         </Navigation>
 
-        <div class="h-screen w-full flex flex-col">
+        <div :class="[authenticated ? 'w-[calc(100%-16rem)]' : 'w-full']" class="h-screen xl:w-full flex flex-col">
 
             <Header />
 
-            <div class="grow overflow-auto w-full relative flex flex-col">
+            <div class="grow overflow-y-auto relative flex flex-col relative overflow-x-hidden">
+
+                <div class="h-fit max-h-full w-96 m-2 absolute right-0 flex flex-col gap-2 z-50">
+                    <Alert v-for="alert in alerts" :type="alert.type" :message="alert.message" />
+                </div>
+
+<!--                <div class="h-fit max-h-full w-96 m-2 absolute left-0 bottom-0 flex flex-col flex-col-reverse gap-2 z-50">-->
+<!--                    <Alert persist v-for="alert in alerts" :type="alert.type" :message="alert.message" />-->
+<!--                </div>-->
 
                 <slot />
 
@@ -75,9 +83,11 @@
     import Header from "../components/Header.vue"
     import NavigationLink from "../components/NavigationLink.vue"
     import ContentPage from "./content-page.vue"
+    import Alert from "../components/Alert.vue"
     import store from "../store"
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
+    const alerts = computed(() => store.state.alert.alerts)
 
 </script>
 

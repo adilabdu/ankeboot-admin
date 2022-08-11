@@ -1,5 +1,7 @@
 <template>
 
+    <div id="top-view"></div>
+
     <Layout>
         <router-view></router-view>
     </Layout>

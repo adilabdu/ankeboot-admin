@@ -1,8 +1,8 @@
 <template>
 
-  <div class="flex flex-col gap-8 bg-white rounded-md border border-border-light shadow-sm p-6">
+  <div class="flex flex-col gap-4 bg-white rounded-md border border-border-light shadow-sm">
 
-    <div class="leading-none flex justify-between items-center">
+    <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>
         <h1 class="text-base font-medium">Monthly Sales</h1>
         <h2 class="text-subtitle text-xs">Sales made within the previous 12 months </h2>
@@ -10,7 +10,7 @@
 
     </div>
 
-    <div class="chart grid grid-cols-12 grow">
+    <div class="chart grid grid-cols-12 grow p-3 ">
 
       <template v-for="i in [['Jan', 6909, 54], ['Feb', 5900, 47], ['Mar', 7110, 57], ['Apr', 8322, 67], ['May', 7221, 59], ['Jun', 8122, 58], ['Jul', 7210, 55], ['Aug', 9101, 74], ['Sep', 10111, 82], ['Oct', 12307, 100], ['Nov', 11721, 95], ['Dec', 9122, 74]]">
 

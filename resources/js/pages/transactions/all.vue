@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="statistics" class="grid grid-cols-4 gap-2">
+    <div v-if="statistics" class="grid grid-cols-4 md:grid-cols-1 gap-2">
         <InfoCard class="col-span-1" label="Total Books">
             <span class="">{{ formatNumber(statistics.count) ?? 0 }}</span>
         </InfoCard>
@@ -111,7 +111,6 @@
     async function fetchTransactions() {
 
         if (!! ! store.state.transaction.transactions) {
-            console.log('Run getTransactions dispatch')
             await store.dispatch('getTransactions')
                 .then()
                 .finally(() => {

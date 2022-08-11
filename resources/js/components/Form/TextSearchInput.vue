@@ -52,7 +52,6 @@
     const searchOptions = ref(null)
 
     function selectSearchResult(selected) {
-        console.log(selected, ' selected')
         emit('update:modelValue', selected)
     }
 

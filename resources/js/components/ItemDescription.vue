@@ -52,7 +52,6 @@
 
   function copyText() {
 
-    console.log(text.value.innerText)
     clicked.value = true
     navigator.clipboard.writeText(text.value.innerText).then().catch().finally(() => {
       setTimeout(() => {

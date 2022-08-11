@@ -62,28 +62,21 @@
 
     if (event.dataTransfer.items[0].getAsFile().type === 'text/csv') {
       dragRegionActivated.value = false
-        console.log('file successfully dropped ', event.dataTransfer.items[0].getAsFile())
       emit('update:modelValue', event.dataTransfer.items[0].getAsFile())
-      // props.modelValue = event.dataTransfer.items[0].getAsFile()
-      console.log('file is ', file.value)
 
     } else {
-      console.log('invalid file type: ', event.dataTransfer.items[0].getAsFile().type)
+      alert('invalid file type: ' + event.dataTransfer.items[0].getAsFile().type)
     }
 
     event.preventDefault()
   }
 
   function getFileFromUpload(event) {
-    // props.modelValue = event.target.files[0]
     emit('update:modelValue', event.target.files[0])
-    console.log('file is ', file.value)
   }
 
   function resetFile() {
-    console.log('reset file')
     emit('update:modelValue', null)
-    // props.modelValue = null
   }
 
 </script>

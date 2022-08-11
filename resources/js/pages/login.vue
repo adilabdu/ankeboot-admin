@@ -21,8 +21,8 @@
 
                 </div>
 
-                <input v-model="credentials.credential" placeholder="Enter username, phone number or email" type="text" name="username" id="username" class="px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
-                <input v-model="credentials.password" placeholder="Enter password" type="password" name="password" id="password" class="px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
+                <input v-model="credentials.credential" placeholder="Enter username, phone number or email" type="text" name="username" id="username" class="autofill:bg-brand-secondary px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
+                <input v-model="credentials.password" placeholder="Enter password" type="password" name="password" id="password" class="autofill:bg-brand-secondary px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
                 <button class="capitalize bg-brand-primary rounded-md shadow-sm h-10 text-white">Log in</button>
 
             </form>

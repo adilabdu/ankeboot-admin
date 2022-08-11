@@ -1,12 +1,14 @@
 <template>
 
     <td :class="[ main ? 'text-black' : 'text-subtitle' ]" v-if="!hide.includes(name)" class="px-4 whitespace-nowrap">
-      {{ value.toLocaleDateString() }}
+      {{ formatNumberToTwoIntegerPlaces(value.getDate()) + '/' + formatNumberToTwoIntegerPlaces(value.getMonth() + 1) + '/' + value.getFullYear() }}
     </td>
 
 </template>
 
 <script setup>
+
+    import { formatNumberToTwoIntegerPlaces } from "../../utils"
 
   defineProps({
 
