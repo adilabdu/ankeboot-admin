@@ -21,8 +21,9 @@ class DailySaleController extends Controller
     {
 
         $request->validate([
-            'limit' => 'integer|required_with:page',
-            'page' => 'integer|required_with:limit'
+            'limit' => 'integer|required_with:page|prohibits:id',
+            'page' => 'integer|required_with:limit',
+            'id' => 'integer|exists:daily_sales,id'
         ]);
 
         try {
@@ -33,6 +34,13 @@ class DailySaleController extends Controller
                     ->skip(($request->input('page') - 1) * $request->input('limit'))
                     ->take($request->input('limit'))
                     ->get();
+
+            } else if ($request->has('id')) {
+
+                $dailySales = DailySale::with('expenses')
+                    ->with('sales_receipts')
+                    ->with('deposits')
+                    ->find($request->input('id'));
 
             } else {
 

@@ -2,17 +2,18 @@
 
     <ContentPage>
 
-        <div class="flex flex-col h-fit w-full gap-4">
+        <div class="flex flex-col h-fit w-full gap-8">
 
-            <div class="flex flex-row items-center justify-start gap-3 h-fit overflow-auto relative">
-                <svg v-if="page > 1" @click="getDailySales('backward')" class="rotate-180" width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>
-                </svg>
+            <container
+                ref="date_cards"
+                @resize="updateGridSize"
+                class="flex flex-row items-center justify-evenly gap-3 h-fit overflow-auto relative"
+            >
 
                 <template v-if="dailySales" v-for="dailySale in dailySales">
 
                     <div :class="[dailySale.submitted ? 'border bg-white' : 'border-dashed border-2']"
-                         class="relative border-border-light flex flex-col justify-between p-4 shrink-0 w-52 h-52 rounded-xl shadow-sm">
+                         class="relative flex flex-col justify-between p-4 shrink-0 w-52 h-52 rounded-xl shadow-sm">
 
                         <div
                             v-if="! dailySale.submitted"
@@ -35,7 +36,7 @@
 
                         <div
                             v-if="dailySale.submitted"
-                            @click="openDailySale(dailySale.date)"
+                            @click="get({ id: dailySale.id })"
                             class="cursor-pointer hover:opacity-100
                              opacity-0 transition-opacity duration-300
                              top-0 left-0 rounded-xl absolute w-full
@@ -56,6 +57,7 @@
                             <div class="flex flex-col leading-tight">
                                 <p class="text-subtitle text">{{ months[dailySale.date.getMonth()] }}</p>
                                 <p class="font-medium text-2xl text-subtitle">{{ formatNumberToTwoIntegerPlaces(dailySale.date.getDate() ) }}</p>
+                                <p class="text-subtitle text">{{ days[dailySale.date.getDay()] }}</p>
                             </div>
                             <svg
                                 :class="[
@@ -86,14 +88,170 @@
 
                 </template>
 
-                <svg @click="getDailySales('forward')" class="" width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>
-                </svg>
+            </container>
+
+            <div v-if="chosenDate" class="w-full flex flex-col items-center gap-2">
+
+                <p class="text-subtitle font-medium py-2">
+                    Daily sales report for
+                    <span class="text-brand-primary">
+                            {{ new Date(chosenDate['date_of']).toDateString() }}
+                        </span>
+                </p>
+
+                <div class="w-full rounded-xl bg-white flex flex-col gap-3 h-fit p-4 border border-border-light shadow-sm">
+
+                    <div class="grid grid-cols-4 gap-2 w-full p-2 grow">
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Date</label>
+                            <label class="font-medium">{{ new Date(chosenDate['date_of']).toDateString() }}</label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Submitted Date</label>
+                            <label class="font-medium">{{ new Date(chosenDate['created_at']).toDateString() }}</label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Cashier</label>
+                            <label class="font-medium">{{ chosenDate['cashier'] }}</label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Status</label>
+                            <label class="px-2 py-0.5 rounded-full bg-brand-secondary text-brand-primary text-xs">
+                                {{ chosenDate['is_submitted'] ? 'submitted' : 'not submitted' }}
+                            </label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Sales receipts</label>
+                            <label class="font-medium">
+                                ETB {{ (chosenDate['sales_receipts'].reduce((old, value) => {  return old + value['amount'] }, 0)).toFixed(2) }}
+                                ({{ chosenDate['sales_receipts'].length }})
+                            </label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Deposit receipts</label>
+                            <label class="font-medium">
+                                ETB {{ (chosenDate['deposits'].reduce((old, value) => {  return old + value['amount'] }, 0)).toFixed(2) }}
+                                ({{ chosenDate['deposits'].length }})
+                            </label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Expenses</label>
+                            <label class="font-medium">
+                                ETB {{ (chosenDate['expenses'].reduce((old, value) => {  return old + value['amount'] }, 0)).toFixed(2) }}
+                                ({{ chosenDate['expenses'].length }})
+                            </label>
+                        </div>
+
+                        <div class="flex flex-col items-center py-2 gap-1">
+                            <label class="text-subtitle font-medium">Difference</label>
+                            <label :class="chosenDate['difference'] > 5 ? 'text-red-500' : ''" class="font-medium">
+                                <span v-if="chosenDate['difference'] > 0">+</span>
+                                <span v-else>-</span>
+                                {{ chosenDate['difference'] }}
+                                ETB
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="flex justify-center items-center px-4">
+            <div v-if="chosenDate" class="grid grid-cols-4 w-full gap-2">
 
-                <h1 class="font-medium text-subtitle text-base">Daily Sale records</h1>
+                <div class="col-span-1 flex flex-col gap-2">
+
+                    <p class="text-center font-medium text-subtitle w-full">Sales Receipts</p>
+
+                    <template v-for="sales_receipt in chosenDate['sales_receipts']">
+                        <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
+
+                            <div class="flex flex-col leading-tight items-start p-4 text-lg justify-center grow">
+                                <p class="text-subtitle">{{ sales_receipt['receipt'] }}</p>
+                            </div>
+                            <p class="p-4 gap-1 w-fit h-full flex items-center justify-center text-lg font-medium">
+                                <sup class="text-xs">ETB</sup>
+                                {{ sales_receipt['amount'].toFixed(2) }}
+                            </p>
+
+                        </div>
+                    </template>
+
+                </div>
+
+                <div class="col-span-1 flex flex-col gap-2">
+
+                    <p class="text-center font-medium text-subtitle w-full">Deposits</p>
+                    <template v-for="deposit in chosenDate['deposits']">
+                        <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
+
+                            <div class="flex flex-col leading-tight items-start p-4 text-lg justify-center grow">
+                                <p class="font-medium text-xs">{{ deposit['type'] }}</p>
+                                <p class="text-subtitle text-xs">{{ new Date(deposit['deposited_on']).toDateString() }}</p>
+                            </div>
+                            <p class="p-4 gap-1 w-fit h-full flex items-center justify-center text-lg font-medium">
+                                <sup class="text-xs">ETB</sup>
+                                {{ deposit['amount'].toFixed(2) }}
+                            </p>
+
+                        </div>
+                    </template>
+
+                </div>
+
+                <div class="col-span-1 flex flex-col gap-2">
+
+                    <p class="text-center font-medium text-subtitle w-full">Expenses</p>
+                    <template v-for="expense in chosenDate['expenses']">
+                        <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
+
+                            <div class="flex flex-col leading-tight items-start p-4 text-lg justify-center grow">
+                                <p class="font-medium">
+                                    <span class="text-subtitle">PV</span>
+                                    {{ expense['receipt'] }}
+                                </p>
+                                <p class="text-subtitle text-xs">{{ expense['description'] }}</p>
+                            </div>
+                            <p class="p-4 gap-1 w-fit h-full flex items-center justify-center text-lg font-medium">
+                                <sup class="text-xs">ETB</sup>
+                                {{ expense['amount'].toFixed(2) }}
+                            </p>
+
+                        </div>
+                    </template>
+
+                </div>
+
+                <div class="col-span-1 flex flex-col gap-2">
+
+                    <p class="text-center font-medium text-subtitle w-full">Expenses</p>
+                    <template v-for="expense in chosenDate['expenses']">
+                        <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
+
+                            <div class="flex flex-col leading-tight items-start p-4 text-lg justify-center grow">
+                                <p class="font-medium">
+                                    <span class="text-subtitle">PV</span>
+                                    {{ expense['receipt'] }}
+                                </p>
+                                <p class="text-subtitle text-xs">{{ expense['description'] }}</p>
+                            </div>
+                            <p class="p-4 gap-1 w-fit h-full flex items-center justify-center text-lg font-medium">
+                                <sup class="text-xs">ETB</sup>
+                                {{ expense['amount'].toFixed(2) }}
+                            </p>
+
+                        </div>
+                    </template>
+
+                </div>
 
             </div>
 
@@ -105,10 +263,11 @@
 
 <script setup>
 
-    import ContentPage from "../../layouts/content-page.vue"
-    import { ref, onMounted } from "vue";
-    import store from "../../store"
+    import { ref, onMounted, watch } from "vue";
     import { formatNumberToTwoIntegerPlaces } from "../../utils"
+    import Container from "../../components/container.vue"
+    import ContentPage from "../../layouts/content-page.vue"
+    import store from "../../store"
 
     const dailySales = ref([])
     const months = [
@@ -117,22 +276,14 @@
         'August', 'September', 'October',
         'November', 'December'
     ]
+    const days = [
+        'Sun', 'Mon', 'Tue', 'Wed',
+        'Thu', 'Fri', 'Sat'
+    ]
     const page = ref(0)
-    const limit = ref(7)
-
-    function openDailySale(date) {
-
-        alert('Daily sale dialog for date: '+ date)
-
-    }
+    const chosenDate = ref(null)
 
     async function getDailySales(direction = 'forward', limit = 7) {
-
-        if (direction === 'forward') {
-            page.value++
-        } else {
-            page.value--
-        }
 
         await axios.get('/api/daily-sales', {
             params: {
@@ -146,6 +297,7 @@
                 dailySales.value = response.data.data.map((dailySale) => {
 
                     return {
+                        id: dailySale.id,
                         date: new Date(dailySale['date_of']),
                         submitted: dailySale['is_submitted'],
                         difference: dailySale.difference
@@ -154,6 +306,44 @@
                 })
 
             }
+
+        })
+
+    }
+
+    const date_cards = ref(null)
+
+    const display = ref(0)
+    watch(display, () => {
+
+        getDailySales('forward', display.value)
+
+    })
+
+    function updateGridSize(size) {
+
+        display.value = Math.floor((size.width) / 216);
+        console.log({
+            size: size,
+            display: display.value,
+        })
+
+    }
+
+    async function get(parameters) {
+
+        await axios.get('/api/daily-sales', {
+
+            params: parameters
+
+        }).then((response) => {
+
+            console.log('get daily sale ', response.data.data)
+            chosenDate.value = response.data.data
+
+        }).catch(($error) => {
+
+            alert($error.data.data)
 
         })
 
@@ -178,7 +368,7 @@
         post().then(() => {
 
             getDailySales().then(() => {
-                console.log(dailySales.value)
+
             })
 
         })
