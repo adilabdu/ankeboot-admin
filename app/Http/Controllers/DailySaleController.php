@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\DepositType;
 use App\Http\Requests\UpdateDailySaleRequest;
+use App\Models\Credit;
 use App\Models\DailySale;
 use App\Models\Deposit;
 use Carbon\Carbon;
@@ -21,9 +22,8 @@ class DailySaleController extends Controller
     {
 
         $request->validate([
-            'limit' => 'integer|required_with:page|prohibits:id',
-            'page' => 'integer|required_with:limit',
-            'id' => 'integer|exists:daily_sales,id'
+            'limit' => 'integer|prohibits:id',
+            'id' => 'integer|exists:daily_sales,id|prohibits:limit'
         ]);
 
         try {
@@ -31,15 +31,13 @@ class DailySaleController extends Controller
             if ($request->has('limit')) {
 
                 $dailySales = DailySale::latest('date_of')
-                    ->skip(($request->input('page') - 1) * $request->input('limit'))
-                    ->take($request->input('limit'))
-                    ->get();
+                    ->paginate($request->input('limit'));
 
             } else if ($request->has('id')) {
 
-                $dailySales = DailySale::with('expenses')
-                    ->with('sales_receipts')
-                    ->with('deposits')
+                $dailySales = DailySale::with([
+                    'transactions.book', 'transactions', 'expenses', 'sales_receipts', 'deposits', 'deposits.credit'
+                ])
                     ->find($request->input('id'));
 
             } else {
@@ -72,7 +70,7 @@ class DailySaleController extends Controller
             DailySale::latest('date_of')
                 ->first()
                 ->date_of ??
-            'July 20, 2022'
+            'August 09, 2022'
             );
         $count = 0;
 
@@ -131,13 +129,30 @@ class DailySaleController extends Controller
 
             $dailySale = DailySale::find($request->input('id'));
             $dailySale->update([
-                'credit_sales' => $request->input('credit_sales') ?? 0.00,
                 'cashier' => $request->input('cashier')
             ]);
 
             $dailySale->deposits()->createMany($request->input('deposits'));
             $dailySale->sales_receipts()->createMany($request->input('sales_receipts'));
             $dailySale->expenses()->createMany($request->input('expenses'));
+
+            // TODO: move the `difference` calculations to an Observable (?)
+            foreach ($request->input('credits') as $credit) {
+
+                $dailySale->deposits()
+                    ->save(new Deposit([
+                        'amount' => $credit['amount'],
+                        'type' => DepositType::CREDIT,
+                        'deposited_on' => $dailySale['date_of'],
+                    ]))
+                    ->credit()->save(new Credit([
+                        'receipt' => $credit['receipt'],
+                        'client_name' => $credit['client_name']
+                    ]));
+
+                $collected += $credit['amount'];
+
+            }
 
             foreach ($request->input('deposits') as $deposit) {
                 $collected += $deposit['amount'];
@@ -150,8 +165,6 @@ class DailySaleController extends Controller
             foreach ($request->input('sales_receipts') as $sales_receipt) {
                 $reported += $sales_receipt['amount'];
             }
-
-            $reported += $request->input('credit_sales') ?? 0.00;
 
             $dailySale->is_submitted = true;
             $dailySale->difference = round($collected - $reported, 2);

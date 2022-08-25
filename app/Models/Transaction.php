@@ -24,6 +24,11 @@ class Transaction extends Model
         return $this->belongsTo(Book::class);
     }
 
+    public function daily_sale(): BelongsTo
+    {
+        return $this->belongsTo(DailySale::class);
+    }
+
 
     public function logs(): MorphMany
     {

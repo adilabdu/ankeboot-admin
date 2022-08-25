@@ -22,6 +22,10 @@ return new class extends Migration
             $table->date('transaction_on');
             $table->enum('type', ['sale', 'purchase']);
             $table->integer('quantity');
+            $table->foreignId('daily_sale_id')
+                ->nullable()
+                ->constrained()
+                ->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

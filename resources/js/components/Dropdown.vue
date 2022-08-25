@@ -1,13 +1,24 @@
 <template>
 
   <!-- Dropdown List -->
-  <div ref="dropdown" class="sm:w-full w-fit flex gap-4 items-center justify-end">
+  <div
+      ref="dropdown"
+      :class="[
+          labelDirection === 'right' ?
+          'gap-4 items-center justify-end' :
+          labelDirection === 'top' ?
+          'flex-col flex-col-reverse gap-1' :
+          ''
+      ]"
+      class="sm:w-full w-fit flex h-10"
+  >
 
-    <div tabindex="0" class="flex flex-col items-end gap-2 relative sm:w-full rounded-md">
+    <div tabindex="0" class="flex flex-col items-end gap-2 relative sm:w-full rounded-md h-full w-full">
 
-      <div @keyup.enter="toggleHideList" @click="toggleHideList" class="border-[0.5px] border-border-light rounded-md sm:w-full w-fit bg-white h-10 shadow-sm flex items-center justify-between">
+      <div @keyup.enter="toggleHideList" @click="toggleHideList" class="border-[0.5px] border-border-light rounded-md sm:w-full w-full bg-white h-full shadow-sm flex items-center justify-between">
 
-        <p class="px-3">{{ list[item] }}</p>
+        <p v-if="modelValue" class="px-3">{{ modelValue }}</p>
+        <p v-else class="px-3 text-[#9CA3AF]">{{ placeholder }}</p>
 
         <div class="flex items-center justify-center h-full pr-3 gap-1 cursor-pointer">
           <div class="h-full w-1 blur-lg bg-white" />
@@ -20,13 +31,16 @@
 
       <!-- List of all Columns -->
       <ul :class="[showList ? '' : 'hidden', dropDirection === 'up' ? '-mt-2 -translate-y-full' : 'mt-12']" class="z-50 overflow-auto absolute max-h-72 w-full bg-white shadow-md rounded-md border-[0.5px] border-border-light">
-        <li @click="setChoice(index)" :class="[item === index ? 'bg-brand-secondary text-brand-primary' : 'hover:bg-brand-secondary hover:text-brand']" class="flex items-center justify-between gap-2 px-4 group cursor-pointer py-2" v-for="(name, index) in list">
+        <li @click="setChoice(index)" :class="[modelValue && modelValue === list[index] ? 'bg-brand-secondary text-brand-primary' : 'hover:bg-brand-secondary hover:text-brand']" class="whitespace-nowrap flex items-center justify-between gap-2 px-4 group cursor-pointer py-2" v-for="(name, index) in list">
           <p>{{ name }}</p>
         </li>
       </ul>
     </div>
 
-    <label v-if="label" class="xs:hidden text-subtitle font-medium whitespace-nowrap">{{ label }}</label>
+    <label v-if="label" class="xs:hidden text-subtitle font-medium whitespace-nowrap">
+        {{ label }}
+        <span v-if="required" class="text-red-600">*</span>
+    </label>
 
   </div>
 
@@ -38,9 +52,8 @@ import { ref } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
 const props = defineProps({
-  choice: {
-    type: Number,
-    default: 1,
+  modelValue: {
+    type: [String, Number]
   },
   list: {
     type: Array,
@@ -53,12 +66,22 @@ const props = defineProps({
   label: {
     type: String,
     default: '',
+  },
+  labelDirection: {
+      type: String,
+      default: 'right'
+  },
+  placeholder: {
+      type: String,
+      default: null
+  },
+  required: {
+      type: Boolean,
+      default: false
   }
 })
 
-const emit = defineEmits([
-  'change'
-])
+const emit = defineEmits(['update:modelValue'])
 
 const showList = ref(false)
 
@@ -66,12 +89,9 @@ function toggleHideList() {
   showList.value = !showList.value
 }
 
-const item = ref(props.choice)
-
 function setChoice(index) {
-  item.value = index
   toggleHideList()
-  emit('change', props.list[index])
+  emit('update:modelValue', props.list[index])
 }
 
 const dropdown = ref(null)

@@ -27,7 +27,6 @@ class UpdateDailySaleRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:daily_sales,id',
-            'credit_sales' => 'nullable|numeric',
             'cashier' => 'required|string',
             'deposits' => 'required',
             'deposits.*.amount' => 'required_with_all:deposits.*.type,deposits.*.deposited_on|numeric',
@@ -46,7 +45,10 @@ class UpdateDailySaleRequest extends FormRequest
             ],
             'expenses.*.receipt' => 'required_with:expenses.*.amount|unique:daily_sale_expenses,receipt',
             'expenses.*.amount' => 'required_with:expenses.*.receipt|numeric',
-            'expenses.*.description' => 'string|nullable'
+            'expenses.*.description' => 'string|nullable',
+            'credits.*.receipt' => 'required_with_all:credits.*.client_name,credits.*.amount',
+            'credits.*.client_name' => 'required_with_all:credits.*.receipt,credits.*.amount',
+            'credits.*.amount' => 'required_with_all:credits.*.client_name,credits.*.receipt|numeric',
         ];
     }
 }

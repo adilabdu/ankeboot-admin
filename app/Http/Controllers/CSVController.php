@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\PurchaseType;
 use App\Enums\TransactionType;
+use App\Http\Requests\InsertDailySaleTransactionsRequest;
 use App\Models\Book;
+use App\Models\DailySale;
 use App\Models\Transaction;
 use App\Traits\ReadsCSV;
 use Carbon\Carbon;
@@ -159,6 +161,70 @@ class CSVController extends Controller
 //                    $book->balance += ($record['quantity'] * -1);
 //                }
 //                $book->save();
+
+            }
+
+            DB::commit();
+
+        } catch (Exception $exception) {
+
+            DB::rollBack();
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => count($records) . ' transaction records inserted'
+        ], 200);
+
+    }
+
+    public function insertDailySaleTransactions(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'file' => [
+                'required',
+                File::types(['csv'])
+            ],
+            'daily_sale_id' => 'required|exists:daily_sales,id'
+        ]);
+
+        try {
+
+            $records = $this->arrayFromCSV($request->file('file'));
+
+            Validator::validate($records, [
+                '*.Item ID' => 'required|exists:books,code',
+                '*.Quantity' => 'required|integer',
+            ], [
+                '*.Item ID.required' => 'The code field at #:position is required',
+                '*.Quantity.required' => 'The quantity field at #:position is required',
+                '*.Quantity.integer' => 'The quantity field at #:position must be a natural number',
+                '*.Item ID.exists' => 'A book with the code field at #:position does not exist'
+            ]);
+
+            DB::beginTransaction();
+
+            $counter = 0;
+            $dailySale = DailySale::find($request->input('daily_sale_id'));
+            foreach ($records as $record) {
+
+                $counter += 1;
+                $book = Book::where('code', $record['Item ID'])->first();
+
+                $dailySale->transactions()->save(new Transaction([
+                    'invoice' => 'ank' . $counter . Carbon::parse($dailySale['date_of'])->format('dmY'),
+                    'book_id' => $book->id,
+                    'transaction_on' => $dailySale['date_of'],
+                    'type' => 'sale',
+                    'quantity' => $record['Quantity']
+                ]));
 
             }
 

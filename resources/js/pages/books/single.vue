@@ -1,8 +1,7 @@
 <template>
 
     <div class="grid grid-cols-12 w-full">
-<!--        <div class="col-span-2"></div>-->
-        <div class="col-span-6 gap-8 flex flex-col">
+        <div class="col-span-8 gap-8 flex flex-col">
             <div class="flex flex-col gap-4">
                 <div class="flex justify-between w-full">
                     <div class="flex flex-col">
@@ -80,88 +79,6 @@
 
             </Table>
         </div>
-<!--        <div class="col-span-4 pl-12 flex flex-col items-end justify-start text-subtitle max-w-fit">-->
-
-<!--            <h2 class="text-black capitalize font-medium pb-2">history</h2>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--                <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                    <p class="font-medium">Book Item created</p>-->
-<!--                    <div class="text-black flex text-xs gap-1">-->
-<!--                        <p>adilabdu</p>-->
-<!--                        <p>02/07/2022</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--                <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                    <p class="font-medium">Purchase Transaction recorded</p>-->
-<!--                    <div class="text-black flex text-xs gap-1">-->
-<!--                        <p>adilabdu</p>-->
-<!--                        <p>02/07/2022</p>-->
-<!--                    </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--            <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                <p class="font-medium">Sale Transaction recorded</p>-->
-<!--                <div class="text-black flex text-xs gap-1">-->
-<!--                    <p>adilabdu</p>-->
-<!--                    <p>02/07/2022</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--            <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                <p class="font-medium">Sale Transaction recorded</p>-->
-<!--                <div class="text-black flex text-xs gap-1">-->
-<!--                    <p>adilabdu</p>-->
-<!--                    <p>02/07/2022</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--            <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                <p class="font-medium">Sale Transaction recorded</p>-->
-<!--                <div class="text-black flex text-xs gap-1">-->
-<!--                    <p>adilabdu</p>-->
-<!--                    <p>02/07/2022</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--            <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                <p class="font-medium">Purchase Transaction recorded</p>-->
-<!--                <div class="text-black flex text-xs gap-1">-->
-<!--                    <p>adilabdu</p>-->
-<!--                    <p>02/07/2022</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--            <div class="py-2 flex items-center">-->
-<!--&lt;!&ndash;                <p class="text-brand-primary text-base font-medium">+</p>&ndash;&gt;-->
-<!--            <div class="text-xs flex flex-col items-end leading-tight relative pl-4">-->
-<!--                <p class="font-medium">Book information updated</p>-->
-<!--                <div class="text-black flex text-xs gap-1">-->
-<!--                    <p>adilabdu</p>-->
-<!--                    <p>02/07/2022</p>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            </div>-->
-
-<!--        </div>-->
     </div>
 
 </template>

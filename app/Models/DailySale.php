@@ -31,6 +31,11 @@ class DailySale extends Model
         return $this->hasMany(DailySaleExpense::class);
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     protected $casts = [
         'date_of' => 'date'
     ];

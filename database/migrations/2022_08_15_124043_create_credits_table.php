@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daily_sales', function (Blueprint $table) {
+        Schema::create('credits', function (Blueprint $table) {
             $table->id();
-            $table->date('date_of')->unique();
-            $table->boolean('is_submitted')
-                ->default(false);
-            $table->float('credit_sales')
-                ->default(0);
-            $table->string('cashier')
+            $table->string('receipt');
+            $table->string('client_name');
+            $table->date('settled_on')
                 ->nullable();
-            $table->float('difference')
-                ->nullable();
+            $table->foreignId('deposit_id')
+                ->constrained()
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daily_sales');
+        Schema::dropIfExists('credits');
     }
 };

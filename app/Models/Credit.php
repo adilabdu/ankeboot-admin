@@ -2,34 +2,31 @@
 
 namespace App\Models;
 
-use App\Enums\DepositType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
-class Deposit extends Model
+class Credit extends Model
 {
     use HasFactory;
 
     protected $guarded = [
-        'daily_sale_id',
+        'settled_on',
+        'deposit_id',
         'created_at',
         'updated_at'
     ];
 
-    public function credit(): HasOne
+    public function deposit(): BelongsTo
     {
-        return $this->hasOne(Credit::class);
-    }
-
-    public function daily_sale(): BelongsTo
-    {
-        return $this->belongsTo(DailySale::class);
+        return $this->BelongsTo(Deposit::class);
     }
 
     protected $casts = [
-        'deposited_on' => 'date'
+        'settled_on' => 'date'
     ];
 
 }

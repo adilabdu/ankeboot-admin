@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ConsignmentController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
@@ -53,6 +54,22 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [DailySaleController::class, 'index']);
         Route::post('/', [DailySaleController::class, 'create']);
         Route::post('/update', [DailySaleController::class, 'update']);
+        Route::get('/statistics', [StatisticsController::class, 'dailySales']);
+        Route::post('/csv', [CSVController::class, 'insertDailySaleTransactions']);
+    });
+
+    Route::prefix('daily-sales')->group(function () {
+        Route::get('/', [DailySaleController::class, 'index']);
+        Route::post('/', [DailySaleController::class, 'create']);
+        Route::post('/update', [DailySaleController::class, 'update']);
+        Route::get('/statistics', [StatisticsController::class, 'dailySales']);
+        Route::post('/csv', [CSVController::class, 'insertDailySaleTransactions']);
+    });
+
+    Route::prefix('consignments')->group(function () {
+        Route::get('/', [ConsignmentController::class, 'index']);
+        Route::post('/', [ConsignmentController::class, 'create']);
+        Route::get('/history', [ConsignmentController::class, 'history']);
     });
 
 });

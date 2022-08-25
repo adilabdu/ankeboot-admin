@@ -17,7 +17,7 @@
         <div class="group flex flex-col gap-1 items-center justify-end text-center w-10">
 
           <div class="h-32 w-[20%] bg-border-dark rounded-full relative">
-            <div :style="'height: ' + i[2] + '%'" class="absolute w-full bottom-0 rounded-full bg-brand-primary z-10"></div>
+            <div :style="'height: ' + i[2] + '%'" class="absolute w-full bottom-0 rounded-full bg-brand-primary z-10 animate-grow-up origin-bottom"></div>
           </div>
           <label :class="[i[2] === 100 ? 'text-brand-primary' : 'text-subtitle']" class="text-xs">{{ i[0] }}</label>
 

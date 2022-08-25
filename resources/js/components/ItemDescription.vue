@@ -1,12 +1,12 @@
 <template>
 
-  <div :class="[size === 'sm' ? 'h-10' : 'h-12']" class="group items-center list-row grid grid-cols-12 relative">
+  <div :class="[size === 'sm' ? 'min-h-[2.5rem]' : 'min-h-[3rem]']" class="border-b border-border-light last:border-none group items-center list-row grid grid-cols-12 relative">
 
-    <label :class="[size === 'sm' ? 'col-span-5' : 'col-span-4']" class="px-8 text-subtitle font-medium capitalize">
+    <label :class="[size === 'sm' ? 'col-span-5' : label_size]" class="px-8 text-subtitle font-medium capitalize">
       {{ label }}
     </label>
 
-    <div :class="[size === 'sm' ? 'col-span-7' : 'col-span-8']" class="relative">
+    <div :class="[size === 'sm' ? 'col-span-7' : description_size]" class="relative">
       <p ref="text">
         <slot>
           <span v-if="!description" class="text-black/25">
@@ -30,9 +30,9 @@
 
 <script setup>
 
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
 
-  defineProps({
+  const props = defineProps({
     label: {
       type: String,
       default: 'index'
@@ -44,6 +44,10 @@
     size: {
       type: String,
       default: 'md',
+    },
+    ratio: {
+        type: String,
+        default: '1:2'
     }
   })
 
@@ -60,6 +64,38 @@
     })
 
   }
+
+  const label_size = ref(null)
+  const description_size = ref(null)
+  onMounted(() => {
+
+      switch(props.ratio) {
+
+          case '1:1':
+
+              label_size.value = 'col-span-6'
+              description_size.value = 'col-span-6'
+
+              break;
+
+          case '5:7':
+
+              label_size.value = 'col-span-5'
+              description_size.value = 'col-span-7'
+
+              break;
+
+          case '1:2':
+          default:
+
+              label_size.value = 'col-span-4'
+              description_size.value = 'col-span-8'
+
+              break;
+
+      }
+
+  })
 
 </script>
 

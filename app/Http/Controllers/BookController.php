@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
+use JetBrains\PhpStorm\NoReturn;
 
 class BookController extends Controller
 {

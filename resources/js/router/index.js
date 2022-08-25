@@ -19,6 +19,11 @@ import TransactionLayout from "../pages/transactions/index.vue"
 import Transactions from "../pages/transactions/all.vue"
 
 import DailySaleLayout from "../pages/daily-sales/index.vue"
+import DailySales from "../pages/daily-sales/all.vue"
+import DailySale from "../pages/daily-sales/single.vue"
+
+import ConsignmentLayout from "../pages/consignments/index.vue"
+import Consignment from "../pages/consignments/single.vue"
 
 const routes = [
     {
@@ -113,8 +118,8 @@ const routes = [
         ],
     },
     {
-        path: '/stocks',
-        name: 'Stocks',
+        path: '/credit-sales',
+        name: 'CreditSales',
         component: ContentPage,
         meta: {
             requiresLogin: true
@@ -126,7 +131,19 @@ const routes = [
         component: DailySaleLayout,
         meta: {
             requiresLogin: true
-        }
+        },
+        children: [
+            {
+                path: '',
+                name: 'DailySales',
+                component: DailySales
+            },
+            {
+                path: ':id',
+                name: 'DailySale',
+                component: DailySale
+            },
+        ],
     },
     {
         path: '/suppliers',
@@ -135,6 +152,21 @@ const routes = [
         meta: {
             requiresLogin: true
         }
+    },
+    {
+        path: '/consignments',
+        name: 'ConsignmentLayout',
+        component: ConsignmentLayout,
+        meta: {
+            requiresLogin: true
+        },
+        children: [
+            {
+                path: ':id',
+                name: 'Consignment',
+                component: Consignment
+            }
+        ]
     },
 ]
 

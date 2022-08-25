@@ -30,7 +30,8 @@ module.exports = {
                 'slide-in': 'slideIn 150ms linear',
                 'slide-up': 'slideUp 100ms linear',
                 'slide-out': 'slideOut 150ms linear',
-                'slide-in-from-left': 'slideInFromLeft 150ms linear'
+                'slide-in-from-left': 'slideInFromLeft 150ms linear',
+                'grow-up': 'growUp 300ms ease-out'
             },
             keyframes: {
                 rotate: {
@@ -52,6 +53,10 @@ module.exports = {
                 slideInFromLeft: {
                     '0%': { transform: 'translateX(-100%)' },
                     '100%': { transform: 'translateX(0%)' }
+                },
+                growUp: {
+                    '0%': { transform: 'scaleY(0%)' },
+                    '100%': { transform: 'scaleY(100%)' }
                 }
             }
         },

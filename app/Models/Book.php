@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\ConsignmentAction;
+use App\Enums\PurchaseType;
+use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,6 +38,39 @@ class Book extends Model
     public function logs(): MorphMany
     {
         return $this->morphMany(Log::class, 'loggable');
+    }
+
+    public function settlements(): HasMany
+    {
+        return $this->hasMany(ConsignmentSettlement::class);
+    }
+
+    public function settled(): int
+    {
+
+        if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
+
+            return $this['settlements']->pluck('quantity')->sum();
+
+        }
+
+        return -1;
+    }
+
+    public function payable(): int
+    {
+
+        if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
+
+            return $this['transactions']->where(
+                'type', TransactionType::SALE
+            )->sum(function ($transaction) {
+                return $transaction->quantity;
+            }) - $this->settled();
+
+        }
+
+        return -1;
     }
 
 }

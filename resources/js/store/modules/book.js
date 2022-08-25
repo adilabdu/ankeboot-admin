@@ -1,4 +1,5 @@
 import axios from "axios";
+import { formatDate } from "../../utils"
 
 const state = {
 
@@ -30,7 +31,7 @@ const actions = {
     async postBook(context, payload) {
 
         const transaction_on = !! payload.transaction_on ?
-            `${parseInt(payload.transaction_on.date).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${(parseInt(payload.transaction_on.month) + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${payload.transaction_on.year}` :
+            formatDate(payload.transaction_on) :
             null
 
         const transaction_type = payload.transaction_type !== undefined ?

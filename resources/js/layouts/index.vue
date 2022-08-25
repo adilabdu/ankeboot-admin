@@ -23,15 +23,20 @@
                             <path d="M13 8L18 4L13 0V2.999H0V4.999H13V8ZM20 11H7V8L2 12L7 16V13H20V11Z"/>
                         </svg>
                     </NavigationLink>
-                    <NavigationLink v-slot="props" label="stock records" route="stocks">
-                        <svg width="18" height="18" viewBox="0 0 18 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 2C18 0.897 17.103 0 16 0H2C0.897 0 0 0.897 0 2V16C0 17.103 0.897 18 2 18H16C17.103 18 18 17.103 18 16V2ZM2 16V2H16L16.002 16H2Z" />
-                            <path d="M4 4H5.998V6H4V4ZM8 4H14V6H8V4ZM4 8H5.998V10H4V8ZM8 8H14V10H8V8ZM4 12H5.998V14H4V12ZM8 12H14V14H8V12Z" />
-                        </svg>
-                    </NavigationLink>
                     <NavigationLink :number="store.state.daily_sale.unsubmitted" v-slot="props" label="daily sales" route="daily-sales">
                         <svg width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 18V4C18 2.897 17.103 2 16 2H14V0H12V2H6V0H4V2H2C0.897 2 0 2.897 0 4V18C0 19.103 0.897 20 2 20H16C17.103 20 18 19.103 18 18ZM6 16H4V14H6V16ZM6 12H4V10H6V12ZM10 16H8V14H10V16ZM10 12H8V10H10V12ZM14 16H12V14H14V16ZM14 12H12V10H14V12ZM16 7H2V5H16V7Z" />
+                        </svg>
+                    </NavigationLink>
+                    <NavigationLink v-slot="props" label="consignments" route="consignments">
+                        <svg width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 20H18V18H3.012C2.55 17.988 2 17.805 2 17C2 16.195 2.55 16.012 3.012 16H18V2C18 0.897 17.103 0 16 0H3C1.794 0 0 0.799 0 3V17C0 19.201 1.794 20 3 20ZM2 6V3C2 2.195 2.55 2.012 3 2H16V14H2V6Z" />
+                            <path d="M10.5 8L13 6L10.5 4V5.4995H4V6.4995H10.5V8ZM14 9.5H7.5V8L5 10L7.5 12V10.5H14V9.5Z" />
+                        </svg>
+                    </NavigationLink>
+                    <NavigationLink v-slot="props" label="credit sales" route="credit-sales">
+                        <svg width="20" height="16" viewBox="0 0 20 16" class="fill-transparent" xmlns="http://www.w3.org/2000/svg">
+                            <path :class="[props.active ? 'stroke-white' : 'stroke-black']" class="stroke-2" d="M15 5V3C15 2.46957 14.7893 1.96086 14.4142 1.58579C14.0391 1.21071 13.5304 1 13 1H3C2.46957 1 1.96086 1.21071 1.58579 1.58579C1.21071 1.96086 1 2.46957 1 3V9C1 9.53043 1.21071 10.0391 1.58579 10.4142C1.96086 10.7893 2.46957 11 3 11H5M7 15H17C17.5304 15 18.0391 14.7893 18.4142 14.4142C18.7893 14.0391 19 13.5304 19 13V7C19 6.46957 18.7893 5.96086 18.4142 5.58579C18.0391 5.21071 17.5304 5 17 5H7C6.46957 5 5.96086 5.21071 5.58579 5.58579C5.21071 5.96086 5 6.46957 5 7V13C5 13.5304 5.21071 14.0391 5.58579 14.4142C5.96086 14.7893 6.46957 15 7 15ZM14 10C14 10.5304 13.7893 11.0391 13.4142 11.4142C13.0391 11.7893 12.5304 12 12 12C11.4696 12 10.9609 11.7893 10.5858 11.4142C10.2107 11.0391 10 10.5304 10 10C10 9.46957 10.2107 8.96086 10.5858 8.58579C10.9609 8.21071 11.4696 8 12 8C12.5304 8 13.0391 8.21071 13.4142 8.58579C13.7893 8.96086 14 9.46957 14 10V10Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="suppliers">
@@ -41,8 +46,9 @@
                     </NavigationLink>
                 </div>
 
-                <div class="flex flex-col">
-                    <h1 class="text-xs text-subtitle text-center pt-8">&copy; አመለወርቅ. 2022</h1>
+                <div class="flex flex-col items-center pt-8 gap-2">
+                    <SwitchInput :loading="loading" label="Remote" v-model="remote" />
+                    <h1 class="text-xs text-subtitle text-center">&copy; {{ footerWords()[getRandomInt(footerWords().length)] }}. 2022</h1>
                 </div>
 
             </div>
@@ -53,7 +59,7 @@
 
             <Header />
 
-            <div class="grow overflow-y-auto relative flex flex-col relative overflow-x-hidden">
+            <div class="grow overflow-y-auto relative flex flex-col relative overflow-overlay overflow-x-hidden">
 
                 <div class="h-fit max-h-full w-96 m-2 absolute right-0 flex flex-col gap-2 z-50">
                     <Alert v-for="alert in alerts" :type="alert.type" :message="alert.message" />
@@ -77,18 +83,45 @@
 
 <script setup>
 
-    import { computed } from "vue"
-
+    import { computed, ref, watch } from "vue"
     import Navigation from "../components/Navigation.vue"
     import Header from "../components/Header.vue"
     import NavigationLink from "../components/NavigationLink.vue"
+    import SwitchInput from "../components/Form/SwitchInput.vue"
     import ContentPage from "./content-page.vue"
     import Alert from "../components/Alert.vue"
     import store from "../store"
+    import { footerWords, getRandomInt } from "../utils";
+    import axios from "axios";
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const alerts = computed(() => store.state.alert.alerts)
 
+    const remote = ref(
+        localStorage.getItem('connection') === 'remote_mysql'
+    )
+    const loading = ref(false)
+
+    watch(remote, () => {
+
+        loading.value = true
+
+        remote.value ? localStorage.setItem('connection', 'remote_mysql') :
+            localStorage.setItem('connection', 'mysql')
+
+        window.axios.defaults.headers.common['database'] = localStorage.getItem('connection')
+
+        loading.value = false
+        location.reload()
+
+    })
+
 </script>
 
-<style scoped></style>
+<style scoped>
+
+    .overflow-overlay {
+        overflow: overlay;
+    }
+
+</style>
