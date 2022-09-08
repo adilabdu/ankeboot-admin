@@ -68,6 +68,27 @@ const actions = {
 
     },
 
+    async updateBook(context, payload) {
+
+        console.log('inside updateBook dispatch', payload)
+
+        return axios.post('/api/books/update', {
+            id: payload.id,
+            title: payload.title,
+            alternate_title: payload['alternate_title'],
+            author: payload.author,
+            category: payload.category,
+            type: payload.type ? 'consignment' : 'cash',
+            code: payload.code,
+            balance: payload.balance
+        }).then((response) => {
+            return response.data
+        }).catch((error) => {
+            return error.response.data.message
+        })
+
+    },
+
     async postMultipleBooks({ commit, dispatch }, payload) {
 
         dispatch('setLoadingState', true)
@@ -125,6 +146,7 @@ const mutations = {
         state.books = payload.map((book) => {
 
             return {
+                id: book.id,
                 code: book.code,
                 title: book.title,
                 category: book.category,
@@ -145,11 +167,13 @@ const mutations = {
             type: payload.type,
             title: payload.title,
             author: payload.author,
+            alternate_title: payload.alternate_title,
             category: payload.category,
             balance: payload.balance,
             supplier: payload.supplier,
             transactions: payload.transactions.map((transaction) => {
                 return {
+                    id: transaction.id,
                     invoice: transaction.invoice,
                     quantity: transaction.quantity,
                     type: transaction.type,

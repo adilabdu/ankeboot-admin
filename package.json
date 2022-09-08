@@ -21,6 +21,7 @@
         "ethiopian-date": "^0.0.6",
         "vue": "^3.2.37",
         "vue-router": "^4.1.2",
+        "vue3-markdown-it": "^1.0.10",
         "vuex": "^4.0.2"
     }
 }

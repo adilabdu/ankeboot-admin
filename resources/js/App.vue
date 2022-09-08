@@ -2,6 +2,10 @@
 
     <div id="top-view"></div>
 
+    <!-- <template v-if="useRoute().fullPath.includes('documents')">
+        <router-view></router-view>
+    </template> -->
+
     <Layout>
         <router-view></router-view>
     </Layout>
@@ -11,6 +15,7 @@
 <script setup>
 
     import { computed, ref } from "vue"
+    import { useRoute } from "vue-router"
     import Layout from "./layouts/index.vue";
     import Login from "./pages/login.vue";
 

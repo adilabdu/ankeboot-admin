@@ -19,8 +19,8 @@
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="transactions">
-                        <svg width="20" height="16" viewBox="0 0 20 16" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 8L18 4L13 0V2.999H0V4.999H13V8ZM20 11H7V8L2 12L7 16V13H20V11Z"/>
+                        <svg width="20" height="20" viewBox="0 0 20 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 19L1 14.5M1 14.5L5.5 10M1 14.5H14.5M14.5 1L19 5.5M19 5.5L14.5 10M19 5.5H5.5" :stroke="[props.active ? 'white' : 'black']" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </NavigationLink>
                     <NavigationLink :number="store.state.daily_sale.unsubmitted" v-slot="props" label="daily sales" route="daily-sales">
@@ -29,9 +29,8 @@
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="consignments" route="consignments">
-                        <svg width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 20H18V18H3.012C2.55 17.988 2 17.805 2 17C2 16.195 2.55 16.012 3.012 16H18V2C18 0.897 17.103 0 16 0H3C1.794 0 0 0.799 0 3V17C0 19.201 1.794 20 3 20ZM2 6V3C2 2.195 2.55 2.012 3 2H16V14H2V6Z" />
-                            <path d="M10.5 8L13 6L10.5 4V5.4995H4V6.4995H10.5V8ZM14 9.5H7.5V8L5 10L7.5 12V10.5H14V9.5Z" />
+                        <svg width="22" height="18" viewBox="0 0 22 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.5 18C19.2956 18 20.0587 17.6839 20.6213 17.1213C21.1839 16.5587 21.5 15.7956 21.5 15V10.5C21.5 9.70435 21.1839 8.94129 20.6213 8.37868C20.0587 7.81607 19.2956 7.5 18.5 7.5H3.5C2.70435 7.5 1.94129 7.81607 1.37868 8.37868C0.816071 8.94129 0.5 9.70435 0.5 10.5V15C0.5 15.7956 0.816071 16.5587 1.37868 17.1213C1.94129 17.6839 2.70435 18 3.5 18H18.5ZM0.5 7.146V3C0.5 2.20435 0.816071 1.44129 1.37868 0.87868C1.94129 0.316071 2.70435 0 3.5 0H8.879C9.47539 0.000259955 10.0473 0.237289 10.469 0.659L12.591 2.78C12.731 2.921 12.922 3 13.121 3H18.5C19.2956 3 20.0587 3.31607 20.6213 3.87868C21.1839 4.44129 21.5 5.20435 21.5 6V7.146C20.6758 6.40664 19.6072 5.99842 18.5 6H3.5C2.39279 5.99842 1.32417 6.40664 0.5 7.146V7.146Z"  :class="[props.active ? 'fill-white' : 'fill-black']" />
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="credit sales" route="credit-sales">
@@ -42,6 +41,11 @@
                     <NavigationLink v-slot="props" label="suppliers">
                         <svg width="19" height="20" viewBox="0 0 19 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                             <path d="M16.5 1C15.8371 1.00053 15.2015 1.26409 14.7328 1.73282C14.2641 2.20155 14.0005 2.83712 14 3.5C14 3.857 14.078 4.196 14.214 4.505L12.259 6.704C11.5949 6.24558 10.807 6.00004 10 6C9.26 6 8.576 6.216 7.981 6.566L5.707 4.293L5.684 4.316C5.88 3.918 6 3.475 6 3C6 2.40666 5.82405 1.82664 5.49441 1.33329C5.16477 0.839943 4.69623 0.455426 4.14805 0.228363C3.59987 0.00129986 2.99667 -0.0581102 2.41473 0.0576455C1.83279 0.173401 1.29824 0.459124 0.878681 0.878681C0.459124 1.29824 0.173401 1.83279 0.0576455 2.41473C-0.0581102 2.99667 0.00129986 3.59987 0.228363 4.14805C0.455426 4.69623 0.839943 5.16477 1.33329 5.49441C1.82664 5.82405 2.40666 6 3 6C3.475 6 3.917 5.88 4.316 5.684L4.293 5.707L6.567 7.98C6.19964 8.59003 6.00375 9.28791 6 10C6 10.997 6.38 11.899 6.985 12.601L4.408 15.177C4.11917 15.0614 3.81111 15.0013 3.5 15C2.122 15 1 16.121 1 17.5C1 18.879 2.122 20 3.5 20C4.878 20 6 18.879 6 17.5C6 17.179 5.934 16.874 5.823 16.591L8.661 13.753C9.082 13.903 9.528 14 10 14C12.206 14 14 12.206 14 10C14 9.364 13.837 8.771 13.572 8.236L15.689 5.853C15.945 5.941 16.215 6 16.5 6C17.879 6 19 4.879 19 3.5C19 2.121 17.879 1 16.5 1ZM10 12C8.897 12 8 11.103 8 10C8 8.897 8.897 8 10 8C11.103 8 12 8.897 12 10C12 11.103 11.103 12 10 12Z" />
+                        </svg>
+                    </NavigationLink>
+                    <NavigationLink v-slot="props" label="documents" route="documents">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" :class="[props.active ? 'stroke-white' : 'stroke-black']" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" />
                         </svg>
                     </NavigationLink>
                 </div>
@@ -59,15 +63,11 @@
 
             <Header />
 
-            <div class="grow overflow-y-auto relative flex flex-col relative overflow-overlay overflow-x-hidden">
+            <div class="grow overflow-y-auto flex flex-col relative overflow-overlay overflow-x-hidden">
 
                 <div class="h-fit max-h-full w-96 m-2 absolute right-0 flex flex-col gap-2 z-50">
                     <Alert v-for="alert in alerts" :type="alert.type" :message="alert.message" />
                 </div>
-
-<!--                <div class="h-fit max-h-full w-96 m-2 absolute left-0 bottom-0 flex flex-col flex-col-reverse gap-2 z-50">-->
-<!--                    <Alert persist v-for="alert in alerts" :type="alert.type" :message="alert.message" />-->
-<!--                </div>-->
 
                 <slot />
 
@@ -83,7 +83,7 @@
 
 <script setup>
 
-    import { computed, ref, watch } from "vue"
+    import { computed, ref, watch, onMounted } from "vue"
     import Navigation from "../components/Navigation.vue"
     import Header from "../components/Header.vue"
     import NavigationLink from "../components/NavigationLink.vue"
@@ -109,10 +109,16 @@
         remote.value ? localStorage.setItem('connection', 'remote_mysql') :
             localStorage.setItem('connection', 'mysql')
 
-        window.axios.defaults.headers.common['database'] = localStorage.getItem('connection')
+        window.axios.defaults.headers.common['database'] = localStorage.getItem('connection') || 'mysql'
 
         loading.value = false
         location.reload()
+
+    })
+
+    onMounted(() => {
+
+        !! localStorage.getItem('connection') ? '' : localStorage.setItem('connection', 'mysql')
 
     })
 

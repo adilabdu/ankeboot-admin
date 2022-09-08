@@ -24,7 +24,7 @@ class TransactionController extends Controller
 
         try {
             if ($request->has('id')) {
-                $books = Transaction::find($request->input('id'));
+                $books = Transaction::with('book')->find($request->input('id'));
             } else {
                 $books = Transaction::with('book')->get();
             }
@@ -73,6 +73,64 @@ class TransactionController extends Controller
             }
 
             $transaction = Transaction::create($request->all());
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ]);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $transaction
+        ]);
+    }
+
+    public function update(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'id' => 'required|exists:transactions,id',
+            'invoice' => 'required',
+            'transaction_on' => 'required|date_format:d-m-Y',
+            'type' => [
+                'required',
+                new Enum(TransactionType::class)
+            ],
+            'quantity' => 'required|integer'
+        ]);
+
+        try {
+
+            $transaction = Transaction::find($request->input('id'));
+            $book = $transaction->book;
+           
+            // Handle case when updated sale exceeds balance 
+            if (TransactionType::from($request->input('type')) === TransactionType::SALE) {
+
+                $resetBalance = match($transaction->type) {
+                    TransactionType::SALE =>  $transaction->book->balance + $transaction->quantity,
+                    TransactionType::PURCHASE =>  $transaction->book->balance - $transaction->quantity
+                };
+
+                if ($request->input('quantity') > $resetBalance) {
+                    return response([
+                        'message' => 'error',
+                        'data' => 'Sale cannot exceed current book balance (' . $resetBalance . ')'
+                    ]);
+                }
+
+            }
+
+            $transaction->update(
+                $request->only([
+                    'invoice', 'transaction_on',
+                    'type', 'quantity'
+                ])
+            );
 
         } catch (Exception $exception) {
 

@@ -19,6 +19,9 @@ function formatNumberToTwoIntegerPlaces(num) {
 }
 
 function formatDate(dateObject) {
+    if (dateObject.date === '') {
+        return null
+    }
     return `${parseInt(dateObject.date).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${(parseInt(dateObject.month) + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${dateObject.year}`
 }
 
@@ -27,6 +30,69 @@ function arrayToStrings(array) {
         return item.toString()
             .replaceAll('_', ' ')
     }).join(', ')
+}
+
+function digitToWritten(digit) {
+
+    const ones = {
+        0: 'ዜሮ',
+        1: 'አንድ',
+        2: 'ሁለት',
+        3: 'ሶስት',
+        4: 'አራት',
+        5: 'አምስት',
+        6: 'ስድስት',
+        7: 'ሰባት',
+        8: 'ስምንት',
+        9: 'ዘጠኝ'
+    }
+
+    const tens = {
+        0: 'ዜሮ',
+        1: 'አስራ',
+        2: 'ሃያ',
+        3: 'ሰላሳ',
+        4: 'አርባ',
+        5: 'ሃምሳ',
+        6: 'ስልሳ',
+        7: 'ሰባ',
+        8: 'ሰማንያ',
+        9: 'ዘጠና'
+    }
+
+    const hundreds = "መቶ"
+    const thousands = "ሺህ"
+    const millions = "ሚሊዮን"
+    const billions = "ቢሊዮን"
+
+    const integer = digit.toString().split('.')[0]
+    const decimal = digit.toString().split('.')[1] ?? null
+
+    const integerStack = integer.split('').reverse()
+    console.log('integerStack ', integerStack)
+
+    let integerWritten = ''
+    for (let i = 0; i < integerStack.length; i++) {
+        
+        if (i === 0) {
+            integerWritten = integerStack[i] === '0' ? '' : ones[integerStack[i]]  
+        } else if (i % 3 === 1) {
+            integerWritten = (integerStack[i] === '0' ? '' : (tens[integerStack[i]])) + ' ' + integerWritten
+        } else if (i % 3 === 2) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + hundreds)) + ' ' + integerWritten
+        } else if (i === 3) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]])) + ' ' + thousands + ' ' + integerWritten
+        } else if (i === 6) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + millions)) + ' ' + integerWritten
+        } else if (i === 9) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + billions)) + ' ' + integerWritten
+        }
+    }
+
+    console.log(integerWritten)
+
+    return  integerWritten + ' ብር ' + 'ከ ' + (!! decimal ? formatNumberToTwoIntegerPlaces(decimal) : '00') + ' ሳንቲም'
+
 }
 
 function getRandomInt(max) {
@@ -90,7 +156,7 @@ function footerWords() {
 }
 
 export {
-    ethiopianDate,
+    ethiopianDate, digitToWritten,
     ethiopianMonths, ethiopianDays, months, days,
     formatDate, getRandomInt, footerWords, formatPrice,
     formatNumber, arrayToStrings, formatNumberToTwoIntegerPlaces

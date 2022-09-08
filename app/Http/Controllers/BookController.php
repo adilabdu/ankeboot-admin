@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
-use JetBrains\PhpStorm\NoReturn;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log as LaravelLog;
 
 class BookController extends Controller
 {
@@ -107,6 +108,72 @@ class BookController extends Controller
                     ])
                 );
             }
+
+            DB::commit();
+
+        } catch (Exception $exception) {
+
+            DB::rollBack();
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ]);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => Book::with('transactions')
+                ->where('id', $book->id)
+                ->first()
+        ]);
+    }
+
+    public function update(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'id' => 'required|exists:books,id',
+            'code' => [
+                'required', 
+                Rule::unique('books')->ignore(Book::find($request->input('id')), 'code')
+            ],
+            'type' => [
+                'required',
+                new Enum(PurchaseType::class)
+            ],
+            'title' => 'required|string',
+            'alternate_title' => 'string|nullable',
+            'author' => 'string|nullable',
+            'category' => 'string',
+            'supplier_id' => 'exists:suppliers,id'
+        ], [
+            'id.required' => 'The id field is required',
+            'code.required' => 'The code field is required',
+            'type.required' => 'The type field is required',
+            'title.required' => 'The title field is required',
+            'code.unique' => 'The code has already been taken',
+            'type.Illuminate\Validation\Rules\Enum' =>
+                'Invalid type field specified. Valid types are `consignment` or `cash`',
+            'title.string' => 'The title field needs to be a string',
+            'author.string' => 'The author field needs to be a string',
+            'category.string' => 'The category field needs to be a string',
+            'id.exists' => 'A book with the given id does not exist',
+            'supplier_id.exists:suppliers,id' => 'A supplier with the given id does not exist'
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            $book = Book::find($request->input('id'));
+            $book->update(
+                $request->only([
+                    'code', 'type', 'title', 'alternate_title',
+                    'author', 'category', 'supplier_id'
+                ])
+            );
 
             DB::commit();
 

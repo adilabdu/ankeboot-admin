@@ -26,10 +26,17 @@ class ConsignmentController extends Controller
         try {
 
             if ($request->has('id')) {
-
+                
                 $consignmentRecords = ConsignmentSettlement::find($request->input('id'));
 
             } else if ($request->has('book_id')) {
+
+                if (PurchaseType::from(Book::find($request->input('book_id'))->type) === PurchaseType::CASH) {
+                    return response([
+                        'message' => 'error',
+                        'data' => 'Cash purchase books cannot be consigned'
+                    ], 400);
+                }
 
                 $consignmentRecords = ConsignmentSettlement::where(
                     'book_id',

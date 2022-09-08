@@ -44,11 +44,11 @@
         :data="transactions"
         :center="['code', 'quantity']"
         :right="[]"
-        :sortable="[]"
+        :sortable="['transaction_type']"
         :searchable="['book_title', 'transaction_date']"
         :hideable="false"
-        :hide="['book_id']"
-        :hide-labels="['book_id']"
+        :hide="['book_id', 'id']"
+        :hide-labels="['book_id', 'id']"
         :actions="true"
         @table-button-click="handleTableButton"
         @edit="handleEdit"
@@ -122,7 +122,11 @@
 
     }
 
-    function handleEdit() {
+    function handleEdit(object) {
+
+        console.log({object})
+
+        router.push({ name: 'UpdateTransaction', params: { id: object.id } })
 
     }
 

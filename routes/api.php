@@ -41,12 +41,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/statistics', [StatisticsController::class, 'books']);
         Route::get('/search', [SearchController::class, 'books']);
         Route::post('/', [BookController::class, 'post']);
+        Route::post('/update', [BookController::class, 'update']);
         Route::post('/csv', [CSVController::class, 'insertBooks']);
     });
 
     Route::prefix('transactions')->group(function () {
         Route::get('/', [TransactionController::class, 'index']);
         Route::post('/', [TransactionController::class, 'post']);
+        Route::post('/update', [TransactionController::class, 'update']);
         Route::post('/csv', [CSVController::class, 'insertTransactions']);
     });
 

@@ -388,7 +388,7 @@
             :center="['code', 'quantity']"
             :right="[]"
             :sortable="['sold', 'book_type', 'book_code', 'title']"
-            :searchable="['book_title', 'transaction_date']"
+            :searchable="['title', 'book_code']"
             :hideable="false"
             :hide="['author']"
             :hide-labels="['stock_card']"

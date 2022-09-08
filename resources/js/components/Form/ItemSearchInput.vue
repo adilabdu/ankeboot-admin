@@ -39,8 +39,7 @@
 
 <script setup>
 
-    import { ref, watch } from "vue"
-    import axios from "axios";
+    import { ref, watch, onMounted } from "vue"
 
     const props = defineProps({
         label: {
@@ -65,6 +64,10 @@
         displayData: {
             type: Array,
             default: ['title', 'code']
+        },
+        searchLogic: {
+            type: Function,
+            required: true
         }
     })
     const emit = defineEmits(['click', 'update:modelValue'])
@@ -81,38 +84,28 @@
     function resetSelected() {
         selected.value = ''
         searchQuery.value = ''
-    }
-
-    async function searchBooks(payload) {
-
-        return await axios.get('/api/books/search', {
-            params: {
-                query: payload
-            }
-        }).then(response => {
-
-            if (response.data.message === 'ok') {
-
-                return response.data.data
-
-            } else {
-
-                alert(response.data.message)
-
-            }
-
-        })
+        emit('update:modelValue', null)
     }
 
     watch(searchQuery, () => {
 
         if (searchQuery.value) {
-            searchBooks(searchQuery.value).then((response) => {
+            props.searchLogic(searchQuery.value).then((response) => {
                 searchResults.value = response['results']
             })
         } else {
             searchResults.value = []
         }
+    })
+
+    onMounted(() => {
+
+        if (!! props.modelValue) {
+            props.searchLogic(props.modelValue, '/api/books', 'id').then((response) => {
+                selected.value = response[props.displayData[0]]
+            })
+        }
+
     })
 
 </script>

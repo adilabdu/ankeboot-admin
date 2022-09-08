@@ -195,11 +195,13 @@
 
         }).then((response) => {
 
+            alert('hello')
+
             consignmentHistory.value = response.data.body
 
         }).catch((error) => {
 
-            router.push({ name: 'Consignments' })
+            router.push({ name: 'Books' })
             store.dispatch('pushAlert', {
                 type: 'error',
                 message: error.response.data.message

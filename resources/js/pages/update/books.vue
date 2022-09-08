@@ -1,13 +1,42 @@
 <template>
 
-    <p class="text-subtitle font-medium">Update an existing Book Form</p>
+    <Form title="Register new Book" :submit="updateBook">
+
+        <TextInput required label="Book title" placeholder="Insert new book title" v-model="bookData.title"/>
+        <TextInput label="አማርኛ አርእስት" placeholder="የአማርኛ አርእስቱን ያስገቡ" v-model="bookData.alternate_title"/>
+
+        <div class="flex gap-8 w-full">
+            <TextInput v-model="bookData.author" class="w-full" placeholder="Book author" label="Book author" />
+            <TextSearchInput
+                :search-list="categories"
+                v-model="bookData.category"
+                required
+                class="w-full"
+                placeholder="Book category"
+                label="Category"
+            />
+        </div>
+
+        <div class="flex items-center gap-8 w-full">
+            <TextInput v-model="bookData.code" required class="w-full" placeholder="Unique item code" label="Item code" />
+            <SwitchInput class="px-3" label-location="top" v-model="bookData.type" label="Consignment"/>
+        </div>
+
+        <Collapsable :open="false" @open="toggleSupplierRegistration" :label="['Register item supplier', 'Register item supplier later']">
+
+            <div class="bg-wallpaper rounded-md text-subtitle font-medium flex w-full h-48 items-center justify-center">
+                Supplier registration form
+            </div>
+
+        </Collapsable>
+
+    </Form>
 
 </template>
 
 <script setup>
 
-    import { onMounted, ref } from "vue";
-    import ContentPage from "../../layouts/content-page.vue";
+    import { computed, onMounted, ref } from "vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
     import TextSearchInput from "../../components/Form/TextSearchInput.vue";
@@ -16,27 +45,18 @@
     import router from "../../router"
     import Collapsable from "../../components/Collapsable.vue";
     import DatePicker from "../../components/Form/DatePicker.vue";
-    import FileInput from "../../components/Form/FileInput.vue";
     import { useRoute } from "vue-router";
 
-    const bookData = ref({
-        title: 'A Book',
-        alternate_title: '',
-        author: 'An Author',
-        category: 'Fake',
-        type: true,
-        code: 'fake2000',
-    })
+    const loading = computed(() => store.state.book.loading)
 
-    const transaction_type = { transaction_type: true }
-    const transactionData = ref({
-        transaction_invoice: 'fake2000',
-        transaction_quantity: '2000',
-        transaction_on: {
-            date: '20',
-            month: '11',
-            year: '2022'
-        }
+    const bookData = ref({
+        id: '',
+        title: '',
+        alternate_title: '',
+        author: '',
+        category: '',
+        type: true,
+        code: '',
     })
 
     const categories = ref([])
@@ -52,46 +72,49 @@
 
     }
 
-    const registerTransaction = ref(true)
-    function toggleTransactionRegistration(state) {
-        registerTransaction.value = state
-    }
-
     const registerSupplier = ref(false)
     function toggleSupplierRegistration(state) {
         registerSupplier.value = state
     }
 
-    function createNewBook() {
+    async function getBook(id) {
+
+        await store.dispatch('getBook', id)
+
+    }
+
+    function updateBook() {
 
         const payload = ref({})
 
         // TODO: find better implementation
-        if (registerTransaction.value) {
-            payload.value = {
-                ...transaction_type,
-                ...transactionData.value,
-                ...bookData.value
-            }
-        } else {
-            payload.value = {
-                ...bookData.value
-            }
+        payload.value = {
+            ...bookData.value
         }
 
         console.table(payload.value)
-        store.dispatch('postBook', payload.value)
+        store.dispatch('updateBook', payload.value)
             .then((response) => {
 
-                if (response === 'ok') {
+                if (response.message === 'ok') {
 
                     // TODO: Handle with a Notification
-                    router.push({ name: 'Book', params: { id: store.state.book.book.id } })
+                    store.dispatch('pushAlert', {
+                        type: 'success',
+                        message: `Item ${response.data.title} updated successfully`,
+                    })
+                    store.dispatch('getBooks')
+                        .then(() => {
+                            router.push({ name: 'Book', params: { id: response.data.id } })
+                        })
 
                 } else {
 
                     // TODO: Handle with a Notification
-                    alert(response)
+                    store.dispatch('pushAlert', {
+                        type: 'error',
+                        message: response,
+                    })
 
                 }
 
@@ -104,6 +127,20 @@
     onMounted(() => {
 
         getCategories()
+        getBook(useRoute().params.id).then(() => {
+
+            console.log(store.state.book.book)
+            const book = store.state.book.book
+
+            bookData.value.id = book.id
+            bookData.value.title = book.title
+            bookData.value.alternate_title = book.alternate_title
+            bookData.value.author = book.author
+            bookData.value.category = book.category
+            bookData.value.type = book.type === 'cash' ? false : true
+            bookData.value.code = book.code
+
+        })
 
     })
 

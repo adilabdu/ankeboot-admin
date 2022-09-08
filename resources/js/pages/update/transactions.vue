@@ -1,101 +1,94 @@
 <template>
 
-    <p class="text-subtitle font-medium">Update an existing Transaction Form</p>
+    <Form title-layout="panel" title="Register new Transaction" :submit="updateTransaction">
+
+        <template #subtitle>
+            Search through the book records and select the item to register a new transaction for.
+            Do not forget to specify the transaction type (purchase / sale).
+        </template>
+
+        <TextInput v-if="store.state.transaction.transaction" disabled v-model="store.state.transaction.transaction.book.title" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
+
+        <div class="flex gap-8 w-full">
+            <TextInput required v-model="transactionData.invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
+            <DatePicker required v-model="transactionData.date" class="w-full" label="Transaction date" />
+        </div>
+
+        <div class="flex items-center gap-8 w-full">
+            <TextInput v-model="transactionData.quantity" required class="w-full" placeholder="Quantity of items in transaction" label="Item Quantity" />
+            <SwitchInput class="px-3" label-location="top" v-model="transactionType.type" label="Purchase"/>
+        </div>
+
+    </Form>
 
 </template>
 
 <script setup>
 
-    import { onMounted, ref } from "vue";
-    import ContentPage from "../../layouts/content-page.vue";
+    import { onMounted, ref, computed } from "vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
-    import TextSearchInput from "../../components/Form/TextSearchInput.vue";
     import SwitchInput from "../../components/Form/SwitchInput.vue";
     import store from "../../store"
-    import router from "../../router"
-    import Collapsable from "../../components/Collapsable.vue";
     import DatePicker from "../../components/Form/DatePicker.vue";
-    import FileInput from "../../components/Form/FileInput.vue";
+    import ItemSearchInput from "../../components/Form/ItemSearchInput.vue"
     import { useRoute } from "vue-router";
+    import router from "../../router";
 
-    const bookData = ref({
-        title: 'A Book',
-        alternate_title: '',
-        author: 'An Author',
-        category: 'Fake',
-        type: true,
-        code: 'fake2000',
+    const transactionType = ref({
+        type: false
     })
-
-    const transaction_type = { transaction_type: true }
     const transactionData = ref({
-        transaction_invoice: 'fake2000',
-        transaction_quantity: '2000',
-        transaction_on: {
-            date: '20',
-            month: '11',
-            year: '2022'
-        }
+        id: '',
+        book_id: '',
+        date: {
+            date: '',
+            month: '',
+            year: ''
+        },
+        quantity: '',
+        invoice: ''
     })
 
-    const categories = ref([])
-    async function getCategories() {
+    async function getTransaction(id) {
 
-        const response = await axios.get('/api/books/categories')
+        await store.dispatch('getTransaction', id)
 
-        if (response.data.message === 'ok') {
-            categories.value = response.data.data
-        } else {
-            categories.value = []
+    }
+
+    function updateTransaction() {
+
+        const payload = {
+            ...transactionData.value,
+            ...transactionType.value
         }
 
-    }
-
-    const registerTransaction = ref(true)
-    function toggleTransactionRegistration(state) {
-        registerTransaction.value = state
-    }
-
-    const registerSupplier = ref(false)
-    function toggleSupplierRegistration(state) {
-        registerSupplier.value = state
-    }
-
-    function createNewBook() {
-
-        const payload = ref({})
-
-        // TODO: find better implementation
-        if (registerTransaction.value) {
-            payload.value = {
-                ...transaction_type,
-                ...transactionData.value,
-                ...bookData.value
-            }
-        } else {
-            payload.value = {
-                ...bookData.value
-            }
-        }
-
-        console.table(payload.value)
-        store.dispatch('postBook', payload.value)
+        store.dispatch('updateTransaction', payload)
             .then((response) => {
 
-                if (response === 'ok') {
+                if (response.message === 'ok') {
 
                     // TODO: Handle with a Notification
-                    router.push({ name: 'Book', params: { id: store.state.book.book.id } })
+                    store.dispatch('pushAlert', {
+                        type: 'success',
+                        message: `Transaction for ${response.data.book.title} updated successfully`,
+                    })
+                    store.dispatch('getBooks')
+                        .then(() => {
+                            router.push({ name: 'Book', params: { id: response.data.book.id } })
+                        })
 
                 } else {
 
                     // TODO: Handle with a Notification
-                    alert(response)
+                    store.dispatch('pushAlert', {
+                        type: 'error',
+                        message: response.data,
+                    })
 
                 }
 
-            })
+                })
             .finally(() => {
             })
 
@@ -103,7 +96,22 @@
 
     onMounted(() => {
 
-        getCategories()
+        getTransaction(useRoute().params.id).then(() => {
+            
+            const transaction = store.state.transaction.transaction
+            
+            transactionData.value.id = transaction.id
+            transactionType.value.type = transaction.type === 'purchase' ? true : false
+            transactionData.value.book_id = transaction.id
+            transactionData.value.quantity = transaction.quantity
+            transactionData.value.invoice = transaction.invoice
+            transactionData.value.date = {
+                date: new Date(transaction.transaction_on).getDate(),
+                month: new Date(transaction.transaction_on).getMonth(),
+                year: new Date(transaction.transaction_on).getFullYear(),
+            }
+        
+        })
 
     })
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { formatDate } from "../../utils";
 
 const state = {
 
@@ -13,6 +14,18 @@ const getters = {
 }
 
 const actions = {
+
+    async getTransaction({ commit }, payload) {
+
+        await axios.get('/api/transactions/', {
+            params: {
+                id: payload
+            }
+        }).then((response) => {
+            commit('getTransaction', response.data.data)
+        })
+
+    },
 
     async getTransactions({ commit }) {
 
@@ -69,15 +82,39 @@ const actions = {
             })
     },
 
+    async updateTransaction(context, payload) {
+
+        return axios.post('/api/transactions/update', {
+            id: payload.id,
+            invoice: payload.invoice,
+            transaction_on: formatDate(payload['date']),
+            type: payload.type ? 'purchase' : 'sale',
+            quantity: payload.quantity,
+            book_id: payload.book_id
+        }).then((response) => {
+            return response.data
+        }).catch((error) => {
+            return error.response.data.message
+        })
+
+    },
+
 }
 
 const mutations = {
+
+    getTransaction(state, payload) {
+
+        state.transaction = payload
+
+    },
 
     getTransactions(state, payload) {
 
         state.transactions = payload.map((transaction) => {
 
             return {
+                id: transaction.id,
                 invoice: transaction.invoice,
                 book_id: transaction.book.id,
                 book_code: transaction.book.code,

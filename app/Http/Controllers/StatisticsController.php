@@ -37,7 +37,7 @@ class StatisticsController extends Controller
             $entries_last_month = Book::where(
                 'created_at',
                 '>=',
-                new Carbon('yesterday'))
+                new Carbon('Last month'))
                 ->count();
 
             return response([

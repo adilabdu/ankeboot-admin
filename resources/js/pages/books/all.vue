@@ -46,9 +46,9 @@
         :right="[]"
         :sortable="['category', 'code', 'balance', 'title', 'purchase_type', 'added_on']"
         :searchable="['title', 'added_on', 'code']"
-        :hideable="false"
-        :hide="[]"
-        :hide-labels="[]"
+        :hideable=false
+        :hide="['id']"
+        :hide-labels="['id']"
         :actions="true"
         @table-button-click="handleTableButton"
         @edit="handleEdit"
@@ -65,7 +65,11 @@
         <template #rows="data">
 
             <Cell name="code" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['code'].toLowerCase() }} </Cell>
-            <Cell class="w-[90%]" name="title" :main="true" :hide="data.hide">{{ data['record'].title }} </Cell>
+            <LinkCell class="w-[90%]" name="title" :main="true" :hide="data.hide" :value="data['record']['title']" :to="'books/' + data['record']['id']">
+                <RouterLink :to="'books/' + data['record']['id']">
+                    {{ data['record']['title'] }}
+                </RouterLink>
+            </LinkCell>
             <Cell class="w-[2%]" name="category" :hide="data.hide">{{ data['record']['category'] }} </Cell>
             <EnumCell class="w-[2%]" name="purchase_type" :hide="data.hide" :colors="['lime', 'stone']" :options="['consignment', 'cash']" :value="data['record']['purchase_type']" />
             <Cell name="balance" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['balance'] }} </Cell>
@@ -83,6 +87,7 @@
     import InfoCard from "../../components/InfoCard.vue"
     import Table from "../../components/Table/Table.vue"
     import Cell from "../../components/Table/Cell.vue"
+    import LinkCell from "../../components/Table/LinkCell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
     import DateCell from "../../components/Table/DateCell.vue"
     import store from "../../store"
@@ -129,7 +134,9 @@
 
         if (!! ! store.state.book.books) {
             await store.dispatch('getBooks')
-                .then()
+                .then(() => {
+                    console.log(store.state.book.books[0])
+                })
                 .finally(() => {
                     loading.value = false
                 })

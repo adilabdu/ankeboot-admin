@@ -13,6 +13,7 @@
             selectable="id"
             placeholder="Search for book item with (code, title)"
             label="Book for Transaction"
+            :search-logic="searchBooks"
         />
 
         <div class="flex gap-8 w-full">
@@ -193,6 +194,27 @@
 
         })
 
+    }
+
+    async function searchBooks(payload) {
+
+        return await axios.get('/api/books/search', {
+            params: {
+                query: payload
+            }
+        }).then(response => {
+
+            if (response.data.message === 'ok') {
+
+                return response.data.data
+
+            } else {
+
+                alert(response.data.message)
+
+            }
+
+        })
     }
 
     onMounted(() => {

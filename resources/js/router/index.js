@@ -25,6 +25,11 @@ import DailySale from "../pages/daily-sales/single.vue"
 import ConsignmentLayout from "../pages/consignments/index.vue"
 import Consignment from "../pages/consignments/single.vue"
 
+import DocumentLayout from "../pages/documents/index.vue"
+import FileLayout from "../layouts/file.vue"
+import EmployeeHire from "../pages/documents/employee-hire.vue"
+import New from "../pages/documents/new.vue"
+
 const routes = [
     {
         path: '/',
@@ -71,12 +76,12 @@ const routes = [
         },
         children: [
             {
-                path: 'books',
+                path: 'books/:id',
                 name: 'UpdateBook',
                 component: UpdateBook
             },
             {
-                path: 'transactions',
+                path: 'transactions/:id',
                 name: 'UpdateTransaction',
                 component: UpdateTransaction
             }
@@ -165,6 +170,26 @@ const routes = [
                 path: ':id',
                 name: 'Consignment',
                 component: Consignment
+            }
+        ]
+    },
+    {
+        path: '/documents',
+        name: 'DocumentLayout',
+        component: DocumentLayout,
+        meta: {
+            requiresLogin: true
+        },
+        children: [
+            {
+                path: 'file/employee-hire',
+                name: 'EmployeeHire',
+                component: EmployeeHire
+            },
+            {
+                path: 'file/new',
+                name: 'New',
+                component: New
             }
         ]
     },
