@@ -117,6 +117,8 @@
         window.axios.defaults.headers.common['database'] = localStorage.getItem('connection') || 'mysql'
 
         loading.value = false
+        
+        store.dispatch("logout")
         location.reload()
 
     })
