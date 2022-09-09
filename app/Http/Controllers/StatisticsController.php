@@ -7,6 +7,7 @@ use App\Models\Credit;
 use App\Models\DailySale;
 use App\Models\Deposit;
 use App\Models\SalesReceipt;
+use App\Models\MailingList;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -177,6 +178,41 @@ class StatisticsController extends Controller
                 ]
             ]
         ]);
+
+    }
+
+    public function mailingList(): Response|Application|ResponseFactory
+    {
+
+        // TODO: Run these queries
+        // 1. Mailing List count
+        // 2. Mailing List count by date (last 30 days)
+
+        try {
+
+            $mailing_list_count = MailingList::count();
+            $entries_last_month = MailingList::where(
+                    'created_at',
+                    '>=',
+                    new Carbon('Last month')
+                )->count();
+
+        } catch (Exception $exception) {
+        
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => [
+                'count' => $mailing_list_count,
+                'count_last_month' => $entries_last_month
+            ]
+        ], 200);
 
     }
 

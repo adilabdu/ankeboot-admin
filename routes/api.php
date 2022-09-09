@@ -9,6 +9,7 @@ use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\MailingListController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -72,6 +73,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [ConsignmentController::class, 'index']);
         Route::post('/', [ConsignmentController::class, 'create']);
         Route::get('/history', [ConsignmentController::class, 'history']);
+    });
+
+    Route::prefix('mailing-list')->group(function () {
+        Route::get('/', [MailingListController::class, 'index']);
+        Route::get('/statistics', [StatisticsController::class, 'mailingList']);
+        Route::post('/delete', [MailingListController::class, 'delete']);
     });
 
 });

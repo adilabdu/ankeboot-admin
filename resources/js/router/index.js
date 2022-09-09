@@ -26,9 +26,11 @@ import ConsignmentLayout from "../pages/consignments/index.vue"
 import Consignment from "../pages/consignments/single.vue"
 
 import DocumentLayout from "../pages/documents/index.vue"
-import FileLayout from "../layouts/file.vue"
 import EmployeeHire from "../pages/documents/employee-hire.vue"
 import New from "../pages/documents/new.vue"
+
+import MailingListLayout from "../pages/mailing-list/index.vue"
+import MailingLists from "../pages/mailing-list/all.vue"
 
 const routes = [
     {
@@ -193,6 +195,26 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/mailing-list',
+        name: 'MailingListLayout',
+        component: MailingListLayout,
+        meta: {
+            requiresLogin: true
+        },
+        children: [
+            {
+                path: '',
+                name: 'MailingLists',
+                component: MailingLists
+            },
+            {
+                path: ':id',
+                name: 'MailingList',
+                component: MailingLists
+            }
+        ]
+    }
 ]
 
 const router = createRouter({
