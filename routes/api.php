@@ -82,3 +82,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 });
+
+Route::post('/mailing-list', [MailingListController::class, 'post']);

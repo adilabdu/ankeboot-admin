@@ -70,4 +70,33 @@ class MailingListController extends Controller
 
     }
 
+    public function post(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required_without:phone|email',
+            'phone' => 'required_without:email|numeric',
+        ]);
+
+        try {
+                
+                $mailingList = MailingList::create($request->all());
+            
+            } catch (Exception $e) {
+                
+                return response([
+                    'message' => 'error',
+                    'data' => $e->getMessage(),
+                ], 500);
+            
+        }
+
+        return response([
+            'message' => 'success',
+            'data' => $mailingList,
+        ], 200);
+
+    }
+
 }
