@@ -2,7 +2,7 @@
 
     <div id="page" class="group hover:shadow-md transition-all duration-300 print:hover:shadow-none print:border-none border border-border-light relative bg-white p-8 print:p-0 justify-between flex flex-col gap-4" size="A4">
 
-        <div class="print:hidden opacity-0 group hover:opacity-100 absolute w-full h-full bg-white/50 top-0 left-0">
+        <div @mouseenter="toggleBlur(true)" @mouseleave="toggleBlur(false)" class="print:hidden opacity-0 group hover:opacity-100 absolute w-full h-full bg-white/50 top-0 left-0">
             <div class="p-4 flex w-full h-full transition-opacity duration-300 opacity-0 group-hover:opacity-100 backdrop-blur-xl">
 
                 <button @click="print" class="sticky top-2 bg-brand-primary px-6 py-0.5 h-10 text-white rounded-lg">Print file</button>
@@ -93,7 +93,13 @@
 
 <script setup>
 
+    import { onMounted, ref } from "vue"
     import { formatNumberToTwoIntegerPlaces } from '../utils';
+
+    const hideBlur = ref(false);
+    function toggleBlur(hide) {
+        hideBlur.value = hide;
+    }
 
     const props = defineProps({
         title: {
@@ -112,12 +118,24 @@
 
     function print() {
 
+        toggleBlur(false)
         document.body.innerHTML = document.getElementById('page').outerHTML
         window.print()
 
         location.reload()
 
     }
+
+    onMounted(() => {
+
+        document.onkeydown = function (e) {
+            if (e.ctrlKey && e.keyCode == 80) {
+                print()
+                return false;
+            }
+        }
+
+    })
 
 </script>
 
