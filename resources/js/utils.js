@@ -12,7 +12,15 @@ function formatPrice(num) {
         })
 }
 
-function formatNumberToTwoIntegerPlaces(num) {
+function formatNumberToTwoIntegerPlaces(num, type='number') {
+
+    if (type === 'price') {
+        if (num.toString().length < 2) {
+            return num.toString() + '0'
+        }
+        return num
+    }
+
     return parseInt(num).toLocaleString('en-US',
         { minimumIntegerDigits: 2 }
     )
@@ -61,6 +69,7 @@ function digitToWritten(digit) {
     }
 
     const hundreds = "መቶ"
+    const ten_variant = 'አስር'
     const thousands = "ሺህ"
     const millions = "ሚሊዮን"
     const billions = "ቢሊዮን"
@@ -69,7 +78,6 @@ function digitToWritten(digit) {
     const decimal = digit.toString().split('.')[1] ?? null
 
     const integerStack = integer.split('').reverse()
-    console.log('integerStack ', integerStack)
 
     let integerWritten = ''
     for (let i = 0; i < integerStack.length; i++) {
@@ -77,7 +85,7 @@ function digitToWritten(digit) {
         if (i === 0) {
             integerWritten = integerStack[i] === '0' ? '' : ones[integerStack[i]]  
         } else if (i % 3 === 1) {
-            integerWritten = (integerStack[i] === '0' ? '' : (tens[integerStack[i]])) + ' ' + integerWritten
+            integerWritten = (integerStack[i] === '0' ? '' : integerStack[i] === '1' && integerStack[i-1] === '0' ? ten_variant : (tens[integerStack[i]])) + ' ' + integerWritten
         } else if (i % 3 === 2) {
             integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + hundreds)) + ' ' + integerWritten
         } else if (i === 3) {
@@ -89,9 +97,7 @@ function digitToWritten(digit) {
         }
     }
 
-    console.log(integerWritten)
-
-    return  integerWritten + ' ብር ' + 'ከ ' + (!! decimal ? formatNumberToTwoIntegerPlaces(decimal) : '00') + ' ሳንቲም'
+    return  integerWritten + ' ብር ' + 'ከ ' + (!! decimal ? formatNumberToTwoIntegerPlaces(decimal, 'price') : '00') + ' ሳንቲም'
 
 }
 
