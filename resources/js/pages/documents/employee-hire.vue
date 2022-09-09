@@ -87,7 +87,7 @@
             </div>
 
             <div class="flex w-full gap-2">
-                <TextInput @focusout="toggleFocus('salary')" @focusin="toggleFocus('salary')" class="w-1/2" v-model="form.salary" label="Salary in ETB" placeholder="Salary of new employee in ETB" />
+                <TextInput pattern="^[0-9]+.?[0-9]{0,2}$" @focusout="toggleFocus('salary')" @focusin="toggleFocus('salary')" class="w-1/2" v-model="form.salary" label="Salary in ETB" placeholder="Salary of new employee in ETB" />
                 <TextInput @focusout="toggleFocus('overtime')" @focusin="toggleFocus('overtime')" class="w-1/2" v-model="form.overtime" label="Overtime Salary in ETB" placeholder="Overtime salary of new employee in ETB" />
             </div>
 
@@ -178,6 +178,8 @@
     })
 
     function submitFileForm() {
+
+        console.log('Submit File form')
 
     }
 
