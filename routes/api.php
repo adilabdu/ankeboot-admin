@@ -10,6 +10,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MailingListController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -79,6 +80,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [MailingListController::class, 'index']);
         Route::get('/statistics', [StatisticsController::class, 'mailingList']);
         Route::post('/delete', [MailingListController::class, 'delete']);
+    });
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [NotificationController::class, 'index']);
+        Route::get('/unread', [NotificationController::class, 'unread']);
     });
 
 });
