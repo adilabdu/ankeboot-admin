@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\MailingList;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\NewSubscriberRegistered;
 
 class MailingListController extends Controller
 {
@@ -82,6 +85,8 @@ class MailingListController extends Controller
         try {
                 
                 $mailingList = MailingList::create($request->all());
+
+                Notification::send(User::all(), new NewSubscriberRegistered($mailingList));
             
             } catch (Exception $e) {
                 
