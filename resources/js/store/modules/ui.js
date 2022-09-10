@@ -1,6 +1,7 @@
 const state = {
 
-    navigationOpened: false
+    navigationOpened: false,
+    contentLoading: false,
 
 }
 
@@ -16,6 +17,12 @@ const actions = {
 
     },
 
+    toggleContentLoading(context, payload) {
+
+        context.commit('toggleContentLoading', payload)
+
+    }
+
 }
 
 const mutations = {
@@ -25,6 +32,12 @@ const mutations = {
         state.navigationOpened = !state.navigationOpened
 
     },
+
+    toggleContentLoading(state, payload) {
+            
+        state.contentLoading = payload
+    
+    }
 
 }
 

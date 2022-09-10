@@ -26,7 +26,7 @@
                 {{ unreadNotifications.length }}
             </div>
 
-            <ul ref="notificationMenu" v-if="viewNotificationsMenu" class="w-96 min-h-[3rem] flex flex-col bg-white absolute border border-border-light shadow-sm rounded-md right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full">
+            <ul ref="notificationMenu" v-if="viewNotificationsMenu" class="w-96 max-h-[22rem] overflow-auto min-h-[3rem] flex flex-col bg-white absolute border border-border-light shadow-sm rounded-md right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full">
 
                 <li v-if="loadingNotifications" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
 
@@ -111,7 +111,7 @@
     import { onClickOutside } from "@vueuse/core"
     import store from "../store"
     import router from "../router"
-import axios from "axios";
+    import axios from "axios";
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const user = computed(() => store.state.auth.user)
@@ -185,11 +185,15 @@ import axios from "axios";
         switch (type) {
 
             case 'App\\Notifications\\NewSubscriberRegistered':
+
+                store.dispatch('toggleContentLoading', true)
+
                 axios.post('/api/notifications/read', {
                     id
                 }).then(() => {
                     getUnreadNotifications().then(() => {
                         router.push({ name: 'MailingLists' })
+                        store.dispatch('toggleContentLoading', false)
                     })
                 })
                 break;
@@ -225,5 +229,9 @@ import axios from "axios";
 </script>
 
 <style scoped>
+
+    .overflow-overlay {
+        overflow: overlay;
+    }
 
 </style>

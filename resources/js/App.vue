@@ -7,6 +7,7 @@
     </template> -->
 
     <Layout>
+        <div id="content-top-view"></div>
         <router-view></router-view>
     </Layout>
 
