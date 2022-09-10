@@ -50,10 +50,11 @@
             </div>
 
             <!--Document title-->
-            <h1 class="mx-auto pt-4">
-                ስለ 
-                <span class="font-bold">{{ title }}</span>
-            </h1>
+            <div class="mx-auto pt-4 flex gap-2">
+                <p>ጉዳዩ</p>
+                <div v-if="!! ! title" class="w-52 bg-gray-400/25 h-5" />
+                <p v-else class="font-bold">{{ title }}</p>
+            </div>
 
             <!--Document content-->
             <main>
