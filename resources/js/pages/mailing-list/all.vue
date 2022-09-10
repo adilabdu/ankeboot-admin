@@ -15,12 +15,13 @@
         </InfoCard>
     </div>
     <Table
+        :key="mailingList"
         :loading="!! ! mailingList"
         title="Mailing List"
         :data="mailingList"
         :center="['phone']"
         :right="[]"
-        :sortable="[]"
+        :sortable="['created_at']"
         :searchable="[]"
         :hideable=false
         :hide="['updated_at']"
@@ -63,12 +64,57 @@
 
     </Table>
 
+    <Teleport v-if="deleteModal" to="#top-view">
+
+        <Modal class="bg-black/50">
+
+            <div class="w-full h-full flex justify-center items-center">
+
+                <!-- Loading indicator -->
+               <div class="flex flex-col w-[32rem] overflow-hidden rounded-xl bg-white">
+
+                    <div class="grow flex items-start h-full w-full p-6 gap-4">
+                        <div>
+                            <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center">
+                                <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M11.0003 7.99999V11.75M1.69731 15.126C0.831309 16.626 1.91431 18.5 3.64531 18.5H18.3553C20.0853 18.5 21.1683 16.626 20.3033 15.126L12.9493 2.37799C12.0833 0.877991 9.91731 0.877991 9.05131 2.37799L1.69731 15.126V15.126ZM11.0003 14.75H11.0073V14.758H11.0003V14.75Z" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="grow h-full w-full flex flex-col justify-start gap-2">
+                            <h1 class="text-base font-medium">
+                                Delete subscriber
+                            </h1>
+                            <p class="text-subtitle">
+                                Are you sure you want to delete this subscriber from the mailing list? This action cannot be undone.
+                                The subscriber will no longer receive any mail from you. 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 flex items-center justify-end gap-2 h-16 w-full bg-wallpaper">
+                        
+                        <button @click="cancelDelete" class="focus:outline-none h-10 rounded-md font-medium bg-white text-black/75 border border-border-light px-5 focus:outline">
+                            Cancel
+                        </button>
+                        <button :class="[deleting ? 'opacity-50' : '']" @click="attemptDelete(recordToDelete.id)" class="focus:outline-none h-10 rounded-md bg-red-600 text-white px-6">Delete Subscriber</button>
+
+                    </div>
+
+               </div>
+
+            </div>
+
+        </Modal>
+
+    </Teleport>
+
 </template>
 
 <script setup>
 
     import { onMounted, ref } from "vue"
     import axios from "axios";
+    import store from "../../store"
     import { formatNumber } from "../../utils";
     import InfoCard from "../../components/InfoCard.vue"
     import Table from "../../components/Table/Table.vue"
@@ -76,6 +122,7 @@
     import LinkCell from "../../components/Table/LinkCell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
     import DateCell from "../../components/Table/DateCell.vue"
+    import Modal from "../../components/Modal.vue";
     
     const statistics = ref(null)
     const mailingList = ref(null)
@@ -108,7 +155,41 @@
 
     }
 
-    function handleDelete() {
+    const deleting = ref(false)
+    async function attemptDelete(id) {
+
+        deleting.value = true
+        await axios.post('/api/mailing-list/delete', { 
+            id 
+        }).then(() => {
+
+            fetchMailingList()
+            fetchStatistics()
+            store.dispatch('pushAlert', {
+                type: 'success',
+                message: 'Subscriber deleted'
+            })
+            deleteModal.value = false
+
+        }).finally(() => {
+            deleting.value = false
+        })
+
+    }
+
+    function cancelDelete() {
+
+        deleteModal.value = false
+        recordToDelete.value = null
+
+    }
+
+    const recordToDelete = ref(null)
+    const deleteModal = ref(false)
+    function handleDelete(record) {
+
+        recordToDelete.value = record
+        deleteModal.value = true
 
     }
 
