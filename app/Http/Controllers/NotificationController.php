@@ -55,4 +55,35 @@ class NotificationController extends Controller
 
     }
 
+    public function read(Request $request)
+    {
+
+        $request->validate([
+            'id' => 'required|exists:notifications,id'
+        ]);
+
+        try {
+
+            Auth::user()
+                ->notifications
+                ->where('id', $request->id)
+                ->first()
+                ->markAsRead();
+
+        } catch (Exception $e) {
+
+            return response([
+                'message' => 'error',
+                'data' => $e->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'success',
+            'data' => 'Notification marked as read'
+        ], 200);
+
+    }
+
 }

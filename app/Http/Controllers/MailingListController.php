@@ -25,7 +25,7 @@ class MailingListController extends Controller
                 ->when($request->input('id'), function ($query, $id) {
                     return $query->where('id', $id)->first();
                 }, function ($query) {
-                    return $query->get();
+                    return $query->orderBy('created_at', 'desc')->get();
                 });
         
         } catch (Exception $e) {
