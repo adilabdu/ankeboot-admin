@@ -68,6 +68,12 @@ class NewSubscriberRegistered extends Notification
     {
         return TelegramMessage::create()
                 ->to($notifiable->telegram_chat_id)
-                ->content('New subsriber registered! ' . $this->mailingList->name . ' has joined the mailing list.');
+                ->content(
+                    'New subscriber registered! *' . 
+                    $this->mailingList->name . 
+                    '* has joined the mailing list on ' . 
+                    $this->mailingList->created_at->format('d/m/Y H:i:s') . 
+                    '.'
+                );
     }
 }
