@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Telegram\TelegramMessage;
 use App\Models\MailingList;
 
 class NewSubscriberRegistered extends Notification
@@ -30,7 +31,7 @@ class NewSubscriberRegistered extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'telegram'];
     }
 
     // /**
@@ -61,5 +62,12 @@ class NewSubscriberRegistered extends Notification
             'phone' => $this->mailingList->phone,
             'email' => $this->mailingList->email,
         ];
+    }
+
+    public function toTelegram($notifiable)
+    {
+        return TelegramMessage::create()
+                ->to($notifiable->telegram_chat_id)
+                ->content('New subsriber registered! ' . $this->mailingList->name . ' has joined the mailing list.');
     }
 }

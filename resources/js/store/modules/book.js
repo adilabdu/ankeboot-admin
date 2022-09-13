@@ -7,6 +7,7 @@ const state = {
     book: null,
     statistics: null,
     loading: false,
+    controller: new AbortController(),
 
 }
 
@@ -22,9 +23,18 @@ const actions = {
 
     async getBooks({ commit }) {
 
-        await axios.get('/api/books').then((response) => {
+        await axios.get('/api/books', {
+            signal: state.controller.signal
+        }).then((response) => {
             commit('getBooks', response.data.data)
         })
+
+    },
+
+    cancelBookRequest() {
+
+        state.controller.abort()
+        state.controller = new AbortController()
 
     },
 
@@ -123,7 +133,9 @@ const actions = {
 
     async getBooksStats({ commit }) {
 
-        await axios.get('/api/books/statistics').then((response) => {
+        await axios.get('/api/books/statistics', {
+            signal: state.controller.signal
+        }).then((response) => {
             commit('getBooksStats', response.data.data)
         })
 

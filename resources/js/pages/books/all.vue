@@ -83,7 +83,7 @@
 
 <script setup>
 
-    import { onMounted, computed, ref } from "vue";
+    import { onMounted, computed, ref, onBeforeUnmount } from "vue";
     import InfoCard from "../../components/InfoCard.vue"
     import Table from "../../components/Table/Table.vue"
     import Cell from "../../components/Table/Cell.vue"
@@ -92,6 +92,7 @@
     import DateCell from "../../components/Table/DateCell.vue"
     import store from "../../store"
     import router from "../../router"
+    import { onBeforeRouteLeave } from "vue-router";
     import { formatNumber } from "../../utils";
 
     const loading = ref(true)
@@ -148,20 +149,26 @@
 
     }
 
-    fetchBooks()
-
     function goto(route) {
         router.push({ name: route })
     }
 
     onMounted(() => {
 
+        fetchBooks()
         store.dispatch('getBooksStats').then(() => {
             countByType.value = {
                 'type': 'consignment',
                 'count': statistics.value['count_by_type']['consignment']
             }
         })
+
+    })
+
+    onBeforeUnmount(() => {
+
+        // TODO: Cancel all pending requests
+        store.dispatch('cancelBookRequest')
 
     })
 

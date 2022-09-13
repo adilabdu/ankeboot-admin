@@ -17,3 +17,7 @@
 body {
     @apply bg-wallpaper text-sm;
 }
+
+.overflow-overlay {
+    overflow: overlay;
+}

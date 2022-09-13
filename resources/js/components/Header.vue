@@ -26,7 +26,7 @@
                 {{ unreadNotifications.length }}
             </div>
 
-            <ul ref="notificationMenu" v-if="viewNotificationsMenu" class="w-96 max-h-[22rem] overflow-auto min-h-[3rem] flex flex-col bg-white absolute border border-border-light shadow-sm rounded-md right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full">
+            <ul ref="notificationMenu" v-if="viewNotificationsMenu" class="animate-appear-down w-96 max-h-[22rem] overflow-auto min-h-[3rem] flex flex-col bg-white absolute border border-border-light shadow-sm rounded-md right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full">
 
                 <li v-if="loadingNotifications" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
 
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div v-if="unread.type = 'App\\Notifications\\NewSubscriberRegistered'" class="grow flex flex-col gap-1">
-                            <p class="">New Subscriber</p>
+                            <p class="font-medium">New Subscriber</p>
                             <p class="text-subtitle">
                                 <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
                                 You can find them in the subscribers list.
@@ -77,7 +77,7 @@
             <div @click="toggleView" class="z-10 cursor-pointer relative border border-brand-primary font-medium w-12 h-12 rounded-full bg-brand-secondary shadow-sm flex items-center justify-center">
                 <h1 class="text-brand-primary text-base">{{ user.name[0] }}</h1>
 
-                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="text-subtitle font-medium right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 w-[12rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
+                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="animate-appear-down text-subtitle font-medium right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 w-[12rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
                     <li @click="settings" class="hover:bg-brand-secondary hover:text-brand flex justify-start gap-4 items-center h-10 px-4 group cursor-pointer">
                         <svg class="" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.42188 14C11.6279 14 13.4219 12.206 13.4219 10C13.4219 7.794 11.6279 6 9.42188 6C7.21587 6 5.42188 7.794 5.42188 10C5.42188 12.206 7.21587 14 9.42188 14ZM9.42188 8C10.5059 8 11.4219 8.916 11.4219 10C11.4219 11.084 10.5059 12 9.42188 12C8.33788 12 7.42188 11.084 7.42188 10C7.42188 8.916 8.33788 8 9.42188 8Z" fill="#6A727F"/>
@@ -107,7 +107,7 @@
 
 <script setup>
 
-    import { ref, computed, onMounted } from "vue"
+    import { ref, computed, onMounted, watch } from "vue"
     import { onClickOutside } from "@vueuse/core"
     import store from "../store"
     import router from "../router"
@@ -209,13 +209,27 @@
 
     const searchInput = ref(null)
 
+    watch(authenticated, () => {
+
+        if (authenticated.value) {
+            getUnreadNotifications()
+                .then()
+                .finally(() => {
+                    loadingNotifications.value = false
+                })
+        }
+
+    })
+
     onMounted(() => {
 
-        getUnreadNotifications()
-            .then()
-            .finally(() => {
-                loadingNotifications.value = false
-            })
+        if (authenticated.value) {
+            getUnreadNotifications()
+                .then()
+                .finally(() => {
+                    loadingNotifications.value = false
+                })
+        }
 
         document.onkeydown = function(e) {
             if (e.ctrlKey && e.keyCode === 75) {

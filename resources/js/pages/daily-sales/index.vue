@@ -16,15 +16,19 @@
 
 <script setup>
 
-    import { onMounted, ref } from "vue";
+    import { onBeforeUnmount, onMounted, ref } from "vue";
     import ContentPage from "../../layouts/content-page.vue"
     import DateNavigation from "../../components/DateNavigation.vue"
     import store from "../../store"
 
+    const controller = new AbortController()
+
     const posted = ref(false)
     async function post() {
 
-        await axios.post('/api/daily-sales').then((response) => {
+        await axios.post('/api/daily-sales', {
+            signal: controller.signal
+        }).then((response) => {
 
             if (response.data.message === 'ok') {
 
@@ -40,6 +44,13 @@
     onMounted(() => {
 
         post()
+
+    })
+
+    onBeforeUnmount(() => {
+
+        // TODO: abort axios request
+        controller.abort()
 
     })
 

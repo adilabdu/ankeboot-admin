@@ -27,6 +27,7 @@ class UpdateDailySaleRequest extends FormRequest
     {
         return [
             'id' => 'required|exists:daily_sales,id',
+            'update_submitted' => 'required|boolean',
             'cashier' => 'required|string',
             'deposits' => 'required',
             'deposits.*.amount' => 'required_with_all:deposits.*.type,deposits.*.deposited_on|numeric',
@@ -41,9 +42,8 @@ class UpdateDailySaleRequest extends FormRequest
             'sales_receipts.*.receipt' => [
                 'required_with_all:sales_receipts.*.amount,sales_receipts.*.is_manual',
                 'string',
-                'unique:sales_receipts,receipt'
             ],
-            'expenses.*.receipt' => 'required_with:expenses.*.amount|unique:daily_sale_expenses,receipt',
+            'expenses.*.receipt' => 'required_with:expenses.*.amount',
             'expenses.*.amount' => 'required_with:expenses.*.receipt|numeric',
             'expenses.*.description' => 'string|nullable',
             'credits.*.receipt' => 'required_with_all:credits.*.client_name,credits.*.amount',

@@ -1,7 +1,16 @@
 <template>
 
-    <div v-if="chosenDate && chosenDate['is_submitted'] && ! loading" class="w-full flex items-center justify-center">
+    <!-- Toggle // "Title" -->
+    <div v-if="chosenDate && chosenDate['is_submitted'] && ! loading" class="relative w-full flex items-center justify-center">
         <Toggle colors="white" class="!bg-white" v-model="toggleState" :labels="['Sales Summary', 'Sales Breakdown']"/>
+        <div class="absolute right-2 top-0 bottom-0 flex flex-row-reverse items-center gap-4">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="cursor-pointer stroke-subtitle hover:stroke-red-500 hover:scale-125 hover:stroke-2 w-5 h-5 transition-transform duration-150">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+            </svg>
+            <svg @click="updateDailySale" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="stroke-subtitle hover:stroke-black hover:scale-125 cursor-pointer w-5 h-5 transition-transform duration-150">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+            </svg>
+        </div>
     </div>
 
     <!-- List of each transaction -->
@@ -166,19 +175,19 @@
             <template #rows>
                 <ItemDescription ratio="5:7" label="Deposit receipts">
                     <label class="font-medium">
-                        ETB {{ formatPrice(chosenDate['deposits'].reduce((old, value) => {  return old + value['amount'] }, 0)) }}
+                        ETB {{ formatPrice(parseFloat(chosenDate['deposits'].reduce((old, value) => {  return old + value['amount'] }, 0))) }}
                         <span class="text-xs text-subtitle">({{ chosenDate['deposits'].length }})</span>
                     </label>
                 </ItemDescription>
                 <ItemDescription ratio="5:7" label="Expenses from daily sale">
                     <label class="font-medium">
-                        ETB {{ formatPrice(chosenDate['expenses'].reduce((old, value) => {  return old + value['amount'] }, 0)) }}
+                        ETB {{ formatPrice(parseFloat(chosenDate['expenses'].reduce((old, value) => {  return old + value['amount'] }, 0))) }}
                         <span class="text-xs text-subtitle">({{ chosenDate['expenses'].length }})</span>
                     </label>
                 </ItemDescription>
                 <ItemDescription ratio="5:7" label="Sales receipts">
                     <label class="font-medium">
-                        ETB {{ formatPrice(chosenDate['sales_receipts'].reduce((old, value) => {  return old + value['amount'] }, 0)) }}
+                        ETB {{ formatPrice(parseFloat(chosenDate['sales_receipts'].reduce((old, value) => {  return old + value['amount'] }, 0))) }}
                         <span class="text-xs text-subtitle">({{ chosenDate['sales_receipts'].length }})</span>
                     </label>
                 </ItemDescription>
@@ -270,7 +279,7 @@
 
             <div class="flex items-center justify-center w-full gap-2 px-2">
                 <p class="text-xs text-subtitle font-medium whitespace-nowrap">Deposits</p>
-                <div class="border-b border-border-light w-full py-1 mb-2 w-full m-auto"></div>
+                <div class="border-b border-border-light w-full py-1 mb-2 m-auto"></div>
             </div>
 
             <template v-for="(deposit, index) in newDailySale['deposits']" :key="index">
@@ -388,7 +397,7 @@
             :center="['code', 'quantity']"
             :right="[]"
             :sortable="['sold', 'book_type', 'book_code', 'title']"
-            :searchable="['title', 'book_code']"
+            :searchable="[]"
             :hideable="false"
             :hide="['author']"
             :hide-labels="['stock_card']"
@@ -421,6 +430,9 @@
         </Table>
 
     </template>
+
+    <!-- Update Modal -->
+    <UpdateDailySaleModal @close="closeUpdateModal" :daily-sale="chosenDate" v-if="updateFlag" />
 
     <!-- Loading indicator -->
     <div class="flex w-full items-center justify-center min-h-[6rem] gap-2" v-if="loading">
@@ -457,6 +469,7 @@
     import Cell from "../../components/Table/Cell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
     import LinkCell from "../../components/Table/LinkCell.vue"
+    import UpdateDailySaleModal from "../update/UpdateDailySaleModal.vue"
     import { formatDate, formatPrice, formatNumberToTwoIntegerPlaces } from "../../utils";
     import store from "../../store";
 
@@ -465,6 +478,15 @@
     const loading = ref(false)
     const submitting = ref(false)
     const transactions = ref([])
+    const updateFlag = ref(false)
+
+    function updateDailySale() {
+        updateFlag.value = true
+    }
+
+    function closeUpdateModal() {
+        updateFlag.value = false
+    }
 
     async function get(parameters) {
 
@@ -502,9 +524,9 @@
             })
 
 
-        }).catch(($error) => {
+        }).catch((error) => {
 
-            alert($error.data.data)
+            alert(error)
 
         })
 
@@ -552,6 +574,7 @@
         submitting.value = true
 
         const recordedDailySale = {
+            update_submitted: false,
             cashier: newDailySale.value.cashier,
             sales_receipts: newDailySale.value.sales,
             deposits: newDailySale.value.deposits.filter((deposit) => {

@@ -25,7 +25,7 @@
     </div>
 
     <!-- TODO: Consider if min-w-[347px] is necessary -->
-    <div :class="[align === 'left' ? 'left-0' : '']" ref="datepicker" v-if="showPicker" class="z-50 translate-y-full -mb-2 bottom-0 absolute min-w-[304.2px] overflow-hidden bg-white rounded-md shadow-md border-[0.5px] border-border-dark flex flex-col">
+    <div :class="[align === 'left' ? 'left-0' : '', dropDirection === 'up' ? '-translate-y-full top-0 mt-4' : 'translate-y-full -mb-2 bottom-0']" ref="datepicker" v-if="showPicker" class="z-50 absolute min-w-[304.2px] overflow-hidden bg-white rounded-md shadow-md border-[0.5px] border-border-dark flex flex-col">
 
       <div class="w-full flex justify-between items-center bg-[#F9FAFB] border-b border-border-dark shadow-sm">
 
@@ -126,6 +126,10 @@
     required: {
       type: Boolean,
       default: false
+    },
+    dropDirection: {
+      type: String,
+      default: 'down'
     }
   })
 

@@ -87,7 +87,7 @@
 
 <script setup>
 
-    import { ref, onMounted } from "vue"
+    import { ref, onMounted, onBeforeUnmount } from "vue"
     import { formatPrice } from "../../utils";
     import InfoCard from "../../components/InfoCard.vue"
     import DropDown from "../../components/Dropdown.vue"
@@ -97,20 +97,27 @@
     const loading = ref(true)
     const statistics = ref({})
     const range = ref('All time')
+    const controller = new AbortController()
 
     async function getStatistics() {
 
-        await axios.get('/api/daily-sales/statistics')
+        await axios.get('/api/daily-sales/statistics', {
+            signal: controller.signal
+        })
             .then((response) => {
 
                 statistics.value = response.data.data
 
             }).catch((error) => {
 
-                store.dispatch('pushAlert', {
-                    type: 'error',
-                    message: 'Something wrong. Please try again later'
-                })
+                if (error.code !== 'ERR_CANCELED') {
+
+                    store.dispatch('pushAlert', {
+                        type: 'error',
+                        message: 'Something wrong. Please try again later'
+                    })
+
+                }
 
             })
 
@@ -122,6 +129,13 @@
             loading.value = false
         })
 
+    })
+
+    onBeforeUnmount(() => {
+      
+        // Abort the request
+        controller.abort()
+    
     })
 
 </script>

@@ -71,7 +71,7 @@
             <div class="w-full h-full flex justify-center items-center">
 
                 <!-- Loading indicator -->
-               <div class="flex flex-col w-[32rem] overflow-hidden rounded-xl bg-white">
+               <div class="animate-scale-up flex flex-col w-[32rem] overflow-hidden rounded-xl bg-white">
 
                     <div class="grow flex items-start h-full w-full p-6 gap-4">
                         <div>

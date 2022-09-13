@@ -13,6 +13,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class DailySaleController extends Controller
@@ -124,10 +125,43 @@ class DailySaleController extends Controller
 
         try {
 
+            $dailySale = DailySale::find($request->input('id'));
+
+            if ($request->input('update_submitted')) {
+
+                // Delete all the deposits
+                // Delete all the sales receipts
+                // Delete all the expenses
+
+                foreach ($dailySale->deposits as $deposit) {
+
+                    $deposit->delete();
+
+                }
+
+                foreach ($dailySale->sales_receipts as $salesReceipt) {
+
+                    $salesReceipt->delete();
+
+                }
+
+                foreach ($dailySale->expenses as $expense) {
+
+                    $expense->delete();
+
+                }
+
+            }
+
+            // Once records are deleted, validate receipts are unique
+            Validator::validate($request->all(), [
+                'sales_receipts.*.receipt' => 'unique:sales_receipts,receipt',
+                'expenses.*.receipt' => 'unique:daily_sale_expenses,receipt',
+            ]);
+
             $collected = 0.00;
             $reported = 0.00;
 
-            $dailySale = DailySale::find($request->input('id'));
             $dailySale->update([
                 'cashier' => $request->input('cashier')
             ]);

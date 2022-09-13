@@ -31,7 +31,9 @@ module.exports = {
                 'slide-up': 'slideUp 100ms linear',
                 'slide-out': 'slideOut 150ms linear',
                 'slide-in-from-left': 'slideInFromLeft 150ms linear',
-                'grow-up': 'growUp 300ms ease-out'
+                'grow-up': 'growUp 300ms ease-out',
+                'scale-up': 'scaleUp 75ms ease-out',
+                'appear-down': 'appearDown 75ms ease-out',
             },
             keyframes: {
                 rotate: {
@@ -57,6 +59,14 @@ module.exports = {
                 growUp: {
                     '0%': { transform: 'scaleY(0%)' },
                     '100%': { transform: 'scaleY(100%)' }
+                },
+                scaleUp: {
+                    '0%': { transform: 'scale(95%)', opacity: 1 },
+                    '100%': { transform: 'scale(100%)', opacity: 1 }
+                },
+                appearDown: {
+                    '0%': { transform: 'translateY(95%)', opacity: 0 },
+                    '100%': { transform: 'translateY(100%)', opacity: 1 }
                 }
             }
         },
