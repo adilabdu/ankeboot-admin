@@ -68,10 +68,10 @@
 
             <Header />
 
-            <div class="grow overflow-y-auto flex flex-col relative overflow-overlay overflow-x-hidden">
+            <div class="grow overflow-y-auto flex flex-col relative overflow-overlay">
 
-                <div class="h-fit max-h-full w-96 m-2 absolute right-0 flex flex-col gap-2 z-50">
-                    <Alert v-for="alert in alerts" :type="alert.type" :message="alert.message" />
+                <div class="h-fit max-h-full min-w-96 m-2 absolute right-0 flex flex-col items-end gap-2 z-50">
+                    <Alert :key="alert" v-for="alert in alerts" :type="alert.type" :message="alert.message" />
                 </div>
 
                 <slot />
