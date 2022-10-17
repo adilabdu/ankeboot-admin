@@ -1,4 +1,5 @@
 import axios from "axios";
+import router from "../../router"
 import { formatDate } from "../../utils"
 
 const state = {
@@ -27,6 +28,10 @@ const actions = {
             signal: state.controller.signal
         }).then((response) => {
             commit('getBooks', response.data.data)
+        }).catch((error) => {
+
+
+
         })
 
     },
@@ -119,16 +124,52 @@ const actions = {
             })
     },
 
-    async getBook({ commit }, payload) {
+    async deleteBook(context, payload) {
+
+        return axios.post('/api/books/delete', {
+            id: payload
+        })
+            .then((response) => {
+                return response.data
+            }).catch((error) => {
+                return error.response.data.message
+            })
+
+    },
+
+    async getBook({ commit, dispatch }, payload) {
 
         await axios.get('/api/books/', {
             params: {
                 id: payload
             }
         }).then((response) => {
-            commit('getBook', response.data.data)
-        })
 
+            commit('getBook', response.data.data)
+        
+        }).catch((error) => {
+
+                
+            router.push({ name: 'Books' }).then(() => {
+
+                if (error.response.status === 500) {
+
+                    dispatch('pushAlert', {
+                        type: 'error',
+                        message: 'Something went wrong, please try again later.'
+                    })
+
+                } else  {
+
+                    dispatch('pushAlert', {
+                        type: 'error',
+                        message: error.response.data.message
+                    })
+                    
+                }
+
+            })
+        })
     },
 
     async getBooksStats({ commit }) {
@@ -136,7 +177,13 @@ const actions = {
         await axios.get('/api/books/statistics', {
             signal: state.controller.signal
         }).then((response) => {
+
             commit('getBooksStats', response.data.data)
+        
+        }).catch((error) => {
+
+            
+
         })
 
     },

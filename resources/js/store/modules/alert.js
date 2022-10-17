@@ -15,6 +15,12 @@ const actions = {
 
         context.commit('pushAlert', payload)
 
+    },
+
+    popAlert(context, payload) {
+
+        context.commit('popAlert')
+
     }
 
 }
@@ -24,9 +30,12 @@ const mutations = {
     pushAlert(state, payload) {
 
         state.alerts.unshift(payload)
-        setTimeout(() => {
-            state.alerts.pop()
-        }, 5000)
+
+    },
+
+    popAlert(state) {
+
+        state.alerts.pop()
 
     }
 

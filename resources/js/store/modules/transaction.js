@@ -66,9 +66,9 @@ const actions = {
 
         dispatch('setLoadingState', true)
 
-        return axios.post('/api/transactions/csv', {
-            file: payload.file
-        }, {
+        console.log(payload.transaction_date)
+
+        return axios.post('/api/transactions/csv', payload, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
