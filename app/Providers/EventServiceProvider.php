@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\NewSubscriberRegistered;
 use App\Models\Book;
 use App\Models\Transaction;
 use App\Observers\BookObserver;
@@ -21,6 +22,7 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+            NewSubscriberRegistered::class,
         ],
     ];
 
