@@ -50,6 +50,9 @@ php artisan config:cache
 Migrate the database table schema
 ```shell
 php artisan migrate
+
+# Alternatively, migrate data and populate test user
+php artisan migrate --seed
 ```
 
 Create test user
