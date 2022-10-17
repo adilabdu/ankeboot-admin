@@ -316,7 +316,7 @@
 
     <div class="flex gap-8 sm:flex-col sm:items-start justify-between items-start sm:gap-3">
       <div class="flex flex-col justify-between sm:gap-1">
-        <h1 v-if="title" class="text-xl font-medium capitalize">{{ title }}</h1>
+        <h1 v-if="title" class="text-base font-medium capitalize">{{ title }}</h1>
         <h2 class="text-subtitle text-justify">
           <slot name="description">
             A template Table component built with Vue 3 and Tailwind CSS. Insert your data into the

@@ -1,6 +1,6 @@
 <template>
 
-    <div class="w-full h-screen fixed bg-black/20 flex items-center justify-center z-50">
+    <div class="w-full h-screen fixed bg-black/80 flex items-center justify-center z-50">
 
         <slot />
 

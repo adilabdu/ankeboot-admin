@@ -1,12 +1,12 @@
 <template>
 
-  <div class="flex flex-col bg-white rounded-md border border-border-light shadow-sm">
+  <div class="flex flex-col bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
 
     <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>
-        <h1 class="text-base font-medium">Monthly Book Sales</h1>
+        <h1 class="text-base font-medium">{{ title }}</h1>
         <h2 class="text-subtitle text-xs">
-            Book sales within the previous 12 months
+            {{ subtitle }}
         </h2>
       </div>
 
@@ -16,8 +16,8 @@
 
         <div class="w-64 h-8 text-subtitle rounded-xl relative bg-wallpaper flex items-center">
             <div :class="[optionA ? 'translate-x-0' : 'translate-x-full']" class="transition-transform duration-300 absolute h-full border-4 border-wallpaper w-1/2 rounded-xl bg-border-dark"></div>
-            <button @click="toggleOption(true)" :class="[optionA ? 'text-black font-medium' : 'text-subtitle']" class="transition-colors duration-300 relative focus:outline-none w-1/2 text-xs rounded-lg h-full">Sales by Birr</button>
-            <button @click="toggleOption(false)" :class="[optionA ? 'text-subtitle' : 'text-black font-medium']" class="transition-colors duration-300 relative focus:outline-none w-1/2 rounded-lg h-full text-xs">Sales by Quantity</button>
+            <button @click="toggleOption(true)" :class="[optionA ? 'text-black font-medium' : 'text-subtitle']" class="transition-colors duration-300 relative focus:outline-none w-1/2 text-xs rounded-lg h-full">Individuals</button>
+            <button @click="toggleOption(false)" :class="[optionA ? 'text-subtitle' : 'text-black font-medium']" class="transition-colors duration-300 relative focus:outline-none w-1/2 rounded-lg h-full text-xs">Organizations</button>
         </div>
 
     </div>
@@ -39,6 +39,29 @@
 
     import { ref, onMounted, watch } from "vue";
     import Chart from "chart.js/auto"
+
+    const props = defineProps({
+        title: {
+            type: String,
+            default: 'Monthly Sales'
+        },
+        subtitle: {
+            type: String,
+            default: 'Sales made within the previous 12 months'
+        },
+        data: {
+            type: Array,
+            required: true
+        },
+        backgroundColor: {
+            type: String,
+            default: '#FF810000'
+        },
+        displayYGrid: {
+            type: Boolean,
+            default: false
+        }
+    });
 
     const optionA = ref(true)
     function toggleOption(value) {
@@ -67,13 +90,13 @@
                     'Oct', 'Nov', 'Dec'
                 ],
                 datasets: [{
-                    data: [58, 71, 68, 70, 52, 58, 60, 65, 66, 72, 80, 82],
+                    data: props.data,
                     borderColor: '#FF8100',
                     borderWidth: 3,
                     tension: 0.3,
                     cubicInterpolationMode: 'monotone',
                     fill: true,
-                    backgroundColor: '#FF810020',
+                    backgroundColor: props.backgroundColor,
                     pointRadius: 2
                 }]
             },

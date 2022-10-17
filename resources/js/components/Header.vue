@@ -26,50 +26,61 @@
                 {{ unreadNotifications.length }}
             </div>
 
-            <ul ref="notificationMenu" v-if="viewNotificationsMenu" class="animate-appear-down w-96 max-h-[22rem] overflow-auto min-h-[3rem] flex flex-col bg-white absolute border border-border-light shadow-sm rounded-md right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full">
+            <div v-if="viewNotificationsMenu" class="flex flex-col overflow-hidden absolute right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full animate-appear-down bg-white border border-border-light shadow-sm rounded-md">
 
-                <li v-if="loadingNotifications" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
+                <ul ref="notificationMenu" class="scrollbar-mobile w-96 max-h-[350px] overflow-overlay min-h-[3rem] flex flex-col">
 
-                    <svg class="animate-rotate" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.4706 5.94533C18.1987 5.55015 18.4769 4.63079 17.9774 3.96992C17.0157 2.69771 15.7589 1.66786 14.3065 0.974827C12.4006 0.0653761 10.2557 -0.217352 8.1792 0.167163C6.10271 0.551679 4.20125 1.5837 2.74734 3.11531C1.29344 4.64692 0.361732 6.59949 0.0857576 8.69317C-0.190217 10.7869 0.203708 12.9142 1.21108 14.7702C2.21844 16.6262 3.78753 18.1157 5.69346 19.0252C7.59939 19.9346 9.74431 20.2174 11.8208 19.8328C13.4032 19.5398 14.8839 18.8708 16.1424 17.8912C16.7961 17.3824 16.7656 16.4223 16.1648 15.852V15.852C15.5639 15.2816 14.621 15.3229 13.9359 15.7887C13.1386 16.3308 12.2332 16.7055 11.2746 16.883C9.82102 17.1521 8.31958 16.9542 6.98542 16.3176C5.65127 15.681 4.55291 14.6384 3.84775 13.3391C3.1426 12.0399 2.86685 10.5508 3.06003 9.08522C3.25321 7.61964 3.90541 6.25284 4.92314 5.18072C5.94087 4.10859 7.27189 3.38618 8.72544 3.11701C10.179 2.84785 11.6804 3.04576 13.0146 3.68238C13.8945 4.10224 14.6718 4.69872 15.3015 5.42894C15.8424 6.05634 16.7425 6.34051 17.4706 5.94533V5.94533Z" fill="#FF8100"/>
-                    </svg>
+                    <li v-if="loadingNotifications" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
 
-                </li>
-                
-                <template v-else>
-
-                    <li @click="notificationAction(unread.type, unread.id)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-4 p-4 w-full border-b ">
-
-                        <div class="w-12 flex justify-center">
-                            <div class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
-                                +
-                            </div>
-                        </div>
-                        <div v-if="unread.type = 'App\\Notifications\\NewSubscriberRegistered'" class="grow flex flex-col gap-1">
-                            <p class="font-medium">New Subscriber</p>
-                            <p class="text-subtitle">
-                                <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
-                                You can find them in the subscribers list.
-                            </p>
-                        </div>
-                        <div class="text-subtitle">1h</div>
-
-                    </li>
-
-                    <li v-if="unreadNotifications.length === 0" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="stroke-brand-primary scale-75 w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.143 17.082a24.248 24.248 0 003.844.148m-3.844-.148a23.856 23.856 0 01-5.455-1.31 8.964 8.964 0 002.3-5.542m3.155 6.852a3 3 0 005.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 003.536-1.003A8.967 8.967 0 0118 9.75V9A6 6 0 006.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53" />
+                        <svg class="animate-rotate" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.4706 5.94533C18.1987 5.55015 18.4769 4.63079 17.9774 3.96992C17.0157 2.69771 15.7589 1.66786 14.3065 0.974827C12.4006 0.0653761 10.2557 -0.217352 8.1792 0.167163C6.10271 0.551679 4.20125 1.5837 2.74734 3.11531C1.29344 4.64692 0.361732 6.59949 0.0857576 8.69317C-0.190217 10.7869 0.203708 12.9142 1.21108 14.7702C2.21844 16.6262 3.78753 18.1157 5.69346 19.0252C7.59939 19.9346 9.74431 20.2174 11.8208 19.8328C13.4032 19.5398 14.8839 18.8708 16.1424 17.8912C16.7961 17.3824 16.7656 16.4223 16.1648 15.852V15.852C15.5639 15.2816 14.621 15.3229 13.9359 15.7887C13.1386 16.3308 12.2332 16.7055 11.2746 16.883C9.82102 17.1521 8.31958 16.9542 6.98542 16.3176C5.65127 15.681 4.55291 14.6384 3.84775 13.3391C3.1426 12.0399 2.86685 10.5508 3.06003 9.08522C3.25321 7.61964 3.90541 6.25284 4.92314 5.18072C5.94087 4.10859 7.27189 3.38618 8.72544 3.11701C10.179 2.84785 11.6804 3.04576 13.0146 3.68238C13.8945 4.10224 14.6718 4.69872 15.3015 5.42894C15.8424 6.05634 16.7425 6.34051 17.4706 5.94533V5.94533Z" fill="#FF8100"/>
                         </svg>
-                        <p class="font-medium text-black">No unread notifications</p>
-                        <p class="text-center">You don't have any unread notifications. You can view all your notifications instead.</p>
-                        <button class="px-2 py-1 rounded-md bg-brand-secondary scale-90 mt-2 text focus:outline-none text-brand-primary">View all</button>
 
                     </li>
 
-                </template>
+                    <template v-else>
 
-            </ul>
+                        <li @click="notificationAction(unread.type, unread.id)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b ">
+
+                            <div class="w-12 flex justify-center items-center">
+                                <div class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
+                                    +
+                                </div>
+                            </div>
+                            <div v-if="unread.type = 'App\\Notifications\\NewSubscriberRegistered'" class="grow flex flex-col gap-1">
+                                <p class="font-medium">New Subscriber</p>
+                                <p class="text-subtitle">
+                                    <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
+                                    You can find them in the subscribers list.
+                                </p>
+                            </div>
+                            <div class="text-subtitle">1h</div>
+
+                        </li>
+
+                        <li v-if="unreadNotifications.length === 0" class="flex flex-col gap-1 items-center justify-center text-subtitle p-4 w-full border-b ">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="stroke-brand-primary scale-75 w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.143 17.082a24.248 24.248 0 003.844.148m-3.844-.148a23.856 23.856 0 01-5.455-1.31 8.964 8.964 0 002.3-5.542m3.155 6.852a3 3 0 005.667 1.97m1.965-2.277L21 21m-4.225-4.225a23.81 23.81 0 003.536-1.003A8.967 8.967 0 0118 9.75V9A6 6 0 006.53 6.53m10.245 10.245L6.53 6.53M3 3l3.53 3.53" />
+                            </svg>
+                            <p class="font-medium text-black">No unread notifications</p>
+                            <p class="text-center">You don't have any unread notifications. You can view all your notifications instead.</p>
+                            <button class="px-2 py-1 rounded-md bg-brand-secondary scale-90 mt-2 text focus:outline-none text-brand-primary">View all</button>
+
+                        </li>
+
+                    </template>
+
+                </ul>
+
+                <div v-if="unreadNotifications.length > 0" class="shadow-md border-t bg-white cursor-pointer flex items-center justify-between gap-5 p-4 w-full ">
+
+                    <button @click="clearAll" class="text-brand-primary focus:outline-none">Clear all</button>
+                    <button class="text-brand-primary focus:outline-none">See all notifications</button>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -130,7 +141,7 @@
     }
 
     onClickOutside(headerMenu, () => {
-        
+
         if (viewHeaderMenu.value) {
             toggleView()
         }
@@ -178,6 +189,13 @@
                 alert(error)
             })
 
+    }
+
+    async function clearAll() {
+
+        await axios.post('/api/notifications/clear-all')
+            .then(() => getUnreadNotifications())
+            .catch()
     }
 
     function notificationAction(type, id) {
@@ -240,6 +258,27 @@
 
     })
 
+    Echo.private('mailing-list')
+        .listen('NewSubscriberRegistered', (e) => {
+
+            console.log('NewSubscriberRegistered event successfully fired ', e)
+
+            getUnreadNotifications()
+                .then()
+                .finally(() => {
+                    loadingNotifications.value = false
+
+                    store.dispatch('pushAlert', {
+                        type: 'default',
+                        message: `${e['mailingList'].name} just subscribed to your mailing list!`,
+                    })
+
+                })
+
+
+
+        })
+
 </script>
 
 <style scoped>
@@ -247,5 +286,23 @@
     .overflow-overlay {
         overflow: overlay;
     }
+
+    .scrollbar-mobile::-webkit-scrollbar {
+        @apply w-1.5;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar-thumb {
+        @apply bg-border-light;
+    }
+
+    .scrollbar-mobile::-webkit-scrollbar-thumb:hover {
+        @apply bg-border-dark;
+    }
+
+
 
 </style>

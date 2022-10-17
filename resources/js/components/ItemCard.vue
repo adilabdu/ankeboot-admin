@@ -5,7 +5,7 @@
     <div :class="[headingSize === 'sm' ? 'py-2' : 'py-6']" v-if="heading" class="flex md:flex-col gap-4 justify-between px-8 shadow-sm">
 
       <div class="flex flex-col">
-        <h1 :class="[headingSize === 'sm' ? 'text-base' : 'text-lg']" class="font-medium">{{ title }}</h1>
+        <h1 :class="[headingSize === 'sm' ? 'text-base' : 'text-base']" class="font-medium">{{ title }}</h1>
         <h2 class="text-subtitle text-xs">{{ subtitle }}</h2>
       </div>
 
