@@ -69,10 +69,20 @@ function digitToWritten(digit) {
     }
 
     const hundreds = "መቶ"
-    const ten_variant = 'አስር'
+    const ten = 'አስር'
     const thousands = "ሺህ"
     const millions = "ሚሊዮን"
     const billions = "ቢሊዮን"
+    const trillions = "ትሪልዮን"
+    const quadrillions = "ክዋድሪሊዮን"
+    const quintillions = "ክዊንቲልዮን"
+    const sextillions = "ሴክስቲልዮን"
+    const septillions = "ሴፕቲልዮን"
+    const octillions = "ኦክቲልዮን"
+    const nonillions = "ኖኒልዮን"
+    const decillions = "ዲሲልዮን"
+    const undecillions = "አንድዲሲልዮን"
+    const duodecillions = "ድዮዲሲልዮን"
 
     const integer = digit.toString().split('.')[0]
     const decimal = digit.toString().split('.')[1] ?? null
@@ -85,7 +95,7 @@ function digitToWritten(digit) {
         if (i === 0) {
             integerWritten = integerStack[i] === '0' ? '' : ones[integerStack[i]]  
         } else if (i % 3 === 1) {
-            integerWritten = (integerStack[i] === '0' ? '' : integerStack[i] === '1' && integerStack[i-1] === '0' ? ten_variant : (tens[integerStack[i]])) + ' ' + integerWritten
+            integerWritten = (integerStack[i] === '0' ? '' : integerStack[i] === '1' && integerStack[i-1] === '0' ? ten : (tens[integerStack[i]])) + ' ' + integerWritten
         } else if (i % 3 === 2) {
             integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + hundreds)) + ' ' + integerWritten
         } else if (i === 3) {
@@ -94,6 +104,26 @@ function digitToWritten(digit) {
             integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + millions)) + ' ' + integerWritten
         } else if (i === 9) {
             integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + billions)) + ' ' + integerWritten
+        } else if (i === 12) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + trillions)) + ' ' + integerWritten
+        } else if (i === 15) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + quadrillions)) + ' ' + integerWritten
+        } else if (i === 18) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + quintillions)) + ' ' + integerWritten
+        } else if (i === 21) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + sextillions)) + ' ' + integerWritten
+        } else if (i === 24) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + septillions)) + ' ' + integerWritten
+        } else if (i === 27) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + octillions)) + ' ' + integerWritten
+        } else if (i === 30) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + nonillions)) + ' ' + integerWritten
+        } else if (i === 33) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + decillions)) + ' ' + integerWritten
+        } else if (i === 36) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + undecillions)) + ' ' + integerWritten
+        } else if (i === 39) {
+            integerWritten = (integerStack[i] === '0' ? '' : (ones[integerStack[i]] + ' ' + duodecillions)) + ' ' + integerWritten
         }
     }
 
