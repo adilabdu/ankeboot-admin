@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConsignmentController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,11 +41,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
-        Route::get('/categories', [BookController::class, 'categories']);
+        Route::get('/categories', [CategoryController::class, 'index']);
         Route::get('/statistics', [StatisticsController::class, 'books']);
         Route::get('/search', [SearchController::class, 'books']);
         Route::post('/', [BookController::class, 'post']);
         Route::post('/update', [BookController::class, 'update']);
+        Route::post('/delete', [BookController::class, 'delete']);
         Route::post('/csv', [CSVController::class, 'insertBooks']);
     });
 
@@ -86,6 +89,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [NotificationController::class, 'index']);
         Route::get('/unread', [NotificationController::class, 'unread']);
         Route::post('/read', [NotificationController::class, 'read']);
+        Route::post('/clear-all', [NotificationController::class, 'clearAll']);
+    });
+
+    Route::prefix('suppliers')->group(function () {
+        Route::get('/', [SupplierController::class, 'index']);
+        Route::post('/', [SupplierController::class, 'post']);
     });
 
 });
