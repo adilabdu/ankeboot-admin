@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
-            $table->integer('tin_number')->nullable()->unique();
+            $table->string('tin_number')->nullable()->unique();
             $table->string('name');
             $table->foreignId('address_id')
+                ->nullable()
                 ->constrained()
                 ->cascadeOnDelete();
             $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
