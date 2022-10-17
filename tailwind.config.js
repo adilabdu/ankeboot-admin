@@ -2,6 +2,7 @@
 module.exports = {
     content: [
         "./resources/views/app.blade.php",
+        "./resources/views/emails/*.blade.php",
         "./resources/js/**/*.{vue,js}",
     ],
     theme: {
@@ -53,7 +54,7 @@ module.exports = {
                     '100%': { transform: 'translateX(100%)' }
                 },
                 slideInFromLeft: {
-                    '0%': { transform: 'translateX(-100%)' },
+                    '0%': { transform: 'translateX(100%)' },
                     '100%': { transform: 'translateX(0%)' }
                 },
                 growUp: {
