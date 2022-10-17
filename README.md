@@ -74,3 +74,10 @@ php artisan serve
 ```
 
 The project should now be available on `localhost` with port number set by the PHP dev server (commonly `localhost:8000`)
+
+#### Note 
+If port `8000` is in use and the PHP dev server assigns the project onto another port number `XXXX` eg. (`8001`, `8002`... ), 
+go to `.env` and update Laravel sanctum's configuration to reflect this change
+```shell
+SANCTUM_STATEFUL_DOMAINS=localhost:XXXX
+```
