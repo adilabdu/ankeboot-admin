@@ -108,7 +108,8 @@ class CSVController extends Controller
                 'required',
                 File::types(['csv'])
             ],
-            'transaction_date' => 'date'
+            'transaction_date' => 'date',
+            'ensure_daily_sale' => 'nullable|boolean'
         ]);
 
         try {
@@ -133,7 +134,7 @@ class CSVController extends Controller
                 '*.invoice.required' => 'The invoice field at #:position is required',
                 '*.transaction_date.required' => 'The transaction_on field at #:position is required',
                 '*.quantity.integer' => 'The quantity field at #:position must be a natural number',
-                '*.code.exists:books,code' => 'A book with the code field at #:position does not exist',
+                '*.code.exists' => 'Code :input does not exist',
                 '*.type.Illuminate\Validation\Rules\Enum' =>
                     'Invalid type field at #:position specified. Valid types are `purchase` or `sale`'
             ]);
@@ -144,7 +145,7 @@ class CSVController extends Controller
 
                 $book = Book::where('code', $record['code'])->first();
 
-                Transaction::create([
+                $transaction = Transaction::create([
                     'invoice' => $record['invoice'],
                     'book_id' => $book->id,
                     'transaction_on' => $request->input('transaction_date') ??
@@ -153,14 +154,44 @@ class CSVController extends Controller
                     'quantity' => $record['quantity']
                 ]);
 
-                // Implementation taken to TransactionObserver class instead
-//                // Update book balance
-//                if ($record['type'] === TransactionType::PURCHASE->value) {
-//                    $book->balance += $record['quantity'];
-//                } else {
-//                    $book->balance += ($record['quantity'] * -1);
-//                }
-//                $book->save();
+                // TODO: if transaction type is sale, assosciate it with a daily sale record
+                if (TransactionType::from($record['type']) === TransactionType::SALE) {
+
+                    $dailySale = DailySale::where(
+                        'date_of', 
+                        $request->input('transaction_date') ??
+                        new Carbon($record['transaction_date'])
+                    )->first();
+
+                    if (! $dailySale) {
+
+                        if ($request->input('ensure_daily_sale')) {
+
+                            // dd($request->input('transaction_date') ?? new Carbon($record['transaction_date']));
+
+                            $dailySale = new DailySale();
+                            
+                            $dailySale->date_of = $request->input('transaction_date') ??
+                                new Carbon($record['transaction_date']);
+
+                            $dailySale->save();
+
+                        } else {
+
+                            return response([
+                                'message' => 'error',
+                                'data' => 'Daily sale record for ' . 
+                                    ($request->input('transaction_date') ?? new Carbon($record['transaction_date'])) . 
+                                    ' does not exist'
+                            ], 422);
+
+                        }
+
+                    }
+
+                    $dailySale->transactions()->save($transaction);
+
+                }
 
             }
 
@@ -206,7 +237,7 @@ class CSVController extends Controller
                 '*.Item ID.required' => 'The code field at #:position is required',
                 '*.Quantity.required' => 'The quantity field at #:position is required',
                 '*.Quantity.integer' => 'The quantity field at #:position must be a natural number',
-                '*.Item ID.exists' => 'A book with the code field at #:position does not exist'
+                '*.Item ID.exists' => 'Item ID with code :input does not exist'
             ]);
 
             DB::beginTransaction();

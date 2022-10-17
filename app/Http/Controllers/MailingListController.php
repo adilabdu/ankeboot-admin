@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SubscriberWelcome;
 use App\Models\MailingList;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewSubscriberRegistered;
 
 class MailingListController extends Controller
 {
-    
+
     public function index(Request $request)
     {
-        
+
         $request->validate([
             'id' => 'nullable|exists:mailing_list,id',
         ]);
@@ -27,14 +29,14 @@ class MailingListController extends Controller
                 }, function ($query) {
                     return $query->orderBy('created_at', 'desc')->get();
                 });
-        
+
         } catch (Exception $e) {
-            
+
             return response([
                 'message' => 'error',
                 'data' => $e->getMessage(),
             ], 500);
-        
+
         }
 
         return response([
@@ -46,7 +48,7 @@ class MailingListController extends Controller
 
     public function delete(Request $request)
     {
-        
+
         $request->validate([
             'id' => 'required|exists:mailing_list,id',
         ]);
@@ -56,14 +58,14 @@ class MailingListController extends Controller
             $mailingList = MailingList::query()
                 ->where('id', $request->input('id'))
                 ->delete();
-        
+
         } catch (Exception $e) {
-            
+
             return response([
                 'message' => 'error',
                 'data' => $e->getMessage(),
             ], 500);
-        
+
         }
 
         return response([
@@ -83,18 +85,23 @@ class MailingListController extends Controller
         ]);
 
         try {
-                
+
                 $mailingList = MailingList::create($request->all());
 
                 Notification::send(User::all(), new NewSubscriberRegistered($mailingList));
-            
+                \App\Events\NewSubscriberRegistered::dispatch($mailingList);
+
             } catch (Exception $e) {
-                
+
                 return response([
                     'message' => 'error',
                     'data' => $e->getMessage(),
                 ], 500);
-            
+
+        }
+
+        if ($mailingList->email) {
+            Mail::to($mailingList->email)->send(new SubscriberWelcome($mailingList));
         }
 
         return response([

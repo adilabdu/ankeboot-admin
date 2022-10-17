@@ -47,7 +47,7 @@ class BookController extends Controller
             return response([
                 'message' => 'error',
                 'data' => $e->getMessage()
-            ]);
+            ], 500);
 
         }
     }
@@ -196,26 +196,32 @@ class BookController extends Controller
         ]);
     }
 
-    public function categories(): Response|Application|ResponseFactory
+    public function delete(Request $request)
     {
+        
+        $request->validate([
+            'id' => 'required|exists:books,id',
+        ]);
 
         try {
 
-            $categories = Book::pluck('category')->unique()->values();
-
-        } catch (Exception $exception) {
-
+            $book = Book::query()
+                ->where('id', $request->input('id'))
+                ->delete();
+        
+        } catch (Exception $e) {
+            
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $e->getMessage(),
             ], 500);
-
+        
         }
 
         return response([
-            'message' => 'ok',
-            'data' => $categories
-        ]);
+            'message' => 'success',
+            'data' => $book,
+        ], 200);
 
     }
 

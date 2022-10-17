@@ -69,7 +69,7 @@ class ConsignmentController extends Controller
     {
         // TODO: get all the `transaction` and `settlement` history of a book
         $request->validate([
-            'book_id' => 'required|exists:books,id|'
+            'book_id' => 'required|exists:books,id'
         ]);
 
         try {
@@ -89,7 +89,7 @@ class ConsignmentController extends Controller
             $settlements = ConsignmentSettlement::where(
                 'book_id', $request->input('book_id')
             )->get()->each(function ($settlement) {
-                $settlement->type = 'settlement';
+                $settlement->type = 'settlement';   // For each record, add `type: settlement`
             });
 
             $consignmentHistory = $transactions->merge($settlements)
@@ -109,7 +109,7 @@ class ConsignmentController extends Controller
         return response([
             'message' => 'ok',
             'body' => [
-                'book' => Book::find($request->input('book_id')),
+                'book' => Book::with('supplier')->find($request->input('book_id')),
                 'history' => $consignmentHistory,
                 'payable' => $book->payable(),
                 'settled' => $book->settled()
