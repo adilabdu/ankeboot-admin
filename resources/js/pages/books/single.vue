@@ -75,7 +75,7 @@
                 </template>
 
                 <template #description>
-                    <p>
+                    <p class="text-xs">
                         <span class="text-subtitle">{{ book.title }}</span>
                     </p>
                 </template>

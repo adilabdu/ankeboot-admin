@@ -72,18 +72,15 @@
         </InfoCard>
     </div>
 
-    <!-- Summary of the Daily Sale -->
     <div v-if="!! consignmentHistory" class="w-full flex justify-between items-start gap-2">
 
         <ItemCard
-            class="max-w-[50%] !w-1/2"
-            title="Consignment information"
+            class="w-1/2"
+            :title="consignmentHistory.book.alternate_title ?? consignmentHistory.book.title"
             subtitle="Consignment record history and supplier information"
-            :heading=false
         >
 
             <template #rows>
-                <ItemDescription ratio="5:7" :description="consignmentHistory.book.title" label="title" />
                 <ItemDescription ratio="5:7" :description="consignmentHistory.book.author" label="author" />
                 <ItemDescription ratio="5:7" :description="consignmentHistory.book.category" label="category" />
                 <ItemDescription
@@ -98,26 +95,26 @@
             </template>
 
         </ItemCard>
+
         <ItemCard
             v-if="consignmentHistory.book['supplier']"
-            class=""
-            :title="'Daily Sales Report'"
-            :heading="false"
+            class="w-1/2"
+            :title="'Supplier information'"
+            heading
         >
 
             <template #rows>
-                <ItemDescription label="supplier">
-                    <div>
-                        {{ "consignmentHistory.book['supplier']['name']" }}
-                    </div>
-                </ItemDescription>
+                <ItemDescription ratio="5:7" :description="consignmentHistory.book.supplier.name" label="name" />
+                <ItemDescription ratio="5:7" :description="consignmentHistory.book.supplier.tin_number" label="tin number" />
+                <ItemDescription ratio="5:7" :description="consignmentHistory.book.supplier.phone" label="phone number" />
+                <ItemDescription ratio="5:7" :description="consignmentHistory.book.supplier.email" label="email" />
             </template>
 
         </ItemCard>
         <div
             v-else
             class="bg-wallpaper relative flex flex-col
-             items-center justify-center gap-4 w-1/2 h-full border-2
+             items-center justify-center gap-4 w-1/2 border-2
              border-dashed border-border-light rounded-md p-4"
         >
 
@@ -194,8 +191,6 @@
             params: parameters
 
         }).then((response) => {
-
-            alert('hello')
 
             consignmentHistory.value = response.data.body
 

@@ -64,55 +64,20 @@
 
     </Table>
 
-    <Teleport v-if="deleteModal" to="#top-view">
+    <ConfirmationModal
+        :open="deleteModal"
+        title="Delete subscriber"
+        button-text="Delete subscriber"
+        :loading="deleting"
+        @cancel="cancelDelete"
+        @confirm="attemptDelete(recordToDelete.id)"
+    >
 
-        <Modal class="bg-black/50">
+        Are you sure you want to delete this subscriber from the mailing list? This action cannot be undone.
+        The subscriber will no longer receive any mail from you.    
 
-            <div class="w-full h-full flex justify-center items-center">
-
-                <!-- Loading indicator -->
-               <div class="animate-scale-up flex flex-col w-[32rem] overflow-hidden rounded-xl bg-white">
-
-                    <div class="grow flex items-start h-full w-full p-6 gap-4">
-                        <div>
-                            <div class="bg-red-100 w-10 h-10 rounded-full flex items-center justify-center">
-                                <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M11.0003 7.99999V11.75M1.69731 15.126C0.831309 16.626 1.91431 18.5 3.64531 18.5H18.3553C20.0853 18.5 21.1683 16.626 20.3033 15.126L12.9493 2.37799C12.0833 0.877991 9.91731 0.877991 9.05131 2.37799L1.69731 15.126V15.126ZM11.0003 14.75H11.0073V14.758H11.0003V14.75Z" stroke="#EF4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="grow h-full w-full flex flex-col justify-start gap-2">
-                            <h1 class="text-base font-medium">
-                                Delete subscriber
-                            </h1>
-                            <p class="text-subtitle">
-                                Are you sure you want to delete this subscriber from the mailing list? This action cannot be undone.
-                                The subscriber will no longer receive any mail from you. 
-                            </p>
-                        </div>
-                    </div>
-                    <div class="p-6 flex items-center justify-end gap-2 h-16 w-full bg-wallpaper">
-                        
-                        <button @click="cancelDelete" class="focus:outline-none h-10 rounded-md font-medium bg-white text-black/75 border border-border-light px-5 focus:outline">
-                            Cancel
-                        </button>
-                        <button :class="[deleting ? 'opacity-50' : '']" @click="attemptDelete(recordToDelete.id)" class="flex items-center justify-center gap-2 focus:outline-none h-10 rounded-md bg-red-600 text-white px-6">
-                            <svg v-if="deleting" class="animate-rotate" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.4706 5.94533C18.1987 5.55015 18.4769 4.63079 17.9774 3.96992C17.0157 2.69771 15.7589 1.66786 14.3065 0.974827C12.4006 0.0653761 10.2557 -0.217352 8.1792 0.167163C6.10271 0.551679 4.20125 1.5837 2.74734 3.11531C1.29344 4.64692 0.361732 6.59949 0.0857576 8.69317C-0.190217 10.7869 0.203708 12.9142 1.21108 14.7702C2.21844 16.6262 3.78753 18.1157 5.69346 19.0252C7.59939 19.9346 9.74431 20.2174 11.8208 19.8328C13.4032 19.5398 14.8839 18.8708 16.1424 17.8912C16.7961 17.3824 16.7656 16.4223 16.1648 15.852V15.852C15.5639 15.2816 14.621 15.3229 13.9359 15.7887C13.1386 16.3308 12.2332 16.7055 11.2746 16.883C9.82102 17.1521 8.31958 16.9542 6.98542 16.3176C5.65127 15.681 4.55291 14.6384 3.84775 13.3391C3.1426 12.0399 2.86685 10.5508 3.06003 9.08522C3.25321 7.61964 3.90541 6.25284 4.92314 5.18072C5.94087 4.10859 7.27189 3.38618 8.72544 3.11701C10.179 2.84785 11.6804 3.04576 13.0146 3.68238C13.8945 4.10224 14.6718 4.69872 15.3015 5.42894C15.8424 6.05634 16.7425 6.34051 17.4706 5.94533V5.94533Z" fill="white"/>
-                            </svg>
-                            <p>Delete Subscriber</p>
-                        </button>
-
-                    </div>
-
-               </div>
-
-            </div>
-
-        </Modal>
-
-    </Teleport>
-
+    </ConfirmationModal>
+    
 </template>
 
 <script setup>
@@ -128,6 +93,7 @@
     import EnumCell from "../../components/Table/EnumCell.vue"
     import DateCell from "../../components/Table/DateCell.vue"
     import Modal from "../../components/Modal.vue";
+    import ConfirmationModal from "../../components/ConfirmationModal.vue";
     
     const statistics = ref(null)
     const mailingList = ref(null)

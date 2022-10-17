@@ -16,8 +16,17 @@
 
         <div class="grid grid-cols-3 gap-2">
             <BarChart />
-            <LineChart />
-            <BarChart />
+            <LineChart 
+                background-color='#FF810020'
+                :data="[32, 40, 32, 44, 58, 42, 70, 70, 50, 43, 33, 29]"
+                title="Monthly subscribers"
+                subtitle="Mailing list registrations for each month of the year"   
+            />
+            <BarChart
+                title="Monthly Purchases"
+                subtitle="Purchases made within the last 12 months"
+                :data="[['Jan', 6909, 32], ['Feb', 5900, 30], ['Mar', 7110, 29], ['Apr', 8322, 35], ['May', 7221, 42], ['Jun', 8122, 58], ['Jul', 7210, 55], ['Aug', 9101, 74], ['Sep', 10111, 59], ['Oct', 12307, 45], ['Nov', 11721, 42], ['Dec', 9122, 39]]"
+            />
         </div>
 
         <ActionMenu />

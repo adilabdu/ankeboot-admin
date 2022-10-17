@@ -14,9 +14,9 @@
     </div>
 
     <!-- List of each transaction -->
-    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="grid grid-cols-4 w-full gap-2">
+    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="grid grid-cols-8 w-full gap-2">
 
-        <div class="col-span-1 flex flex-col gap-2">
+        <div class="col-span-2 col-start-2 flex flex-col gap-2">
 
             <p class="text-center font-medium text-subtitle w-full">Sales Receipts</p>
 
@@ -26,12 +26,12 @@
                     <div class="flex flex-col leading-tight items-start p-4 text-lg justify-center grow">
                         <p :class="[sales_receipt['is_manual'] ? '' : '']" class="text-subtitle">{{ sales_receipt['receipt'] }}</p>
                     </div>
-                    <div class="flex flex-col leading-tight items-end p-4 text-lg justify-center grow">
+                    <div class="flex flex-col gap-0.5 leading-tight items-end p-4 text-lg justify-center grow">
                         <p class="gap-1 w-fit flex items-center justify-center font-medium">
                             <sup class="text-xs">ETB</sup>
                             {{ formatPrice(sales_receipt['amount']) }}
                         </p>
-                        <p v-if="sales_receipt['is_manual']" class="text-xs px-2 py-0.5 bg-brand-secondary text-brand-primary rounded-full">manual receipt(s)</p>
+                        <p v-if="sales_receipt['is_manual']" class="text-xs px-2 py-0.5 border border-brand-primary text-brand-primary rounded-full">manual receipt(s)</p>
                     </div>
 
                 </div>
@@ -39,7 +39,7 @@
 
         </div>
 
-        <div class="col-span-1 flex flex-col gap-2">
+        <div class="col-span-2 flex flex-col gap-2">
 
             <p class="text-center font-medium text-subtitle w-full">Deposits</p>
             <template v-for="deposit in chosenDate['deposits']">
@@ -69,7 +69,7 @@
 
         </div>
 
-        <div v-if="chosenDate['expenses'].length > 0" class="col-span-1 flex flex-col gap-2">
+        <div v-if="chosenDate['expenses'].length > 0" class="col-span-2 flex flex-col gap-2">
 
             <p class="text-center font-medium text-subtitle w-full">Expenses</p>
             <template v-if="chosenDate['expenses'].length > 0" v-for="expense in chosenDate['expenses']">
@@ -93,14 +93,6 @@
                 No expenses reported
             </div>
 
-        </div>
-
-        <div v-if="chosenDate['expenses'].length > 0" class="col-span-1 flex flex-col gap-2">
-            <p class="text-center font-medium text-subtitle w-full">Credit Sales</p>
-            <p v-if="!! chosenDate['remark']">{{ chosenDate['remark'] }}</p>
-            <div v-else class="flex justify-center items-center text-subtitle text-xs h-12">
-                No remarks given
-            </div>
         </div>
 
     </div>

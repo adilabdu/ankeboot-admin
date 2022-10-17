@@ -42,10 +42,16 @@
         </div>
         <div class="flex flex-col col-span-8 items-end gap-6">
             <FileInput class="w-full " v-model="uploadFile" />
-            <div class="w-full flex justify-end items-center px-6">
-                <button type="submit" class="px-4 bg-brand-primary w-fit text-white rounded-md py-2">
-                    Upload
-                </button>
+            <div class="w-full flex justify-between items-end px-6">
+
+                <DatePicker drop-direction="up" align="left" label="Transaction Date" class="min-w-[16rem]" v-model="bulkTransactionDate" />
+
+                <div class="w-full flex justify-end items-center">
+                    <button type="submit" class="px-4 bg-brand-primary w-fit text-white rounded-md py-2">
+                        Upload
+                    </button>
+                </div>
+
             </div>
         </div>
     </form>
@@ -85,6 +91,7 @@
 <script setup>
 
     import { onMounted, ref, computed } from "vue";
+    import { formatDate } from "../../utils";
     import ContentPage from "../../layouts/content-page.vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
@@ -116,11 +123,17 @@
 
     const loading = computed(() => store.state.book.loading)
     const uploadFile = ref(null)
+    const bulkTransactionDate = ref({
+            date: '',
+            month: '',
+            year: ''
+        })
 
     function insertMultipleTransactions() {
 
         store.dispatch('postMultipleTransactions', {
-            file: uploadFile.value
+            file: uploadFile.value,
+            transaction_date: bulkTransactionDate.value
         }).then((response) => {
 
             if (response.message === 'ok') {

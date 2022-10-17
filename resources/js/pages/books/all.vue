@@ -79,6 +79,22 @@
 
     </Table>
 
+    <ConfirmationModal
+        :open="deleteModal"
+        title="Delete book"
+        button-text="Delete book"
+        :loading="deleting"
+        @cancel="cancelDelete"
+        @confirm="attemptDelete(recordToDelete.id)"
+    >
+
+        Are you sure you want to delete 
+        <span class="text-black">{{ recordToDelete.title }}</span>
+        ? This action cannot be undone.
+        Any transaction history of the book will also be deleted.
+
+    </ConfirmationModal>
+
 </template>
 
 <script setup>
@@ -92,8 +108,27 @@
     import DateCell from "../../components/Table/DateCell.vue"
     import store from "../../store"
     import router from "../../router"
+    import ConfirmationModal from "../../components/ConfirmationModal.vue";
     import { onBeforeRouteLeave } from "vue-router";
     import { formatNumber } from "../../utils";
+
+    const deleteModal = ref(false)
+    const recordToDelete = ref(null)
+    const deleting = ref(false)
+
+    function cancelDelete() {
+        deleteModal.value = false
+        recordToDelete.value = null
+    }
+
+    function attemptDelete(id) {
+        deleting.value = true
+        store.dispatch('deleteBook', id).then(() => {
+            deleteModal.value = false
+            deleting.value = false
+            recordToDelete.value = null
+        })
+    }
 
     const loading = ref(true)
     const books = computed(() => store.state.book.books)
@@ -123,12 +158,13 @@
 
     }
 
-    function handleEdit() {
-
+    function handleEdit(object) {
+        router.push({ name: 'UpdateBook', params: { id: object.id }})
     }
 
-    function handleDelete() {
-
+    function handleDelete(object) {
+        recordToDelete.value = object
+        deleteModal.value = true
     }
 
     async function fetchBooks() {

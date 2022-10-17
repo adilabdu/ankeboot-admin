@@ -165,9 +165,9 @@
         salary: "",
         overtime: "",
         document_date: {
-            date: '',
-            month: '',
-            year: ''
+            date: new Date().getDate(),
+            month: new Date().getMonth(),
+            year: new Date().getFullYear()
         },
         ref_no: ""
     })

@@ -1,6 +1,24 @@
 <template>
 
-    <div class="w-full h-fit flex flex-col flex-col-reverse gap-2 items-end">
+    <div class="grid grid-cols-3 gap-2">
+        <LineChart
+            display-y-grid
+            :data="[0, 0, 5.12, -4.80, 4.93, 0.12, -1.57, -2.48, -4.29, 2.08, 5.63, 5.83]" 
+            title="Daily sales difference"
+            subtitle="Daily sales difference between reported and collected amount in last 12 days"   
+        />
+        <BarChart
+            title="Daily Sales"
+            subtitle="Sales made within the past 12 working days"
+        />
+        <LineChart 
+            title="Monthly subscribers"
+            subtitle="Mailing list registrations for each month of the year"   
+        />
+    </div>
+
+
+    <div class="w-full h-fit flex flex-col-reverse gap-2 items-end">
         <DropDown
             v-model="range"
             class="text-sm font-normal min-w-[133px] w-fit h-8"
@@ -91,6 +109,8 @@
     import { formatPrice } from "../../utils";
     import InfoCard from "../../components/InfoCard.vue"
     import DropDown from "../../components/Dropdown.vue"
+    import BarChart from "../../components/Graphs/BarChart.vue";
+    import LineChart from "../../components/Graphs/LineChart.vue";
     import axios from "axios";
     import store from "../../store";
 
