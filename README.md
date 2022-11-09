@@ -7,7 +7,7 @@ A web-based system built with a Laravel, Vue, Tailwind and MySQL stack.
 
 #### Setting up project on local dev machine
 
-Clone the project and follow these procedures to get it up and running on your machine. All the dependencies 
+Clone the project and follow these procedures to get it up and running on your machine. All the required environments 
 (PHP 8, MySQL composer, node) are assumed to be available.
 
 Generate your own copy of environmental files from the example file
