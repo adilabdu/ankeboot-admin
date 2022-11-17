@@ -2,8 +2,8 @@
 
     <!-- Toggle // "Title" -->
     <div v-if="chosenDate && chosenDate['is_submitted'] && ! loading" class="relative w-full flex items-center justify-center">
-        <Toggle colors="white" class="!bg-white" v-model="toggleState" :labels="['Sales Summary', 'Sales Breakdown']"/>
-        <div class="absolute right-2 top-0 bottom-0 flex flex-row-reverse items-center gap-4">
+        <Toggle colors="white" class="!bg-white sm:z-10" v-model="toggleState" :labels="['Sales Summary', 'Sales Breakdown']"/>
+        <div class="absolute right-2 top-0 sm:left-0 bottom-0 flex flex-row-reverse items-center sm:justify-between sm:w-full sm:z-last gap-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="cursor-pointer stroke-subtitle hover:stroke-red-500 hover:scale-125 hover:stroke-2 w-5 h-5 transition-transform duration-150">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
             </svg>
@@ -14,11 +14,11 @@
     </div>
 
     <!-- List of each transaction -->
-    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="grid grid-cols-8 w-full gap-2">
+    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="sm:flex sm:flex-col grid grid-cols-8 w-full gap-2">
 
         <div class="col-span-2 col-start-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Sales Receipts</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Sales Receipts</p>
 
             <template v-for="sales_receipt in chosenDate['sales_receipts']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
@@ -41,7 +41,7 @@
 
         <div class="col-span-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Deposits</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Deposits</p>
             <template v-for="deposit in chosenDate['deposits']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
 
@@ -71,7 +71,7 @@
 
         <div v-if="chosenDate['expenses'].length > 0" class="col-span-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Expenses</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Expenses</p>
             <template v-if="chosenDate['expenses'].length > 0" v-for="expense in chosenDate['expenses']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
 
