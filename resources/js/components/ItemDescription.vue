@@ -2,7 +2,7 @@
 
   <div :class="[size === 'sm' ? 'min-h-[2.5rem]' : 'min-h-[3rem]']" class="border-b border-border-light last:border-none group items-center list-row grid grid-cols-12 relative">
 
-    <label :class="[size === 'sm' ? 'col-span-5' : label_size]" class="px-8 text-subtitle font-medium capitalize">
+    <label :class="[size === 'sm' ? 'col-span-5' : label_size]" class="md:px-4 px-8 text-subtitle font-medium capitalize">
       {{ label }}
     </label>
 
