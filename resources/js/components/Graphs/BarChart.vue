@@ -10,11 +10,11 @@
 
     </div>
 
-    <div class="chart grid grid-cols-12 grow p-3 ">
+    <div class="chart grid grid-cols-12 grow p-3">
 
       <template v-for="i in data">
 
-        <div class="group flex flex-col gap-1 items-center justify-end text-center w-10">
+        <div class="group flex flex-col gap-1 items-center justify-end text-center">
 
           <div class="h-32 w-[20%] bg-border-dark rounded-full relative">
             <div :style="'height: ' + i[2] + '%'" class="absolute w-full bottom-0 rounded-full bg-brand-primary z-10 animate-grow-up origin-bottom"></div>
