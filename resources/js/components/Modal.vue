@@ -10,6 +10,16 @@
 
 <script setup>
 
+import { onBeforeUnmount, onMounted } from "vue";
+
+    onMounted(() => {
+        document.getElementById("contentPage").style.overflow = "hidden";
+    })
+
+    onBeforeUnmount(() => {
+        document.getElementById("contentPage").style.overflow = "auto";
+    })
+
 </script>
 
 <style scoped>
