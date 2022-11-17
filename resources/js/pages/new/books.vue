@@ -33,7 +33,7 @@
 
             <div class="flex items-center gap-8 w-full">
                 <TextInput v-model="transactionData.transaction_quantity" required class="w-full" placeholder="Quantity of items in transaction" label="Item Quantity" />
-                <SwitchInput class="px-3" label-location="top" v-model="transaction_type.transaction_type" label="Purchase"/>
+                <SwitchInput class="px-3 opacity-50" label-location="top" v-model="transaction_type.transaction_type" label="Purchase"/>
             </div>
 
         </Collapsable>
