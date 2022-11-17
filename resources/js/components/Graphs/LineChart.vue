@@ -22,7 +22,7 @@
 
     </div>
 
-    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2">
+    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2 min-h-[7rem]">
 
 <!--        <h1 class="absolute w-full text-center text-subtitle font-medium mt-1">Title about Graph</h1>-->
 
