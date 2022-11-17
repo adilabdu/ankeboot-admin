@@ -4,11 +4,11 @@
 
         <Modal @close="$emit('close')">
 
-            <div id="formModal" class="form-modal w-[45%] h-[75%] overflow-overlay animate-scale-up">
+            <div id="formModal" class="form-modal w-[45%] animate-scale-up">
 
                 <Form @cancel="$emit('close')" :submit="submitUpdate" class="h-full w-full" title="Update Daily Sale" title-layout="contained">
 
-                    <div ref="formContent" class="h-[30rem] overflow-auto flex flex-col gap-6">
+                    <div ref="formContent" class="flex flex-col gap-6">
 
                         <div class="flex items-center justify-center w-full gap-2">
                             <TextInput class="w-2/5" disabled label="Date of Sale" v-model="data.date" placeholder="Name of cashier on call" />
@@ -108,7 +108,7 @@
                                 <template v-for="(expense, index) in data.expenses" :key="index">
 
                                     <div class="flex items-start justify-start w-full gap-2">
-                                        <button type="button" @click="removeExpense(index)" v-if="index !== 0" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
+                                        <button type="button" @click="removeExpense(index)" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
                                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
@@ -118,7 +118,7 @@
                                         <TextInput class="w-2/3" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
                                     </div>
                                     <div class="flex items-start justify-start w-full gap-2">
-                                        <div v-if="index !== 0" class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
+                                        <div class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
                                         <TextAreaInput
                                         class="w-full"
                                         required
@@ -339,7 +339,7 @@
     transition: all;
     transition-duration: 1s;
   }
-  
+
   #formModal::-webkit-scrollbar-track {
     background-color: rgba(0,0,0,0);
   }
