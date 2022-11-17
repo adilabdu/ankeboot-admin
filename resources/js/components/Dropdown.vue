@@ -37,7 +37,7 @@
       </ul>
     </div>
 
-    <label v-if="label" class="xs:hidden text-subtitle font-medium whitespace-nowrap">
+    <label v-if="label" :class="[hideLabelOnMobile ? 'xs:hidden' : '']" class="text-subtitle font-medium whitespace-nowrap">
         {{ label }}
         <span v-if="required" class="text-red-600">*</span>
     </label>
@@ -78,6 +78,10 @@ const props = defineProps({
   required: {
       type: Boolean,
       default: false
+  },
+  hideLabelOnMobile: {
+      type: Boolean,
+      default: true,
   }
 })
 
