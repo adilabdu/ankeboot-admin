@@ -461,7 +461,7 @@
     import Cell from "../../components/Table/Cell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
     import LinkCell from "../../components/Table/LinkCell.vue"
-    import UpdateDailySaleModal from "../update/UpdateDailySaleModal.vue"
+    import UpdateDailySaleModal from "../update/daily-sales.vue"
     import { formatDate, formatPrice, formatNumberToTwoIntegerPlaces } from "../../utils";
     import store from "../../store";
 
@@ -472,11 +472,14 @@
     const transactions = ref([])
     const updateFlag = ref(false)
 
+    // TODO: find better implementation to hide Content Page overflow
     function updateDailySale() {
+        document.getElementById("contentPage").style.overflow = "hidden"
         updateFlag.value = true
     }
 
     function closeUpdateModal() {
+        document.getElementById("contentPage").style.overflow = "auto"
         updateFlag.value = false
     }
 
@@ -535,7 +538,8 @@
 
     onMounted(() => {
 
-       get({ id: useRoute().params.id })
+        console.log(useRoute().params.id)
+        get({ id: useRoute().params.id })
 
     })
 
