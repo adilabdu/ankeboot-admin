@@ -4,15 +4,15 @@
 
         <Modal @close="$emit('close')">
 
-            <div id="formModal" class="form-modal w-[45%] animate-scale-up">
+            <div id="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
 
-                <Form @cancel="$emit('close')" :submit="submitUpdate" class="h-full w-full" title="Update Daily Sale" title-layout="contained">
+                <Form modal @cancel="$emit('close')" :submit="submitUpdate" class="h-full w-full rounded-b-none" title="Update Daily Sale" title-layout="contained">
 
                     <div ref="formContent" class="flex flex-col gap-6">
 
-                        <div class="flex items-center justify-center w-full gap-2">
-                            <TextInput class="w-2/5" disabled label="Date of Sale" v-model="data.date" placeholder="Name of cashier on call" />
-                            <TextInput class="w-3/5" required label="Cashier" v-model="data.cashier" placeholder="Name of cashier on call" />
+                        <div class="flex sm:flex-col items-center justify-center w-full gap-2">
+                            <TextInput class="w-2/5 sm:w-full" disabled label="Date of Sale" v-model="data.date" placeholder="Name of cashier on call" />
+                            <TextInput class="w-3/5 sm:w-full" required label="Cashier" v-model="data.cashier" placeholder="Name of cashier on call" />
                         </div>
 
                         <!-- Sale receipts -->
@@ -25,10 +25,10 @@
 
                             <template v-for="(sale, index) in data.sales" :key="index">
 
-                                <div class="flex items-start justify-center w-full gap-2">
+                                <div class="relative flex sm:flex-col items-start justify-center w-full gap-2">
                                     <SwitchInput v-if="index !== 0" v-model="sale.is_manual" label-location="top" class="px-2" label="Manual receipt" />
                                     <TextInput
-                                        class="w-2/5"
+                                        class="w-2/5 sm:w-full"
                                         required
                                         :label="
                                             index === 0 ?
@@ -38,8 +38,8 @@
                                         v-model="sale.amount"
                                         placeholder="Total sale amount in ETB"
                                     />
-                                    <TextInput class="w-3/5" required label="Receipt No." v-model="sale.receipt" :placeholder="index === 0 ? 'Receipt of Z-Report (Z:****)' : 'Sale receipt no.'" />
-                                    <button type="button" @click="removeSales(index)" v-if="index !== 0" class="self-end rounded-md min-h-[2.5rem] min-w-[2.5rem] flex items-center justify-center">
+                                    <TextInput class="w-3/5 sm:w-full" required label="Receipt No." v-model="sale.receipt" :placeholder="index === 0 ? 'Receipt of Z-Report (Z:****)' : 'Sale receipt no.'" />
+                                    <button type="button" @click="removeSales(index)" v-if="index !== 0" class="sm:absolute sm:top-0 sm:right-0 sm:mt-6 self-end rounded-md min-h-[2.5rem] min-w-[2.5rem] flex items-center justify-center">
                                         <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                             <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
@@ -70,16 +70,16 @@
                             <template v-for="(deposit, index) in data.deposits" :key="index">
 
                                 <div class="flex flex-col w-full gap-2">
-                                    <div class="flex items-start justify-start w-full gap-2">
+                                    <div class="flex sm:flex-col items-start justify-start w-full gap-2">
                                         <button type="button" @click="removeDeposit(index)" v-if="index !== 0" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
                                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                                             </svg>
                                         </button>
-                                        <TextInput class="w-1/3" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
-                                        <DatePicker drop-direction="up" label="Deposit date" required v-model="deposit.deposited_on" class="w-1/3" />
-                                        <Dropdown drop-direction="up" required v-model="deposit.type" :list="['cash', 'withholding', 'cheque', 'transfer', 'credit', 'card']" placeholder="Choose the type of Deposit" label-direction="top" label="Deposit type" class="!w-1/3 h-16" />
+                                        <TextInput class="w-1/3 sm:w-full" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
+                                        <DatePicker drop-direction="up" label="Deposit date" required v-model="deposit.deposited_on" class="w-1/3 sm:w-full" />
+                                        <Dropdown :hide-label-on-mobile="false" drop-direction="up" required v-model="deposit.type" :list="['cash', 'withholding', 'cheque', 'transfer', 'credit', 'card']" placeholder="Choose the type of Deposit" label-direction="top" label="Deposit type" class="!w-1/3 sm:!w-full h-16" />
                                     </div>
                                     <div v-if="deposit.type === 'credit'" class="flex items-start justify-start w-full gap-2">
                                         <div v-if="index !== 0" class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
@@ -107,18 +107,18 @@
 
                                 <template v-for="(expense, index) in data.expenses" :key="index">
 
-                                    <div class="flex items-start justify-start w-full gap-2">
+                                    <div class="flex sm:flex-col items-start justify-start w-full gap-2">
                                         <button type="button" @click="removeExpense(index)" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
                                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                                             </svg>
                                         </button>
-                                        <TextInput class="w-1/3" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
-                                        <TextInput class="w-2/3" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
+                                        <TextInput class="w-1/3 sm:w-full" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
+                                        <TextInput class="w-2/3 sm:w-full" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
                                     </div>
                                     <div class="flex items-start justify-start w-full gap-2">
-                                        <div class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
+                                        <div class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center sm:hidden" />
                                         <TextAreaInput
                                         class="w-full"
                                         required
@@ -346,6 +346,12 @@
 
   .form-modal:hover #formModal::-webkit-scrollbar-thumb {
     background-color: rgba(116,116,116,1) !important;
+  }
+
+  @media (max-width: 640px) {
+      #formModal::-webkit-scrollbar {
+          width: 0;
+      }
   }
 
 </style>
