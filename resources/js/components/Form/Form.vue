@@ -25,7 +25,8 @@
 
         <form
             :class="[
-                titleLayout === 'panel' ? 'col-span-8' : ''
+                titleLayout === 'panel' ? 'col-span-8' : '',
+                modal ? 'sm:rounded-b-none' : ''
             ]"
             @submit.prevent="submit"
             class="p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
@@ -42,19 +43,22 @@
 
             <slot />
 
-            <div v-if="showSubmit" class="w-full flex justify-between items-center">
-                <p class="text-subtitle text-xs px-2">
+            <div v-if="showSubmit" :class="[modal ? 'sm:flex-col' : '']" class="w-full flex justify-between items-center">
+                <p :class="[modal ? 'sm:hidden' : '']" class="text-subtitle text-xs px-2">
                     <span class="text-red-600 text-sm">*</span>
                     Required fields
                 </p>
-                <div class="flex gap-4">
-                    <button type="button" @click="$emit('cancel')" class="px-4 text-brand-primary w-fit rounded-md py-2">
+                <div :class="[modal ? 'sm:w-full' : '']" class="flex gap-4">
+                    <button type="button" @click="$emit('cancel')" :class="[modal ? 'sm:w-full sm:bg-brand-secondary sm:border sm:border-brand-primary' : '']" class="px-4 text-brand-primary w-fit rounded-md py-2">
                         Cancel
                     </button>
                     <button
                         :disabled="isLoading"
                         type="submit"
-                        :class="[isLoading ? 'opacity-50' : '']"
+                        :class="[
+                            isLoading ? 'opacity-50' : '',
+                            modal ? 'sm:w-full' : ''
+                        ]"
                         class="px-4 bg-brand-primary w-fit text-white rounded-md py-2"
                     >
                         <svg v-if="isLoading" class="inline animate-rotate mr-2" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,6 +107,10 @@
         titleLayout: {
             type: String,
             default: 'panel'
+        },
+        modal: {
+            type: Boolean,
+            default: false
         }
     })
 

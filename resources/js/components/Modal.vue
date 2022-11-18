@@ -1,6 +1,6 @@
 <template>
 
-    <div class="modal w-full h-screen overflow-y-auto py-12 fixed bg-black/80 flex items-start justify-center z-[100]">
+    <div class="modal w-full h-screen overflow-y-auto py-12 sm:py-0 sm:overflow-hidden fixed bg-black/80 flex items-start sm:items-end justify-center z-[100]">
 
         <slot />
 
