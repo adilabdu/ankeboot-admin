@@ -5,7 +5,7 @@
         <TextInput required label="Book title" placeholder="Insert new book title" v-model="bookData.title"/>
         <TextInput label="አማርኛ አርእስት" placeholder="የአማርኛ አርእስቱን ያስገቡ" v-model="bookData.alternate_title"/>
 
-        <div class="flex gap-8 w-full">
+        <div class="flex sm:flex-col gap-8 w-full">
             <TextInput v-model="bookData.author" class="w-full" placeholder="Book author" label="Book author" />
             <TextSearchInput
                 :search-list="categories"
@@ -26,7 +26,7 @@
 
             <div class="border-b border-border-light w-full py-1 w-[95%] m-auto"></div>
 
-            <div class="flex gap-8 w-full">
+            <div class="flex sm:flex-col gap-8 w-full">
                 <TextInput required v-model="transactionData.transaction_invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
                 <DatePicker required v-model="transactionData.transaction_on" class="w-full" label="Transaction date" />
             </div>
@@ -47,7 +47,7 @@
 
     </Form>
 
-    <form @submit.prevent="insertMultipleBooks" title="Insert Multiple Book " submit="" class="w-full grid grid-cols-12 gap-2">
+    <form @submit.prevent="insertMultipleBooks" title="Insert Multiple Book " submit="" class="w-full sm:flex sm:flex-col grid grid-cols-12 gap-2">
         <div class="col-span-4 py-2 flex flex-col gap-1">
             <h1 class="text-base">Insert multiple Book records from CSV</h1>
             <slot name="subtitle">

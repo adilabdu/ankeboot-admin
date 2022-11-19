@@ -16,19 +16,19 @@
             :search-logic="searchBooks"
         />
 
-        <div class="flex gap-8 w-full">
+        <div class="flex sm:flex-col gap-8 w-full">
             <TextInput required v-model="transactionData.invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
             <DatePicker required v-model="transactionData.date" class="w-full" label="Transaction date" />
         </div>
 
         <div class="flex items-center gap-8 w-full">
             <TextInput v-model="transactionData.quantity" required class="w-full" placeholder="Quantity of items in transaction" label="Item Quantity" />
-            <SwitchInput class="px-3" label-location="top" v-model="transactionType.type" label="Purchase"/>
+            <SwitchInput class="px-3 sm:order-first" label-location="top" v-model="transactionType.type" label="Purchase"/>
         </div>
 
     </Form>
 
-    <form @submit.prevent="insertMultipleTransactions" title="Form" submit="" class="w-full grid grid-cols-12 gap-2">
+    <form @submit.prevent="insertMultipleTransactions" title="Form" submit="" class="w-full sm:flex sm:flex-col grid grid-cols-12 gap-2">
         <div class="col-span-4 py-2 flex flex-col gap-1">
             <h1 class="text-base">Insert multiple Book records from CSV</h1>
             <slot name="subtitle">
@@ -42,7 +42,7 @@
         </div>
         <div class="flex flex-col col-span-8 items-end gap-6">
             <FileInput class="w-full " v-model="uploadFile" />
-            <div class="w-full flex justify-between items-end px-6">
+            <div class="w-full flex justify-between items-end px-6 sm:px-0">
 
                 <DatePicker drop-direction="up" align="left" label="Transaction Date" class="min-w-[16rem]" v-model="bulkTransactionDate" />
 
