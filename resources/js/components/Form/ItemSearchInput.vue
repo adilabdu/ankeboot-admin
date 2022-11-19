@@ -8,7 +8,7 @@
             </label>
             <button @click="$emit('click')" type="button" class="px-2 text-brand-primary text-xs rounded-md">+ Create</button>
         </div>
-        <div v-if="selected" class="peer flex items-center justify-between focus:outline-brand-primary focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md">
+        <div v-if="selected" class="peer flex items-center justify-between focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md">
             <label class="">{{ selected }}</label>
             <svg @click="resetSelected" class="cursor-pointer" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.1723 10.7574L10.7581 12.1716L13.5865 15L10.7581 17.8284L12.1723 19.2426L15.0008 16.4142L17.8292 19.2426L19.2434 17.8284L16.415 15L19.2434 12.1716L17.8292 10.7574L15.0008 13.5858L12.1723 10.7574Z" fill="#FF8100"/>
@@ -20,7 +20,7 @@
             v-model="searchQuery"
             :required="required" type="text"
             :placeholder="placeholder"
-            class="peer focus:outline-brand-primary focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
+            class="peer focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
         <ul v-if="searchResults.length > 0" ref="searchOptions" class="scrollbar peer-focus:inline hidden active:inline absolute w-full max-h-[12.5rem] overflow-auto rounded-md border border-border-light shadow-md bg-white bottom-0 translate-y-full -mb-2 z-20">
             <template v-for="search in searchResults">
                 <li tabindex="0" @click="selectSearchResult(search)" class="h-16 flex cursor-pointer hover:text-brand-primary w-full h-10 items-center px-4 hover:bg-brand-secondary">

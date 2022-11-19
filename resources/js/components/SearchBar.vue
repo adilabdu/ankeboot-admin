@@ -6,7 +6,7 @@
 
     <div class="relative flex flex-col items-end gap-2 relative sm:w-full">
 
-      <input v-model="query" :placeholder="placeholder" type="text" class="icon-placeholder md:focus:outline-none focus:outline-brand-primary focus:outline-offset-2 px-3 border-[0.5px] border-border-light rounded-md sm:w-full w-64 bg-white h-10 shadow-sm flex items-center justify-between"/>
+      <input v-model="query" :placeholder="placeholder" type="text" class="icon-placeholder md:focus:outline-none focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 px-3 border-[0.5px] border-border-light rounded-md sm:w-full w-64 bg-white h-10 shadow-sm flex items-center justify-between"/>
 <!--      <span class="text-subtitle absolute mt-[0.7rem] left-0 ml-[0.75rem]">-->
 <!--        <slot>-->
 <!--          {{ placeholder }}-->

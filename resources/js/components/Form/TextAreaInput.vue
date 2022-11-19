@@ -5,7 +5,7 @@
             {{ label }}
             <span v-if="required" class="text-red-600">*</span>
         </label>
-        <textarea rows="4" :disabled="disabled" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :required="required" type="textarea" :placeholder="placeholder" class="focus:outline-brand-primary focus:outline focus:outline-2 focus:outline-offset-2 w-full p-2 border border-border-light rounded-md" />
+        <textarea rows="4" :disabled="disabled" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" :required="required" type="textarea" :placeholder="placeholder" class="focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 w-full p-2 border border-border-light rounded-md" />
     </div>
 
 </template>
