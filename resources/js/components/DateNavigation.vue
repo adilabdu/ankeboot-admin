@@ -10,7 +10,7 @@
     ]"
         >
             <!-- Date Cards -->
-            <template v-if="! dataLoading" v-for="i in 7">
+            <template v-if="! dataLoading" v-for="i in 6">
 
                 <DateLinkCard  :daily-sale="dailySales[i]"/>
 
