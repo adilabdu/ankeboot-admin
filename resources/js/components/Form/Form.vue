@@ -2,15 +2,15 @@
 
     <div
         :class="[
-            titleLayout === 'panel' ? 'grid grid-cols-12' : ''
+            (titleLayout === 'panel' && largerThanSm) ? 'grid grid-cols-12' : ''
         ]"
         class="w-full gap-2"
     >
 
         <div
-            v-if="titleLayout !== 'contained'"
+            v-if="(titleLayout !== 'contained' && largerThanSm)"
             :class="[
-                titleLayout === 'panel' ? 'col-span-4' : '',
+                (titleLayout === 'panel' && largerThanSm) ? 'col-span-4' : '',
             ]"
             class="py-2 flex flex-col gap-1"
         >
@@ -25,13 +25,13 @@
 
         <form
             :class="[
-                titleLayout === 'panel' ? 'col-span-8' : '',
+                (titleLayout === 'panel' && largerThanSm) ? 'col-span-8' : '',
                 modal ? 'sm:rounded-b-none' : ''
             ]"
             @submit.prevent="submit"
             class="p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
 
-            <div v-if="titleLayout === 'contained'" class="flex flex-col gap-1">
+            <div v-if="titleLayout === 'contained' || smallerThanMd" class="flex flex-col gap-1">
                 <h1 class="text-base">{{ title }}</h1>
                 <h2 class="text-subtitle">
                     <slot name="subtitle">
@@ -117,6 +117,13 @@
     const emits = defineEmits(['cancel'])
 
     const isLoading = computed(() => props.loading)
+
+    import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+
+    const breakpoints = useBreakpoints(breakpointsTailwind)
+
+    const largerThanSm = breakpoints.greater('sm') // only larger than sm
+    const smallerThanMd = breakpoints.smaller('md') // only smaller than md
 
 </script>
 
