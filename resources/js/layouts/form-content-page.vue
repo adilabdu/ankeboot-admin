@@ -2,13 +2,13 @@
 
     <ContentPage>
 
-        <div class="grid grid-cols-12 w-full gap-6">
+        <div class="sm:flex sm:flex-col grid grid-cols-12 w-full gap-6">
 
             <div class="col-span-9 gap-8 flex flex-col">
                 <router-view></router-view>
             </div>
 
-            <div class="sticky top-8 h-fit w-full rounded-lg col-span-3">
+            <div class="sm:relative sticky top-8 h-fit w-full rounded-lg col-span-3">
 
                 <ul class="p-2 font-medium items-end text-subtitle flex flex-col gap-1">
                     <RouterLink v-slot="{ isActive }" active-class="ring-1 ring-brand-primary bg-brand-secondary text-brand-primary" to="/new/books" class="focus:outline-none flex items-center flex-row-reverse justify-between p-3 hover:bg-brand-secondary hover:text-brand-primary w-full text-right rounded-md group">
