@@ -1,8 +1,8 @@
 <template>
 
-    <div class="flex w-full gap-4">
+    <div class="flex sm:flex-col-reverse w-full gap-4">
 
-        <File class="w-1/2" :date="formatDate(form.document_date)" :no="form.ref_no" :title="form.title">
+        <File class="w-1/2 sm:w-full sm:scale-[.45] sm:origin-top-left" :date="formatDate(form.document_date)" :no="form.ref_no" :title="form.title">
 
             <Markdown v-if="form.content" :source="form.content" />
             <div class="flex flex-col" v-else>
@@ -12,7 +12,7 @@
 
         </File>
 
-        <Form :submit="submitFileForm" class="w-1/2" title="Fill file information" title-layout="contained">
+        <Form :submit="submitFileForm" class="w-1/2 sm:w-full" title="Fill file information" title-layout="contained">
 
             <template #subtitle>
                 Add in the missing information to complete the file
@@ -58,7 +58,7 @@
         content: false
     })
     function toggleFocus(field) {
-        
+
         switch (field) {
 
             case 'content':
