@@ -18,7 +18,7 @@
                 Add in the missing information to complete the file
             </template>
 
-            <div class="flex w-full gap-2">
+            <div class="flex sm:flex-col w-full gap-2">
                 <DatePicker class="grow" v-model="form.document_date" label="Document Dated" />
                 <TextInput class="grow" v-model="form.ref_no" label="Document No." placeholder="Document Reference No." />
             </div>

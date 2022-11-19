@@ -74,21 +74,21 @@
                 Add in the missing information to complete the file
             </template>
 
-            <div class="flex w-full gap-2">
+            <div class="flex sm:flex-col w-full gap-2">
                 <DatePicker class="grow" v-model="form.document_date" label="Document Dated" />
                 <TextInput class="grow" v-model="form.ref_no" label="Document No." placeholder="Document Reference No." />
             </div>
 
             <TextInput @focusout="toggleFocus('name')" @focusin="toggleFocus('name')" v-model="form.name" label="New Employee Name" placeholder="Provide the name of the new employee to be hired" />
 
-            <div class="flex w-full gap-2">
+            <div class="flex sm:flex-col w-full gap-2">
                 <TextInput @focusout="toggleFocus('role')" @focusin="toggleFocus('role')" class="grow" v-model="form.role" label="Employee Position" placeholder="Position / Responsibility of the new employee" />
                 <DatePicker @focusout="toggleFocus('start_date')" @focusin="toggleFocus('start_date')" class="grow" v-model="form.start_date" label="Start Date" placeholder="Select the starting date of the new employee" />
             </div>
 
-            <div class="flex w-full gap-2">
-                <TextInput pattern="^[0-9]+.?[0-9]{0,2}$" @focusout="toggleFocus('salary')" @focusin="toggleFocus('salary')" class="w-1/2" v-model="form.salary" label="Salary in ETB" placeholder="Salary of new employee in ETB" />
-                <TextInput @focusout="toggleFocus('overtime')" @focusin="toggleFocus('overtime')" class="w-1/2" v-model="form.overtime" label="Overtime Salary in ETB" placeholder="Overtime salary of new employee in ETB" />
+            <div class="flex sm:flex-col w-full gap-2">
+                <TextInput pattern="^[0-9]+.?[0-9]{0,2}$" @focusout="toggleFocus('salary')" @focusin="toggleFocus('salary')" class="w-1/2 sm:w-full" v-model="form.salary" label="Salary in ETB" placeholder="Salary of new employee in ETB" />
+                <TextInput @focusout="toggleFocus('overtime')" @focusin="toggleFocus('overtime')" class="w-1/2 sm:w-full" v-model="form.overtime" label="Overtime Salary in ETB" placeholder="Overtime salary of new employee in ETB" />
             </div>
 
         </Form>
