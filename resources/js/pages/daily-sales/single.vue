@@ -206,7 +206,7 @@
 
     </div>
 
-    <Form title-layout="contained" :loading="submitting" v-if="chosenDate && !chosenDate['is_submitted'] && ! loading" :submit="submitDailySale" title="Submit Daily Sale">
+    <Form :loading="submitting" v-if="chosenDate && !chosenDate['is_submitted'] && ! loading" :submit="submitDailySale" title="Submit Daily Sale">
 
         <template #subtitle>
             Daily sales record for
