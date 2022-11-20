@@ -4,7 +4,7 @@
 
         <Modal @close="$emit('close')">
 
-            <div id="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
+            <div id="formModal" ref="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
 
                 <Form modal @cancel="$emit('close')" :submit="submitUpdate" class="h-full w-full rounded-b-none" title="Update Daily Sale" title-layout="contained">
 
@@ -159,6 +159,7 @@
 <script setup>
 
     import { onMounted, ref } from "vue"
+    import { onClickOutside } from "@vueuse/core";
     import router from "../../router"
     import store from "../../store"
     import { formatDate } from "../../utils"
@@ -179,6 +180,11 @@
     })
 
     const emits = defineEmits(['close', 'update'])
+
+    const formModal = ref(null)
+    onClickOutside(formModal, () => {
+        emits('close')
+    })
 
     function addSales() {
 
