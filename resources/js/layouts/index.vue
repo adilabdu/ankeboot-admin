@@ -64,7 +64,7 @@
 
         </Navigation>
 
-        <div :class="[authenticated ? 'w-[calc(100%-16rem)]' : 'w-full']" class="h-screen xl:w-full flex flex-col">
+        <div :class="[authenticated ? 'w-[calc(100%-16rem)]' : 'w-full']" class="h-screen h-[100dvh] xl:w-full flex flex-col">
 
             <Header />
 
