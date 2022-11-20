@@ -3,7 +3,6 @@
     <div class="relative">
         <Container
             ref="date_cards"
-            @resize="updateGridSize"
             class="date-card-container grid grid-cols-2 justify-items-center auto-rows-[0] gap-x-3 grid-rows-1 overflow-hidden h-fit justify-start overflow-auto relative transition-all duration-500 group"
             :class="[
         paginating ? 'opacity-25' : ''
@@ -17,7 +16,7 @@
             </template>
 
             <!-- Date Cards loading -->
-            <template v-else v-for="_ in display">
+            <template v-else v-for="i in 6">
 
                 <LoadingCard />
 
@@ -74,21 +73,21 @@
     const next = ref(null)
     const previous = ref(null)
 
-    async function nextPage() {
-
-        paginating.value = true
-        await getDailySales(next.value, 7)
-        paginating.value = false
-
-    }
-
-    async function previousPage() {
-
-        paginating.value = true
-        await getDailySales(previous.value, 7)
-        paginating.value = false
-
-    }
+    // async function nextPage() {
+    //
+    //     paginating.value = true
+    //     await getDailySales(next.value, 7)
+    //     paginating.value = false
+    //
+    // }
+    //
+    // async function previousPage() {
+    //
+    //     paginating.value = true
+    //     await getDailySales(previous.value, 7)
+    //     paginating.value = false
+    //
+    // }
 
     async function getDailySales(url = '/api/daily-sales?page=1', limit = 7) {
 
@@ -120,26 +119,26 @@
 
     }
 
-    const display = ref(7)
-    watch(display, () => {
-
-        getDailySales('/api/daily-sales?page=1', display.value)
-
-    })
+    // const display = ref(7)
+    // watch(display, () => {
+    //
+    //     getDailySales('/api/daily-sales?page=1')
+    //
+    // })
 
     const dailySales = ref([])
     const displayedDailySales = computed(() => { return dailySales.value.length })
 
     const page = ref(0)
-    function updateGridSize(size) {
-
-        display.value = Math.floor((size.width) / 216);
-        console.log({
-            size: size,
-            display: display.value,
-        })
-
-    }
+    // function updateGridSize(size) {
+    //
+    //     display.value = Math.floor((size.width) / 216);
+    //     console.log({
+    //         size: size,
+    //         display: display.value,
+    //     })
+    //
+    // }
 
     onMounted(() => {
 
