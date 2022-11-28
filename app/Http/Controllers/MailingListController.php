@@ -100,7 +100,7 @@ class MailingListController extends Controller
 
         }
 
-        if ($mailingList->email) {
+        if ($mailingList->email && env('MAIL_ENABLE')) {
             Mail::to($mailingList->email)->send(new SubscriberWelcome($mailingList));
         }
 
