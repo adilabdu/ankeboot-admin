@@ -1,7 +1,7 @@
 <template>
 
   <!--  TODO: remove min-w-[16rem] or not?-->
-  <nav ref="navigation" :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full']" class="z-20 h-screen min-w-[16rem] bg-white border-r border-border-light xl:absolute xl:top-0 xl:left-0 flex flex-col transition-transform duration-300">
+  <nav ref="navigation" :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full']" class="z-20 h-screen min-w-[16rem] bg-white sm:border-t border-r border-border-light xl:absolute xl:top-0 xl:left-0 flex flex-col transition-transform duration-300">
 
       <div class="w-full min-h-[4rem] px-4 flex items-center justify-between">
 

@@ -1,10 +1,10 @@
 <template>
 
-  <div class="flex flex-col w-full bg-white shadow-sm border-b border-border-light">
+  <div class="flex flex-col w-full bg-white shadow-sm sm:border-t border-b border-border-light">
     <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="sm:px-4 w-full min-h-[4rem] gap-8 flex items-center px-8">
 
         <!-- Burger -->
-        <svg class="hidden xl:inline w-6 h-6 stroke-subtitle stroke-[1.5]" @click="toggleNavigation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg v-if="authenticated" class="hidden xl:inline w-6 h-6 stroke-subtitle stroke-[1.5]" @click="toggleNavigation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
 
