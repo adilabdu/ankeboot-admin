@@ -76,7 +76,7 @@
 
                 <slot />
 
-                <p class="text-xs text-subtitle text-center pt-8 pb-1">&nbsp;</p>
+<!--                <p class="text-xs text-subtitle text-center pt-8 pb-1">&nbsp;</p>-->
 
             </div>
 
@@ -117,7 +117,7 @@
         window.axios.defaults.headers.common['database'] = localStorage.getItem('connection') || 'mysql'
 
         loading.value = false
-        
+
         store.dispatch("logout")
         location.reload()
 
