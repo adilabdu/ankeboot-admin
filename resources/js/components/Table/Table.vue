@@ -357,7 +357,7 @@
         />
 
         <!-- Date search -->
-        <div v-if="dateSearchable" class="flex items-center gap-4">
+        <div v-if="dateSearchable" class="flex items-center gap-4 sm:gap-2 sm:w-full">
           <DatePicker class="w-48" align="left" v-model="dateQuery.start" />
           <label class="font-medium text-subtitle"> to </label>
           <DatePicker class="w-48" v-model="dateQuery.end" />
