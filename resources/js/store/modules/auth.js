@@ -38,7 +38,11 @@ const actions = {
                     context.commit("login", response.data.data.user)
                 })
                 .catch(error => {
-                    context.commit("error", error)
+                    context.commit("error", error.response.data.data)
+                    context.dispatch("pushAlert", {
+                        type: 'error',
+                        message: error.response.data.data
+                    })
                 })
                 .finally(() => context.commit("loading", false))
         }
