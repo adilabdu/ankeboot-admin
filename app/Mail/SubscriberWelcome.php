@@ -6,6 +6,9 @@ use App\Models\MailingList;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class SubscriberWelcome extends Mailable
@@ -24,18 +27,18 @@ class SubscriberWelcome extends Mailable
         $this->mailingList = $mailingList;
     }
 
-    public function envelope()
+    public function envelope(): Envelope
     {
-
+        return new Envelope(
+            from: new Address('contact@ankeboot.com', 'Ankeboot Publishing + Bookstore'),
+            subject: 'Thanks for joining our network!'
+        );
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function content(): Content
     {
-        return $this->view('emails.welcome');
+        return new Content(
+            view: 'emails.welcome'
+        );
     }
 }
