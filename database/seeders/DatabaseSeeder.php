@@ -23,14 +23,8 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
 
         $this->seedUser();
         $this->seedDailySales();
@@ -41,12 +35,23 @@ class DatabaseSeeder extends Seeder
     {
         try {
 
-            User::create([
-                'name' => 'Test User',
-                'email' => 'testuser@test.com',
-                'username' => 'testuser',
-                'phone_number' => '0912345678',
-                'password' => Hash::make('helloworld')
+            DB::table('users')->insertOrIgnore([
+                [
+                    'name' => 'Test User',
+                    'email' => 'testuser@test.com',
+                    'username' => 'testuser',
+                    'phone_number' => '0912345678',
+                    'password' => Hash::make('helloworld'),
+                    'telegram_chat_id' => '5783481231'
+                ],
+                [
+                    'name' => 'Adil Abdu Bushra',
+                    'email' => 'adil@ankeboot.com',
+                    'username' => 'adil',
+                    'phone_number' => '0912272145',
+                    'password' => Hash::make('helloworld'),
+                    'telegram_chat_id' => '340546535'
+                ]
             ]);
 
         } catch (Exception $e) {
