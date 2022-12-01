@@ -9,6 +9,7 @@ use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
@@ -95,6 +96,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index']);
         Route::post('/', [SupplierController::class, 'post']);
+    });
+
+    Route::prefix('stores')->group(function () {
+        Route::get('/', [StoreController::class, 'index']);
+        Route::post('/', [StoreController::class, 'post']);
     });
 
 });
