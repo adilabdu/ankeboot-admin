@@ -2,8 +2,8 @@
 
     <!-- Toggle // "Title" -->
     <div v-if="chosenDate && chosenDate['is_submitted'] && ! loading" class="relative w-full flex items-center justify-center">
-        <Toggle colors="white" class="!bg-white" v-model="toggleState" :labels="['Sales Summary', 'Sales Breakdown']"/>
-        <div class="absolute right-2 top-0 bottom-0 flex flex-row-reverse items-center gap-4">
+        <Toggle colors="white" class="!bg-white sm:z-10" v-model="toggleState" :labels="['Sales Summary', 'Sales Breakdown']"/>
+        <div class="absolute right-2 top-0 sm:left-0 bottom-0 flex flex-row-reverse items-center sm:justify-between sm:w-full sm:z-last gap-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="cursor-pointer stroke-subtitle hover:stroke-red-500 hover:scale-125 hover:stroke-2 w-5 h-5 transition-transform duration-150">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
             </svg>
@@ -14,11 +14,11 @@
     </div>
 
     <!-- List of each transaction -->
-    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="grid grid-cols-8 w-full gap-2">
+    <div v-if="!toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="sm:flex sm:flex-col grid grid-cols-8 w-full gap-2">
 
         <div class="col-span-2 col-start-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Sales Receipts</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Sales Receipts</p>
 
             <template v-for="sales_receipt in chosenDate['sales_receipts']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
@@ -41,7 +41,7 @@
 
         <div class="col-span-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Deposits</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Deposits</p>
             <template v-for="deposit in chosenDate['deposits']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
 
@@ -71,7 +71,7 @@
 
         <div v-if="chosenDate['expenses'].length > 0" class="col-span-2 flex flex-col gap-2">
 
-            <p class="text-center font-medium text-subtitle w-full">Expenses</p>
+            <p class="text-center font-medium text-subtitle w-full sm:text-left sm:ml-2">Expenses</p>
             <template v-if="chosenDate['expenses'].length > 0" v-for="expense in chosenDate['expenses']">
                 <div class="flex w-full border border-border-light rounded-xl shadow-sm h-fit bg-white/75">
 
@@ -98,7 +98,7 @@
     </div>
 
     <!-- Summary of the Daily Sale -->
-    <div v-if="toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="w-full flex items-start gap-2">
+    <div v-if="toggleState && chosenDate && chosenDate['is_submitted'] && ! loading" class="w-full flex md:flex-col sm:gap-4 items-start gap-2">
 
         <ItemCard
             class=""
@@ -217,9 +217,9 @@
             <b><i>expenses</i></b> and other information required for the Daily Sale report.
         </template>
 
-        <div class="flex items-center justify-center w-full gap-2">
-            <TextInput class="w-2/5" disabled label="Date of Sale" v-model="newDailySale.date" placeholder="Name of cashier on call" />
-            <TextInput class="w-3/5" required label="Cashier" v-model="newDailySale.cashier" placeholder="Name of cashier on call" />
+        <div class="flex sm:flex-col items-center justify-center w-full gap-2">
+            <TextInput class="w-2/5 sm:w-full" disabled label="Date of Sale" v-model="newDailySale.date" placeholder="Name of cashier on call" />
+            <TextInput class="w-3/5 sm:w-full" required label="Cashier" v-model="newDailySale.cashier" placeholder="Name of cashier on call" />
         </div>
 
         <!-- Sale receipts -->
@@ -232,10 +232,10 @@
 
             <template v-for="(sale, index) in newDailySale['sales']" :key="index">
 
-                <div class="flex items-start justify-center w-full gap-2">
+                <div class="relative flex sm:flex-col items-start justify-center w-full gap-2">
                     <SwitchInput v-if="index !== 0" v-model="sale.is_manual" label-location="top" class="px-2" label="Manual receipt" />
                     <TextInput
-                        class="w-2/5"
+                        class="w-2/5 sm:w-full"
                         required
                         :label="
                             index === 0 ?
@@ -245,8 +245,8 @@
                         v-model="sale.amount"
                         placeholder="Total sale amount in ETB"
                     />
-                    <TextInput class="w-3/5" required label="Receipt No." v-model="sale.receipt" :placeholder="index === 0 ? 'Receipt of Z-Report (Z:****)' : 'Sale receipt no.'" />
-                    <button type="button" @click="removeSalesReceipt(index)" v-if="index !== 0" class="self-end rounded-md min-h-[2.5rem] min-w-[2.5rem] flex items-center justify-center">
+                    <TextInput class="w-3/5 sm:w-full" required label="Receipt No." v-model="sale.receipt" :placeholder="index === 0 ? 'Receipt of Z-Report (Z:****)' : 'Sale receipt no.'" />
+                    <button type="button" @click="removeSalesReceipt(index)" v-if="index !== 0" class="sm:absolute sm:top-0 sm:mt-6 sm:order-first self-end rounded-md min-h-[2.5rem] min-w-[2.5rem] flex items-center justify-center">
                         <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                             <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
@@ -277,16 +277,16 @@
             <template v-for="(deposit, index) in newDailySale['deposits']" :key="index">
 
                 <div class="flex flex-col w-full gap-2">
-                    <div class="flex items-start justify-start w-full gap-2">
+                    <div class="flex sm:flex-col items-start justify-start w-full gap-2">
                         <button type="button" @click="removeDeposit(index)" v-if="index !== 0" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                             </svg>
                         </button>
-                        <TextInput class="w-1/3" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
-                        <DatePicker label="Deposit date" required v-model="deposit.deposited_on" class="w-1/3" />
-                        <Dropdown required v-model="deposit.type" :list="['cash', 'withholding', 'cheque', 'transfer', 'credit', 'card']" placeholder="Choose the type of Deposit" label-direction="top" label="Deposit type" class="!w-1/3 h-16" />
+                        <TextInput class="w-1/3 sm:w-full" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
+                        <DatePicker label="Deposit date" required v-model="deposit.deposited_on" class="w-1/3 sm:w-full" />
+                        <Dropdown :hide-label-on-mobile=false required v-model="deposit.type" :list="['cash', 'withholding', 'cheque', 'transfer', 'credit', 'card']" placeholder="Choose the type of Deposit" label-direction="top" label="Deposit type" class="!w-1/3 sm:!w-full h-16" />
                     </div>
                     <div v-if="deposit.type === 'credit'" class="flex items-start justify-start w-full gap-2">
                         <div v-if="index !== 0" class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
@@ -314,18 +314,18 @@
 
                 <template v-for="(expense, index) in newDailySale['expenses']" :key="index">
 
-                    <div class="flex items-start justify-start w-full gap-2">
+                    <div class="flex sm:flex-col items-start justify-start w-full gap-2">
                         <button type="button" @click="removeExpense(index)" v-if="index !== 0" class="self-end rounded-md h-10 w-10 flex items-center justify-center">
                             <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1.6 14.7333C1.6 15.1577 1.76857 15.5646 2.06863 15.8647C2.36869 16.1647 2.77565 16.3333 3.2 16.3333H11.2C11.6243 16.3333 12.0313 16.1647 12.3314 15.8647C12.6314 15.5646 12.8 15.1577 12.8 14.7333V5.13331H14.4V3.53331H11.2V1.93331C11.2 1.50897 11.0314 1.102 10.7314 0.801942C10.4313 0.501884 10.0243 0.333313 9.6 0.333313H4.8C4.37565 0.333313 3.96869 0.501884 3.66863 0.801942C3.36857 1.102 3.2 1.50897 3.2 1.93331V3.53331H0V5.13331H1.6V14.7333ZM4.8 1.93331H9.6V3.53331H4.8V1.93331ZM4 5.13331H11.2V14.7333H3.2V5.13331H4Z" fill="#FF8100"/>
                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                             </svg>
                         </button>
-                        <TextInput class="w-1/3" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
-                        <TextInput class="w-2/3" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
+                        <TextInput class="w-1/3 sm:w-full" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
+                        <TextInput class="w-2/3 sm:w-full" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
                     </div>
                     <div class="flex items-start justify-start w-full gap-2">
-                        <div v-if="index !== 0" class="self-end rounded-md h-10 min-w-[2.5rem] flex items-center justify-center" />
+                        <div v-if="index !== 0" class="self-end rounded-md h-10 sm:hidden min-w-[2.5rem] flex items-center justify-center" />
                         <TextAreaInput
                         class="w-full"
                         required
@@ -357,7 +357,7 @@
     <!-- Daily sale items list -->
     <template v-if="toggleState && chosenDate && ! loading">
 
-        <form v-if="! chosenDate['transactions'].length > 0" @submit.prevent="insertDailyTransaction" title="Insert Daily Transaction" submit="" class="w-full grid grid-cols-12 gap-2">
+        <form v-if="! chosenDate['transactions'].length > 0" @submit.prevent="insertDailyTransaction" title="Insert Daily Transaction" submit="" class="sm:flex sm:flex-col w-full grid grid-cols-12 gap-2">
             <div class="col-span-4 py-2 flex flex-col gap-1">
                 <h1 class="text-base">Insert multiple Book records from CSV</h1>
                 <slot name="subtitle">
@@ -461,7 +461,7 @@
     import Cell from "../../components/Table/Cell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
     import LinkCell from "../../components/Table/LinkCell.vue"
-    import UpdateDailySaleModal from "../update/UpdateDailySaleModal.vue"
+    import UpdateDailySaleModal from "../update/daily-sales.vue"
     import { formatDate, formatPrice, formatNumberToTwoIntegerPlaces } from "../../utils";
     import store from "../../store";
 
@@ -535,7 +535,8 @@
 
     onMounted(() => {
 
-       get({ id: useRoute().params.id })
+        console.log(useRoute().params.id)
+        get({ id: useRoute().params.id })
 
     })
 

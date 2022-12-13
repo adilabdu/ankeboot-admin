@@ -30,6 +30,7 @@ module.exports = {
                 'rotate': 'rotate 2s linear infinite',
                 'slide-in': 'slideIn 150ms linear',
                 'slide-up': 'slideUp 100ms linear',
+                'slide-up-modal': 'slideUp 150ms ease-in',
                 'slide-out': 'slideOut 150ms linear',
                 'slide-in-from-left': 'slideInFromLeft 150ms linear',
                 'grow-up': 'growUp 300ms ease-out',

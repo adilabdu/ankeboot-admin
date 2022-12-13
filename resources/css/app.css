@@ -11,7 +11,7 @@
 }
 
 * {
-    @apply select-none focus:outline focus:outline-brand-primary focus:outline-offset-2 focus:outline-2 font-basic;
+    @apply select-none sm:focus:outline-none focus:outline focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 focus:outline-2 font-basic;
 }
 
 body {

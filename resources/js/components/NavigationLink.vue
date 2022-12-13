@@ -32,6 +32,7 @@
 
     import {computed, onMounted} from "vue";
     import router from "../router"
+    import store from "../store"
 
     const props = defineProps({
 
@@ -52,7 +53,7 @@
     const active = computed(() => router)
 
     function navigate() {
-
+        store.dispatch('toggleNavigation', false)
     }
 
     onMounted(() => {

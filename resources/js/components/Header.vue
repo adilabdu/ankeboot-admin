@@ -1,23 +1,23 @@
 <template>
 
-  <div class="flex flex-col w-full bg-white shadow-sm border-b border-border-light">
-    <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="w-full min-h-[4rem] gap-8 flex items-center px-8">
+  <div class="flex flex-col w-full bg-white shadow-sm sm:border-t border-b border-border-light">
+    <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="sm:px-4 w-full min-h-[4rem] gap-8 flex items-center px-8">
 
-        <svg class="hidden xl:inline" @click="toggleNavigation" width="22" height="17" viewBox="0 0 22 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="22" height="3" fill="#6A727F"/>
-            <rect y="7" width="22" height="3" fill="#6A727F"/>
-            <rect y="14" width="22" height="3" fill="#6A727F"/>
+        <!-- Burger -->
+        <svg v-if="authenticated" class="hidden xl:inline w-6 h-6 stroke-subtitle stroke-[1.5]" @click="toggleNavigation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
 
-
-        <div v-if="authenticated" class="flex flex-row-reverse items-center justify-center gap-4 h-full grow">
-            <input ref="searchInput" @focusout="toggleInputFocus(false)" @focus="toggleInputFocus(true)" class="peer h-full selection:text-white selection:bg-brand-primary focus:outline-none placeholder-subtitle grow" type="text" placeholder="Search... (CTRL + K)" />
+        <!-- Search field -->
+        <div v-if="authenticated" class="sm:justify-end flex flex-row-reverse items-center justify-center gap-4 h-full grow">
+            <input ref="searchInput" @focusout="toggleInputFocus(false)" @focus="toggleInputFocus(true)" class="sm:w-[24px] peer h-full selection:text-white selection:bg-brand-primary focus:outline-none placeholder-subtitle grow" type="text" placeholder="Search... (CTRL + K)" />
             <svg class="peer-focus:fill-brand-primary fill-subtitle transition-all duration-150 scale-90 peer-focus:scale-100" width="19" height="19" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z" />
             </svg>
         </div>
 
-        <div v-if="authenticated" class="relative w-12 h-12 rounded-full flex items-center justify-center">
+        <!-- Notifications -->
+        <div v-if="authenticated" class="sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center">
             <svg :class="[viewNotificationsMenu ? 'scale-105' : '']" @click="toggleNotificationsView" width="20" height="20" viewBox="0 0 20 20" class="fill-transparent hover:scale-105 group transition-transform duration-300" xmlns="http://www.w3.org/2000/svg">
                 <path class="stroke-black/50 group-hover:stroke-black" d="M12.8565 15.082C14.7197 14.8614 16.5504 14.4217 18.3105 13.772C16.8199 12.1208 15.9962 9.9745 15.9995 7.75V7.05V7C15.9995 5.4087 15.3674 3.88258 14.2421 2.75736C13.1169 1.63214 11.5908 1 9.9995 1C8.4082 1 6.88208 1.63214 5.75686 2.75736C4.63164 3.88258 3.9995 5.4087 3.9995 7V7.75C4.00252 9.97463 3.17849 12.121 1.6875 13.772C3.4205 14.412 5.2475 14.857 7.1425 15.082M12.8565 15.082C10.9585 15.3071 9.04051 15.3071 7.1425 15.082M12.8565 15.082C13.0006 15.5319 13.0364 16.0094 12.9611 16.4757C12.8857 16.942 12.7013 17.384 12.4229 17.7656C12.1444 18.1472 11.7798 18.4576 11.3587 18.6716C10.9376 18.8856 10.4719 18.9972 9.9995 18.9972C9.52712 18.9972 9.06142 18.8856 8.64031 18.6716C8.21919 18.4576 7.85457 18.1472 7.57612 17.7656C7.29767 17.384 7.11326 16.942 7.03791 16.4757C6.96256 16.0094 6.9984 15.5319 7.1425 15.082" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -84,6 +84,7 @@
 
         </div>
 
+        <!-- Profile Menu -->
         <div v-if="authenticated" class="flex items-center justify-center gap-6">
             <div @click="toggleView" class="z-10 cursor-pointer relative border border-brand-primary font-medium w-12 h-12 rounded-full bg-brand-secondary shadow-sm flex items-center justify-center">
                 <h1 class="text-brand-primary text-base">{{ user.name[0] }}</h1>
@@ -108,6 +109,7 @@
             </div>
         </div>
 
+        <!-- Unauthenticated -->
         <button v-if="!authenticated" class="text-subtitle px-4 py-2 rounded-md hover:bg-wallpaper capitalize">request new password</button>
 
     </header>

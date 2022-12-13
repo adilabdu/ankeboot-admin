@@ -9,7 +9,7 @@
         <span v-if="required" class="text-red-600">*</span>
     </label>
 
-    <div ref="form" tabindex="0" @keyup.enter="togglePicker" @click="togglePicker" class="w-full focus:outline-2 focus:outline-brand-primary focus:outline-offset-2 border-[0.5px] border-border-light rounded-md sm:w-full bg-white h-10 shadow-sm flex items-center justify-between">
+    <div ref="form" tabindex="0" @keyup.enter="togglePicker" @click="togglePicker" class="w-full sm:focus:outline-none focus:outline-2 focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 border-[0.5px] border-border-light rounded-md sm:w-full bg-white h-10 shadow-sm flex items-center justify-between">
 
       <p class="px-3" :class="[modelValue.date ? 'text-brand-primary' : 'text-subtitle']">{{ visibleDate }}</p>
       <input :value="visibleDate === 'dd MM YYYY' ? null : visibleDate" :required="required" class="sr-only" />
@@ -51,7 +51,7 @@
 
       </div>
 
-      <button type="button" @click="setToToday" :class="[isSetToToday ? 'bg-brand-secondary border-brand-primary' : 'border-border-light', displayDatePicker ? '' : 'hidden']" class="flex justify-between items-center focus:outline-brand-primary focus:outline-offset-2 px-4 py-2 mx-3 rounded-md my-2 border-[1px] shadow-sm">
+      <button type="button" @click="setToToday" :class="[isSetToToday ? 'bg-brand-secondary border-brand-primary' : 'border-border-light', displayDatePicker ? '' : 'hidden']" class="flex justify-between items-center focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 px-4 py-2 mx-3 rounded-md my-2 border-[1px] shadow-sm">
         <span :class="[isSetToToday ? 'text-brand-primary' : 'text-subtitle']" class="font-medium">Today&nbsp;</span>
         <span :class="isSetToToday ? 'text-brand-primary' : 'text-subtitle'" class="font-medium">{{ today }}</span>
       </button>

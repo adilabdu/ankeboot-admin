@@ -3,39 +3,38 @@
     <div class="relative">
         <Container
             ref="date_cards"
-            @resize="updateGridSize"
-            class="flex flex-row items-center gap-3 h-fit overflow-auto relative transition-all duration-500 group"
+            class="date-card-container grid grid-cols-2 justify-items-center auto-rows-[0] gap-x-3 grid-rows-1 overflow-hidden h-fit justify-start overflow-auto relative transition-all duration-500 group"
             :class="[
-            displayedDailySales < 7 ? 'justify-start' : 'justify-evenly',
-            paginating ? 'opacity-25' : ''
-        ]"
+        paginating ? 'opacity-25' : ''
+    ]"
         >
             <!-- Date Cards -->
-            <template v-if="! dataLoading" v-for="dailySale in dailySales">
+            <template v-if="! dataLoading" v-for="i in 6">
 
-                <DateLinkCard  :daily-sale="dailySale"/>
+                <DateLinkCard  :daily-sale="dailySales[i]"/>
 
             </template>
 
             <!-- Date Cards loading -->
-            <template v-else v-for="_ in display">
+            <template v-else v-for="i in 6">
 
                 <LoadingCard />
 
             </template>
 
-            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute left-0 z-20 rounded-full" v-if="previous" @click="previousPage">
-                <svg width="12" height="19" viewBox="0 0 12 19" class="rotate-180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>
-                </svg>
-            </button>
-            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute right-0 z-20 rounded-full" v-if="next" @click="nextPage">
-                <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>
-                </svg>
-            </button>
+<!-- TODO: find better pagination implementation -->
+<!--            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute left-0 z-20 rounded-full" v-if="previous" @click="previousPage">-->
+<!--                <svg width="12" height="19" viewBox="0 0 12 19" class="rotate-180" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
+<!--                </svg>-->
+<!--            </button>-->
+<!--            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute right-0 z-20 rounded-full" v-if="next" @click="nextPage">-->
+<!--                <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
+<!--                </svg>-->
+<!--            </button>-->
 
-        </Container>
+</Container>
         <!-- Loading indicator -->
         <div v-if="paginating" class="absolute top-0 bottom-0 flex w-full items-center justify-center gap-2">
 
@@ -74,21 +73,21 @@
     const next = ref(null)
     const previous = ref(null)
 
-    async function nextPage() {
-
-        paginating.value = true
-        await getDailySales(next.value, 7)
-        paginating.value = false
-
-    }
-
-    async function previousPage() {
-
-        paginating.value = true
-        await getDailySales(previous.value, 7)
-        paginating.value = false
-
-    }
+    // async function nextPage() {
+    //
+    //     paginating.value = true
+    //     await getDailySales(next.value, 7)
+    //     paginating.value = false
+    //
+    // }
+    //
+    // async function previousPage() {
+    //
+    //     paginating.value = true
+    //     await getDailySales(previous.value, 7)
+    //     paginating.value = false
+    //
+    // }
 
     async function getDailySales(url = '/api/daily-sales?page=1', limit = 7) {
 
@@ -120,26 +119,26 @@
 
     }
 
-    const display = ref(7)
-    watch(display, () => {
-
-        getDailySales('/api/daily-sales?page=1', display.value)
-
-    })
+    // const display = ref(7)
+    // watch(display, () => {
+    //
+    //     getDailySales('/api/daily-sales?page=1')
+    //
+    // })
 
     const dailySales = ref([])
     const displayedDailySales = computed(() => { return dailySales.value.length })
 
     const page = ref(0)
-    function updateGridSize(size) {
-
-        display.value = Math.floor((size.width) / 216);
-        console.log({
-            size: size,
-            display: display.value,
-        })
-
-    }
+    // function updateGridSize(size) {
+    //
+    //     display.value = Math.floor((size.width) / 216);
+    //     console.log({
+    //         size: size,
+    //         display: display.value,
+    //     })
+    //
+    // }
 
     onMounted(() => {
 
@@ -162,4 +161,41 @@
 
 </script>
 
-<style scoped></style>
+<style scoped>
+
+@media only screen and (max-width: 320px) {
+
+        .date-card-container {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+}
+
+@media only screen and (min-width: 505px) {
+
+    .date-card-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media only screen and (min-width: 830px) {
+
+    .date-card-container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1100px) {
+
+    .date-card-container {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+
+    .date-card-container {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+}
+
+</style>

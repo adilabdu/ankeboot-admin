@@ -13,13 +13,7 @@
 
             </div>
 
-            <form @submit.prevent="attemptLogin" method="POST" class="flex flex-col gap-2 relative">
-
-                <div v-if="loading" class="flex items-center justify-center w-full h-full bg-white/75 absolute rounded-md">
-
-                    <p class="text-xs text-brand-primary">Loading...</p>
-
-                </div>
+            <form @submit.prevent="attemptLogin" method="POST" :class="[loading ? 'opacity-50' : '']" class="flex flex-col gap-2 relative">
 
                 <input v-model="credentials.credential" placeholder="Enter username, phone number or email" type="text" name="username" id="username" class="autofill:bg-brand-secondary px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
                 <input v-model="credentials.password" placeholder="Enter password" type="password" name="password" id="password" class="autofill:bg-brand-secondary px-2 h-10 w-80 bg-white rounded-md border border-border-light shadow-sm" />
@@ -43,7 +37,7 @@
         credential: '',
         password: ''
     })
-    const loading = ref(false)
+    const loading = computed(() => store.state.auth.isLoading)
 
     function attemptLogin() {
         store.dispatch('login', {

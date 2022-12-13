@@ -1,6 +1,6 @@
 <template>
 
-  <div class="flex flex-col bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
+  <div class="flex flex-col gap-4 bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
 
     <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>
@@ -22,7 +22,7 @@
 
     </div>
 
-    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2">
+    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2 min-h-[7rem]">
 
 <!--        <h1 class="absolute w-full text-center text-subtitle font-medium mt-1">Title about Graph</h1>-->
 

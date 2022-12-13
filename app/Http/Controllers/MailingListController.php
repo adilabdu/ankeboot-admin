@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Mail\SubscriberWelcome;
 use App\Models\MailingList;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Http\Response;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\NewSubscriberRegistered;
@@ -75,7 +79,7 @@ class MailingListController extends Controller
 
     }
 
-    public function post(Request $request)
+    public function post(Request $request): Response|Application|ResponseFactory
     {
 
         $request->validate([
@@ -100,7 +104,7 @@ class MailingListController extends Controller
 
         }
 
-        if ($mailingList->email) {
+        if ($mailingList->email && Env::get('MAIL_ENABLE')) {
             Mail::to($mailingList->email)->send(new SubscriberWelcome($mailingList));
         }
 

@@ -1,8 +1,8 @@
 <template>
 
-    <div class="overflow-hidden rounded-2xl w-full h-96 bg-white border border-border-light shadow-md grid grid-cols-3 grid-rows-2">
+    <div class="overflow-hidden rounded-2xl w-full h-96 sm:h-fit bg-white border border-border-light shadow-md grid grid-cols-3 grid-rows-2 sm:grid-cols-1 sm:grid-rows-6">
 
-            <RouterLink to="new/books" class="overflow-ellipsis cursor-pointer p-8 col-span-1 row-span-1 border-r border-b border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
+            <RouterLink to="new/books" class="overflow-ellipsis cursor-pointer p-8 col-span-1 row-span-1 border-r border-b sm:border-r-0 border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
             <h1 class="group-hover:text-brand-primary font-medium text-base">Register new Book</h1>
             <p class="text-subtitle group-hover:text-black overflow-hidden">
                 Register a new item when stock arrives. A new book entry requires
@@ -10,7 +10,7 @@
                 book category.
             </p>
         </RouterLink>
-        <RouterLink to="new/books" class="cursor-pointer p-8 col-span-1 row-span-1 border-b border-r border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
+        <RouterLink to="new/books" class="cursor-pointer p-8 col-span-1 row-span-1 border-b border-r sm:border-r-0 border-border-light flex flex-col justify-start gap-4 hover:bg-wallpaper/75 group">
             <h1 class="group-hover:text-brand-primary font-medium text-base">Insert Book records from Data Source</h1>
             <p class="text-subtitle group-hover:text-black overflow-hidden">
                 If you have a bulk of item records that need registration, insert these
@@ -25,7 +25,7 @@
                 with reminder notifications for missing transactions.
             </p>
         </RouterLink>
-        <RouterLink to="" class="cursor-pointer p-8 col-span-1 row-span-1 border-r border-border-light flex flex-col justify-start gap-4 hover:hover:bg-wallpaper/75 group">
+        <RouterLink to="" class="cursor-pointer p-8 col-span-1 row-span-1 border-r sm:border-b sm:border-r-0 border-border-light flex flex-col justify-start gap-4 hover:hover:bg-wallpaper/75 group">
             <h1 class="group-hover:text-brand-primary font-medium text-base">View Stock Records</h1>
             <p class="group-hover:text-black text-subtitle overflow-hidden">
                 View the stock records for any of the items in your inventory. Stock record includes a
@@ -33,7 +33,7 @@
                 balance of the item currently in stock.
             </p>
         </RouterLink>
-        <RouterLink to="" class="cursor-pointer p-8 col-span-1 row-span-1 border-r border-border-light flex flex-col justify-start gap-4 hover:hover:bg-wallpaper/75 group">
+        <RouterLink to="" class="cursor-pointer p-8 col-span-1 row-span-1 border-r sm:border-b sm:border-r-0 border-border-light flex flex-col justify-start gap-4 hover:hover:bg-wallpaper/75 group">
             <h1 class="group-hover:text-brand-primary font-medium text-base">Document Tracking</h1>
             <p class="group-hover:text-black text-subtitle overflow-hidden">
                 Manage all company signed letters and documents. Create new template for future use,

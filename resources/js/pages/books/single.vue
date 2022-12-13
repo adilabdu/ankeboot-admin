@@ -17,7 +17,7 @@
                 >
 
                     <template #action>
-                        <button @click="goToUpdate" class="focus:outline-brand-primary focus:outline-offset-2 h-fit md:w-fit px-6 py-2.5 bg-brand-primary rounded-lg text-white flex justify-between sm:justify-center items-center gap-2 sm:w-full">
+                        <button @click="goToUpdate" class="focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 h-fit md:w-fit px-6 py-2.5 bg-brand-primary rounded-lg text-white flex justify-between sm:justify-center items-center gap-2 sm:w-full">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M15.1329 5C15.5109 4.622 15.7189 4.12 15.7189 3.586C15.7189 3.052 15.5109 2.55 15.1329 2.172L13.5469 0.586C13.1689 0.208 12.6669 0 12.1329 0C11.5989 0 11.0969 0.208 10.7199 0.585L0.0878906 11.184V15.599H4.50089L15.1329 5ZM12.1329 2L13.7199 3.585L12.1299 5.169L10.5439 3.584L12.1329 2ZM2.08789 13.599V12.014L9.12789 4.996L10.7139 6.582L3.67489 13.599H2.08789Z" fill="white"/>
                             </svg>

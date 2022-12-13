@@ -13,7 +13,7 @@ const actions = {
 
     toggleNavigation(context, payload) {
 
-        context.commit('toggleNavigation')
+        context.commit('toggleNavigation', payload)
 
     },
 
@@ -29,14 +29,19 @@ const mutations = {
 
     toggleNavigation(state, payload) {
 
+        if (payload) {
+            state.navigationOpened = payload
+            return
+        }
+
         state.navigationOpened = !state.navigationOpened
 
     },
 
     toggleContentLoading(state, payload) {
-            
+
         state.contentLoading = payload
-    
+
     }
 
 }

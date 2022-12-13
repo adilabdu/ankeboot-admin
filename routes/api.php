@@ -9,6 +9,7 @@ use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
@@ -75,6 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('consignments')->group(function () {
         Route::get('/', [ConsignmentController::class, 'index']);
+        Route::get('/books', [ConsignmentController::class, 'books']);
         Route::post('/', [ConsignmentController::class, 'create']);
         Route::get('/history', [ConsignmentController::class, 'history']);
     });
@@ -95,6 +97,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index']);
         Route::post('/', [SupplierController::class, 'post']);
+    });
+
+    Route::prefix('stores')->group(function () {
+        Route::get('/', [StoreController::class, 'index']);
+        Route::post('/', [StoreController::class, 'post']);
+        Route::get('/list', [StoreController::class, 'list']);
+        Route::get('/statistics', [StatisticsController::class, 'store']);
     });
 
 });

@@ -6,7 +6,8 @@
          focus-visible:outline-brand-primary focus-visible:my-1 focus-visible:first:ml-1
          focus-visible:last:mr-1 transition-colors transition-opacity duration-500
          relative flex flex-col justify-between shrink-0 flex-1
-         aspect-square max-w-[212px] max-h-[212px] rounded-xl shadow-sm"
+         aspect-square min-w-full w-full aspect-square rounded-xl shadow-sm
+"
     >
 
         <!-- Date card content -->

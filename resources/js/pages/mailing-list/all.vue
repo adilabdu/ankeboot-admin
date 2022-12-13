@@ -1,6 +1,6 @@
 <template>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid sm:flex sm:flex-col grid-cols-2 gap-2">
         <InfoCard class="col-span-1" label="Total Subscribers">
             <span v-if="statistics" class="">{{ formatNumber(statistics.count) ?? 0 }}</span>
             <svg v-else class="animate-rotate my-2" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,7 +35,7 @@
 
         <template #description>
             <p>
-                Subscribers list from 
+                Subscribers list from
                 <a href="https://ankeboot.com" target="_blank">
                     <i class="text-brand-primary focus:outline-none">ankeboot.com</i>
                 </a>
@@ -58,7 +58,7 @@
                 <template v-if="! data['record']['phone']" class="text-center text-opacity-0">N/A</template>
                 <a :href="`tel:${data['record']['phone']}`">{{ data['record']['phone'] }}</a>
             </Cell>
-            <DateCell class="w-[2%]" name="created_at" :hide="data.hide" :value="new Date(data['record']['created_at'])" />  
+            <DateCell class="w-[2%]" name="created_at" :hide="data.hide" :value="new Date(data['record']['created_at'])" />
 
         </template>
 
@@ -74,10 +74,10 @@
     >
 
         Are you sure you want to delete this subscriber from the mailing list? This action cannot be undone.
-        The subscriber will no longer receive any mail from you.    
+        The subscriber will no longer receive any mail from you.
 
     </ConfirmationModal>
-    
+
 </template>
 
 <script setup>
@@ -94,7 +94,7 @@
     import DateCell from "../../components/Table/DateCell.vue"
     import Modal from "../../components/Modal.vue";
     import ConfirmationModal from "../../components/ConfirmationModal.vue";
-    
+
     const statistics = ref(null)
     const mailingList = ref(null)
 
@@ -130,8 +130,8 @@
     async function attemptDelete(id) {
 
         deleting.value = true
-        await axios.post('/api/mailing-list/delete', { 
-            id 
+        await axios.post('/api/mailing-list/delete', {
+            id
         }).then(() => {
 
             fetchMailingList()

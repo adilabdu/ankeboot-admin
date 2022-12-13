@@ -5,8 +5,8 @@
             {{ label }}
             <span v-if="required" class="text-red-600">*</span>
         </label>
-            <input :disabled="disabled" v-if="pattern === ''" :value="modelValue" @input="validate($event.target.value)" :required="required" type="text" :placeholder="placeholder" class="peer focus:outline-brand-primary focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
-            <input :disabled="disabled" v-else :pattern="pattern" :value="modelValue" @input="validate($event.target.value)" :required="required" type="text" :placeholder="placeholder" class="peer focus:outline-brand-primary focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
+            <input :disabled="disabled" v-if="pattern === ''" :value="modelValue" @input="validate($event.target.value)" :required="required" type="text" :placeholder="placeholder" class="peer focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
+            <input :disabled="disabled" v-else :pattern="pattern" :value="modelValue" @input="validate($event.target.value)" :required="required" type="text" :placeholder="placeholder" class="peer focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
         <p v-if="error !== ''" class="peer-focus:inline hidden text-xs text-red-600">{{ error }}</p>
     </div>
 
@@ -68,7 +68,7 @@
         if (input === '') {
 
             emits('update:modelValue', '')
-        
+
         } else if (props.pattern !== '' && ! new RegExp(props.pattern).test(input)) {
 
             console.log(`Please input a valid ${patternType.value}`)
