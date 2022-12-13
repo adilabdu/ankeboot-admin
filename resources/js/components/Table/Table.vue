@@ -176,9 +176,13 @@
         if (props.data[0][column] instanceof Date) {
 
           if (range === 'start') {
-            found = found || object[column].toLocaleDateString() >= new Date(event.year, event.month, event.date).toLocaleDateString()
+            found = found || new Date(object[column].toLocaleDateString()) >= new Date(event.year, event.month, event.date)
+              console.log({
+                  a: object[column].toLocaleDateString(),
+                  b: new Date(event.year, event.month, event.date).toLocaleDateString()
+              })
           } else {
-            found = found || object[column].toLocaleDateString() <= new Date(event.year, event.month, event.date).toLocaleDateString()
+            found = found || new Date(object[column].toLocaleDateString()) <= new Date(event.year, event.month, event.date)
           }
 
           if (event.date === null) {
