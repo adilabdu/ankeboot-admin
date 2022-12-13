@@ -4,9 +4,8 @@
 
         <div class="flex flex-col h-fit w-full gap-8">
 
-            <DateNavigation :loading="! posted" />
-
             <router-view></router-view>
+            <DateNavigation :loading="! posted" />
 
         </div>
 

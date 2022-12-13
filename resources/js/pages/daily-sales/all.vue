@@ -1,30 +1,11 @@
 <template>
 
-    <div class="grid grid-cols-3 gap-2 sm:grid-cols-1 sm:grid-rows-1">
-        <LineChart
-            display-y-grid
-            :data="[0, 0, 5.12, -4.80, 4.93, 0.12, -1.57, -2.48, -4.29, 2.08, 5.63, 5.83]"
-            title="Daily sales difference"
-            subtitle="Daily sales difference"
-        />
-        <BarChart
-            title="Daily Sales"
-            subtitle="Sales made within the past 12 working days"
-        />
-        <LineChart
-            title="Monthly subscribers"
-            subtitle="Mailing list registrations for each month of the year"
-            :data="[0, 0, 5.12, -4.80, 4.93, 0.12, -1.57, -2.48, -4.29, 2.08, 5.63, 5.83]"
-        />
-    </div>
-
-
-    <div class="w-full h-fit flex flex-col-reverse gap-2 items-end">
-        <DropDown
-            v-model="range"
-            class="text-sm font-normal min-w-[133px] w-fit h-8"
-            :list="['Last week', 'Last month', 'All time']"
-        ></DropDown>
+    <div class="w-full h-fit flex flex-col gap-2 items-end">
+<!--        <DropDown-->
+<!--            v-model="range"-->
+<!--            class="text-sm font-normal min-w-[133px] w-fit h-8"-->
+<!--            :list="['Last week', 'Last month', 'All time']"-->
+<!--        ></DropDown>-->
         <div class="w-full grid grid-cols-4 gap-2 sm:grid-cols-1 sm:grid-rows-1">
             <InfoCard class="group col-span-1  sm:row-span-1" label="Unsubmitted Daily Sales">
                 <div v-if="! loading" class="w-full flex items-center justify-between">
