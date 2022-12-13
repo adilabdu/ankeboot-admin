@@ -2,18 +2,6 @@
 
     <ContentPage>
 
-        <div class="grid grid-cols-4 gap-2 sm:grid-rows-4 sm:grid-cols-1">
-            <InfoCard class="col-span-1 sm:row-span-1" label="Current Stock Balance">
-                <span>{{ formatNumber(1661) }}</span>
-            </InfoCard>
-            <InfoCard class="col-span-1 sm:row-span-1" label="Last Transaction Quantity">
-                <span>2</span>
-                <span class="mt-0.5 text-sm px-2 rounded-lg font-medium bg-red-100 text-red-900">sell</span>
-            </InfoCard>
-            <InfoCard class="col-span-1 sm:row-span-1" label="Last Transaction on" :content="new Date().getDate() + '.' + (new Date().getMonth() + 1) + '.' + new Date().getFullYear()" />
-            <InfoCard class="col-span-1 sm:row-span-1" label="Last Transaction on" :content="new Date().getDate() + '.' + (new Date().getMonth() + 1) + '.' + new Date().getFullYear()" />
-        </div>
-
         <div class="grid grid-cols-3 gap-2 sm:grid-rows-3 sm:grid-cols-1">
             <BarChart />
             <LineChart
