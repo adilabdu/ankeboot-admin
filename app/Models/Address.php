@@ -21,6 +21,10 @@ class Address extends Model
         return $this->hasOne(Supplier::class);
     }
 
+    public function store(): HasOne
+    {
+        return $this->hasOne(Store::class);
+    }
 
     public function logs(): MorphMany
     {
