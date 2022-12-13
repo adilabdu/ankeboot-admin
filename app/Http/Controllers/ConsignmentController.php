@@ -26,7 +26,7 @@ class ConsignmentController extends Controller
         try {
 
             if ($request->has('id')) {
-                
+
                 $consignmentRecords = ConsignmentSettlement::find($request->input('id'));
 
             } else if ($request->has('book_id')) {
@@ -61,6 +61,45 @@ class ConsignmentController extends Controller
         return response([
             'message' => 'ok',
             'body' => $consignmentRecords
+        ]);
+
+    }
+
+    public function books(): Response|Application|ResponseFactory
+    {
+
+        try {
+
+            $consignments = Book::where(
+                'type',
+                PurchaseType::CONSIGNMENT
+            )->get()->map(function ($consignment) {
+                return [
+                    'id' => $consignment->id,
+                    'code' => $consignment->code,
+                    'title' => $consignment->title,
+                    'category' => $consignment->category,
+                    'balance' => $consignment->balance,
+                    'payable' => $consignment->payable(),
+                    'settled' => $consignment->settled(),
+                    'created_at' => $consignment->created_at,
+                    'updated_at' => $consignment->updated_at,
+                    'deleted_at' => $consignment->deleted_at,
+                ];
+            });
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $consignments
         ]);
 
     }
