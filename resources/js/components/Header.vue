@@ -16,10 +16,17 @@
             </svg>
         </div>
 
+        <!-- Quick Actions -->
+        <div v-if="authenticated" class="sm:hidden relative -mr-3 w-12 h-12 rounded-full flex items-center justify-center group">
+            <svg :class="[viewQuickActionsMenu ? 'scale-110 fill-zinc-300 stroke-zinc-600 stroke-1' : 'stroke-[1.5] stroke-subtitle']" @click="toggleQuickActionsView" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="transition-transform duration-300 group-hover:scale-110 group-hover:fill-zinc-300 group-hover:stroke-zinc-600 group-hover:stroke-1 w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+        </div>
+
         <!-- Notifications -->
         <div v-if="authenticated" class="sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center">
             <svg :class="[viewNotificationsMenu ? 'scale-105' : '']" @click="toggleNotificationsView" width="20" height="20" viewBox="0 0 20 20" class="fill-transparent hover:scale-105 group transition-transform duration-300" xmlns="http://www.w3.org/2000/svg">
-                <path class="stroke-black/50 group-hover:stroke-black" d="M12.8565 15.082C14.7197 14.8614 16.5504 14.4217 18.3105 13.772C16.8199 12.1208 15.9962 9.9745 15.9995 7.75V7.05V7C15.9995 5.4087 15.3674 3.88258 14.2421 2.75736C13.1169 1.63214 11.5908 1 9.9995 1C8.4082 1 6.88208 1.63214 5.75686 2.75736C4.63164 3.88258 3.9995 5.4087 3.9995 7V7.75C4.00252 9.97463 3.17849 12.121 1.6875 13.772C3.4205 14.412 5.2475 14.857 7.1425 15.082M12.8565 15.082C10.9585 15.3071 9.04051 15.3071 7.1425 15.082M12.8565 15.082C13.0006 15.5319 13.0364 16.0094 12.9611 16.4757C12.8857 16.942 12.7013 17.384 12.4229 17.7656C12.1444 18.1472 11.7798 18.4576 11.3587 18.6716C10.9376 18.8856 10.4719 18.9972 9.9995 18.9972C9.52712 18.9972 9.06142 18.8856 8.64031 18.6716C8.21919 18.4576 7.85457 18.1472 7.57612 17.7656C7.29767 17.384 7.11326 16.942 7.03791 16.4757C6.96256 16.0094 6.9984 15.5319 7.1425 15.082" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path :class="[viewNotificationsMenu ? 'stroke-black' : 'stroke-subtitle']" class="group-hover:stroke-black" d="M12.8565 15.082C14.7197 14.8614 16.5504 14.4217 18.3105 13.772C16.8199 12.1208 15.9962 9.9745 15.9995 7.75V7.05V7C15.9995 5.4087 15.3674 3.88258 14.2421 2.75736C13.1169 1.63214 11.5908 1 9.9995 1C8.4082 1 6.88208 1.63214 5.75686 2.75736C4.63164 3.88258 3.9995 5.4087 3.9995 7V7.75C4.00252 9.97463 3.17849 12.121 1.6875 13.772C3.4205 14.412 5.2475 14.857 7.1425 15.082M12.8565 15.082C10.9585 15.3071 9.04051 15.3071 7.1425 15.082M12.8565 15.082C13.0006 15.5319 13.0364 16.0094 12.9611 16.4757C12.8857 16.942 12.7013 17.384 12.4229 17.7656C12.1444 18.1472 11.7798 18.4576 11.3587 18.6716C10.9376 18.8856 10.4719 18.9972 9.9995 18.9972C9.52712 18.9972 9.06142 18.8856 8.64031 18.6716C8.21919 18.4576 7.85457 18.1472 7.57612 17.7656C7.29767 17.384 7.11326 16.942 7.03791 16.4757C6.96256 16.0094 6.9984 15.5319 7.1425 15.082" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
 
             <div v-if="! loadingNotifications" class="top-2 right-2 text-white rounded-full flex items-center justify-center absolute w-4 h-4 bg-brand-primary font-medium text-[0.5rem]">
@@ -130,12 +137,17 @@
     const user = computed(() => store.state.auth.user)
 
     const viewNotificationsMenu = ref(false)
+    const viewQuickActionsMenu = ref(false)
     const viewHeaderMenu = ref(false)
     const headerMenu = ref(null)
     const notificationMenu = ref(null)
 
     function toggleNotificationsView() {
         viewNotificationsMenu.value = !viewNotificationsMenu.value
+    }
+
+    function toggleQuickActionsView() {
+        viewQuickActionsMenu.value = !viewQuickActionsMenu.value
     }
 
     function toggleView() {
@@ -224,6 +236,10 @@
         }
 
         toggleNotificationsView()
+
+    }
+
+    function toggleQuickActionsMenu() {
 
     }
 

@@ -1,6 +1,5 @@
 <template>
 
-  <!--  TODO: remove min-w-[16rem] or not?-->
   <nav ref="navigation" :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full']" class="z-20 h-screen min-w-[16rem] bg-white sm:border-t border-r border-border-light xl:absolute xl:top-0 xl:left-0 flex flex-col transition-transform duration-300">
 
       <div class="w-full min-h-[4rem] px-4 flex items-center justify-between">
@@ -10,7 +9,7 @@
               <h1 class="text-xs text-subtitle">Management System</h1>
           </div>
 
-          <svg @click="toggleNavigation" class="w-4 h-4  stroke-[2.5] stroke-subtitle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <svg @click="toggleNavigation" class="hidden xl:inline w-4 h-4 stroke-[2.5] stroke-subtitle" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
 
