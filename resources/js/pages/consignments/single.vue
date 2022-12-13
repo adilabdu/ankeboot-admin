@@ -267,8 +267,8 @@
 
         <Modal>
 
-            <div ref="newSupplierForm" class="w-1/2 sm:animate-slide-up-modal animate-scale-up">
-                <Form :submit="submitNewSupplier" @cancel="addSupplier(false)" title-layout="contained" title="Assign a supplier" submit="assignSupplier">
+            <div ref="newSupplierForm" class="w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
+                <Form modal class="h-full w-full rounded-b-none" :submit="submitNewSupplier" @cancel="addSupplier(false)" title-layout="contained" title="Assign a supplier" submit="assignSupplier">
 
                     <div class="w-full sm:flex-col flex gap-8">
                         <TextInput required v-model="newSupplier.name" class="sm:w-full w-3/5" placeholder="Supplier full name" label="Full name" />
