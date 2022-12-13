@@ -8,10 +8,14 @@ use App\Models\DailySale;
 use App\Models\Deposit;
 use App\Models\SalesReceipt;
 use App\Models\MailingList;
+use App\Models\Store;
+use App\Models\StoreBook;
+use App\Models\StoreTransaction;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class StatisticsController extends Controller
@@ -198,7 +202,7 @@ class StatisticsController extends Controller
                 )->count();
 
         } catch (Exception $exception) {
-        
+
             return response([
                 'message' => 'error',
                 'data' => $exception->getMessage()
@@ -216,4 +220,66 @@ class StatisticsController extends Controller
 
     }
 
+    public function store(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'store_id' => 'required|exists:stores,id'
+        ]);
+
+        // TODO: Run these queries, for a given store "store_id"
+        // - Number of distinct book titles in store_id
+        // - Total copies of items in store_id inventory
+        // - Last Transaction in store_id
+
+        try {
+
+            $bookStore = StoreBook::with('book')
+                ->where('store_id', $request->input('store_id'));
+
+            $total_copies = $bookStore->sum('balance');
+            $books_count = $bookStore->count();
+
+            if (StoreTransaction::where('store_id', $request->input('store_id'))->count()) {
+
+                $latest = StoreTransaction::with(
+                    'transaction',
+                    'transaction.book'
+                )
+                    ->where('store_id', $request->input('store_id'))
+                    ->get()->sortByDesc('transaction.transaction_on')
+                    ->first();
+
+                $latest_transaction = [
+                    'book' => $latest->transaction->book->title,
+                    'transaction_type' => $latest->transaction->type->value,
+                    'transaction_on' => $latest->transaction->transaction_on,
+                    'transaction_quantity' => $latest->quantity
+                ];
+
+            } else {
+
+                $latest_transaction = null;
+
+            }
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => [
+                'total_copies' => $total_copies,
+                'books_count' => $books_count,
+                'latest_transaction' => $latest_transaction
+            ]
+        ]);
+
+    }
 }
