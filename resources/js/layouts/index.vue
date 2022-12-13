@@ -1,6 +1,6 @@
 <template>
 
-    <div class="flex flex-row max-w-full relative">
+    <div class="flex flex-row max-w-full relative overflow-x-hidden">
 
         <Navigation v-if="authenticated">
 
@@ -23,14 +23,19 @@
                             <path d="M5.5 19L1 14.5M1 14.5L5.5 10M1 14.5H14.5M14.5 1L19 5.5M19 5.5L14.5 10M19 5.5H5.5" :stroke="[props.active ? 'white' : 'black']" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </NavigationLink>
+                    <NavigationLink v-slot="props" label="stores">
+                        <svg class="w-6 h-6 fill-transparent stroke-[1.5] scale-90" :class="[props.active ? 'stroke-white' : 'stroke-black']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
+                        </svg>
+                    </NavigationLink>
                     <NavigationLink :number="store.state.daily_sale.unsubmitted" v-slot="props" label="daily sales" route="daily-sales">
                         <svg class="scale-90" width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 18V4C18 2.897 17.103 2 16 2H14V0H12V2H6V0H4V2H2C0.897 2 0 2.897 0 4V18C0 19.103 0.897 20 2 20H16C17.103 20 18 19.103 18 18ZM6 16H4V14H6V16ZM6 12H4V10H6V12ZM10 16H8V14H10V16ZM10 12H8V10H10V12ZM14 16H12V14H14V16ZM14 12H12V10H14V12ZM16 7H2V5H16V7Z" />
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="consignments" route="consignments">
-                        <svg class="scale-90" width="22" height="18" viewBox="0 0 22 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18.5 18C19.2956 18 20.0587 17.6839 20.6213 17.1213C21.1839 16.5587 21.5 15.7956 21.5 15V10.5C21.5 9.70435 21.1839 8.94129 20.6213 8.37868C20.0587 7.81607 19.2956 7.5 18.5 7.5H3.5C2.70435 7.5 1.94129 7.81607 1.37868 8.37868C0.816071 8.94129 0.5 9.70435 0.5 10.5V15C0.5 15.7956 0.816071 16.5587 1.37868 17.1213C1.94129 17.6839 2.70435 18 3.5 18H18.5ZM0.5 7.146V3C0.5 2.20435 0.816071 1.44129 1.37868 0.87868C1.94129 0.316071 2.70435 0 3.5 0H8.879C9.47539 0.000259955 10.0473 0.237289 10.469 0.659L12.591 2.78C12.731 2.921 12.922 3 13.121 3H18.5C19.2956 3 20.0587 3.31607 20.6213 3.87868C21.1839 4.44129 21.5 5.20435 21.5 6V7.146C20.6758 6.40664 19.6072 5.99842 18.5 6H3.5C2.39279 5.99842 1.32417 6.40664 0.5 7.146V7.146Z"  :class="[props.active ? 'fill-white' : 'fill-black']" />
+                        <svg class="w-6 h-6 stroke-[1.5] fill-transparent" :class="[props.active ? 'stroke-white' : 'stroke-black']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path class="fill-none" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
                         </svg>
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="credit sales" route="credit-sales">

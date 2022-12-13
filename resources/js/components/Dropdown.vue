@@ -17,7 +17,7 @@
 
       <div @keyup.enter="toggleHideList" @click="toggleHideList" class="border-[0.5px] border-border-light rounded-md sm:w-full w-full bg-white h-full shadow-sm flex items-center justify-between">
 
-        <p v-if="modelValue" class="px-3">{{ modelValue }}</p>
+        <p v-if="modelValue" class="px-3">{{ resource_list ? selected : modelValue }}</p>
         <p v-else class="px-3 text-[#9CA3AF]">{{ placeholder }}</p>
 
         <div class="flex items-center justify-center h-full pr-3 gap-1 cursor-pointer">
@@ -31,8 +31,8 @@
 
       <!-- List of all Columns -->
       <ul :class="[showList ? '' : 'hidden', dropDirection === 'up' ? '-mt-2 -translate-y-full' : 'mt-12']" class="z-50 overflow-auto absolute max-h-72 w-full bg-white shadow-md rounded-md border-[0.5px] border-border-light">
-        <li @click="setChoice(index)" :class="[modelValue && modelValue === list[index] ? 'bg-brand-secondary text-brand-primary' : 'hover:bg-brand-secondary hover:text-brand']" class="whitespace-nowrap flex items-center justify-between gap-2 px-4 group cursor-pointer py-2" v-for="(name, index) in list">
-          <p>{{ name }}</p>
+        <li @click="setChoice(index)" :class="[modelValue && (modelValue === list[index] || modelValue['display'] === list[index]) ? 'bg-brand-secondary text-brand-primary' : 'hover:bg-brand-secondary hover:text-brand']" class="whitespace-nowrap flex items-center justify-between gap-2 px-4 group cursor-pointer py-2" v-for="(name, index) in list">
+          <p>{{ resource_list ? name[resource_list['display']] : name }}</p>
         </li>
       </ul>
     </div>
@@ -58,6 +58,10 @@ const props = defineProps({
   list: {
     type: Array,
     default: [ 5, 10, 25, 'All' ]
+  },
+  resource_list: {
+    type: Object,
+    default: null
   },
   dropDirection: {
     type: String,
@@ -93,9 +97,15 @@ function toggleHideList() {
   showList.value = !showList.value
 }
 
+const selected = ref(null)
 function setChoice(index) {
   toggleHideList()
-  emit('update:modelValue', props.list[index])
+  if (props.resource_list) {
+      emit('update:modelValue', props.list[index][props.resource_list.value])
+      selected.value = props.list[index][props.resource_list.display]
+  } else {
+      emit('update:modelValue', props.list[index])
+  }
 }
 
 const dropdown = ref(null)

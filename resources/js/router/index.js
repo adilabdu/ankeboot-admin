@@ -9,6 +9,10 @@ import BookLayout from "../pages/books/index.vue";
 import Books from "../pages/books/all.vue";
 import Book from "../pages/books/single.vue";
 
+import StoreLayout from "../pages/stores/index.vue";
+import Stores from "../pages/stores/all.vue";
+import Store from "../pages/stores/single.vue"
+
 import FormLayout from "../layouts/form-content-page.vue";
 import CreateBook from "../pages/new/books.vue";
 import CreateTransaction from "../pages/new/transactions.vue";
@@ -17,12 +21,14 @@ import UpdateTransaction from "../pages/update/transactions.vue"
 
 import TransactionLayout from "../pages/transactions/index.vue"
 import Transactions from "../pages/transactions/all.vue"
+import Transaction from "../pages/transactions/single.vue"
 
 import DailySaleLayout from "../pages/daily-sales/index.vue"
 import DailySales from "../pages/daily-sales/all.vue"
 import DailySale from "../pages/daily-sales/single.vue"
 
 import ConsignmentLayout from "../pages/consignments/index.vue"
+import Consignments from "../pages/consignments/all.vue"
 import Consignment from "../pages/consignments/single.vue"
 
 import DocumentLayout from "../pages/documents/index.vue"
@@ -110,6 +116,26 @@ const routes = [
         ],
     },
     {
+        path: '/stores',
+        name: 'StoreLayout',
+        component: StoreLayout,
+        meta: {
+            requiresLogin: true
+        },
+        children: [
+            {
+                path: '',
+                name: 'Stores',
+                component: Stores
+            },
+            {
+                path: ':id',
+                name: 'Store',
+                component: Store
+            }
+        ],
+    },
+    {
         path: '/transactions',
         name: 'TransactionLayout',
         component: TransactionLayout,
@@ -122,6 +148,11 @@ const routes = [
                 name: 'Transactions',
                 component: Transactions
             },
+            {
+                path: ':id',
+                name: 'Transaction',
+                component: Transaction
+            }
         ],
     },
     {
@@ -168,6 +199,11 @@ const routes = [
             requiresLogin: true
         },
         children: [
+            {
+                path: '',
+                name: 'Consignments',
+                component: Consignments
+            },
             {
                 path: ':id',
                 name: 'Consignment',
