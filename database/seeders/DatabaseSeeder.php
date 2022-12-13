@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Book;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Deposit;
@@ -27,6 +29,8 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->seedUser();
+        $this->seedBook();
+        $this->seedStore();
         $this->seedDailySales();
 
     }
@@ -56,6 +60,39 @@ class DatabaseSeeder extends Seeder
 
         } catch (Exception $e) {
             dd('Error: ' . $e->getMessage());
+        }
+    }
+
+    private function seedBook()
+    {
+        try {
+            Book::factory()->count(20)->create();
+        } catch (Exception $e) {
+            dd('Error: ', $e->getMessage());
+        }
+    }
+
+    private function seedStore()
+    {
+        try {
+            Store::create([
+                'name' => 'Shop',
+                'primary' => true,
+            ]);
+            Store::create([
+                'name' => 'Bole Store 1',
+            ]);
+            Store::create([
+                'name' => 'Bole Store 2'
+            ]);
+            Store::create([
+                'name' => 'Bole Store 3'
+            ]);
+            Store::create([
+                'name' => 'Welete Warehouse'
+            ]);
+        } catch (Exception $e) {
+            dd('Error: ', $e->getMessage());
         }
     }
 
