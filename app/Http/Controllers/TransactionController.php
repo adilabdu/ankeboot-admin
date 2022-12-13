@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Enums\TransactionType;
 use App\Models\Book;
 use App\Models\DailySale;
+use App\Models\Store;
+use App\Models\StoreBook;
+use App\Models\StoreTransaction;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 use Carbon\Carbon;
 
@@ -26,7 +31,13 @@ class TransactionController extends Controller
 
         try {
             if ($request->has('id')) {
-                $books = Transaction::with('book')->find($request->input('id'));
+                $books = [
+                    'transaction' => Transaction::with('book')
+                        ->find($request->input('id')),
+                    'stores' => StoreTransaction::with('store')
+                        ->where('transaction_id', $request->input('id'))
+                        ->get()
+                ];
             } else {
                 $books = Transaction::with('book')->get();
             }
@@ -41,7 +52,7 @@ class TransactionController extends Controller
             return response([
                 'message' => 'error',
                 'data' => $e->getMessage()
-            ]);
+            ], 500);
 
         }
     }
@@ -49,7 +60,7 @@ class TransactionController extends Controller
     public function post(Request $request): Response|Application|ResponseFactory
     {
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'invoice' => 'required',
             'book_id' => 'required|exists:books,id',
             'transaction_on' => 'required|date_format:d-m-Y',
@@ -57,41 +68,98 @@ class TransactionController extends Controller
                 'required',
                 new Enum(TransactionType::class)
             ],
-            'quantity' => 'required|integer'
+            'quantity' => 'required',
+            'quantity.*' => [
+                'required_if:type,purchase',
+            ],
+            'quantity.*.store_id' => 'required_if:type,purchase|exists:stores,id',
+            'quantity.*.amount' => 'required_if:type,purchase|integer'
         ]);
+
+        $validator->sometimes('quantity', 'array', function ($input) {
+            return $input->type === 'purchase';
+        });
+
+        $validator->sometimes('quantity', 'integer', function ($input) {
+            return $input->type === 'sale';
+        });
+
+        $validator->validate();
 
         try {
 
-            $book = Book::find($request->input('book_id'));
-            if (TransactionType::from($request->input('type')) === TransactionType::SALE) {
-                if ($request->input('quantity') > $book->balance) {
+            if (TransactionType::from($request->input('type')) === TransactionType::PURCHASE) {
+
+                // Get sum of quantities user is transacting
+                $quantity = 0;
+                foreach ($request->input('quantity') as $q) {
+                    $quantity += $q['amount'];
+                }
+
+                // Create a new Transaction
+                $transaction = Transaction::create([
+                    'invoice' => $request->input('invoice'),
+                    'book_id' => $request->input('book_id'),
+                    'transaction_on' => $request->input('transaction_on'),
+                    'type' => $request->input('type'),
+                    'quantity' => $quantity
+                ]);
+
+                foreach ($request->input('quantity') as $q) {
+
+                    $storeBook = StoreBook::firstOrCreate([
+                        'store_id' => $q['store_id'],
+                        'book_id' => $request->input('book_id')
+                    ]);
+
+                    $storeBook->balance += $q['amount'];
+                    $storeBook->save();
+
+                    StoreTransaction::create([
+                        'store_id' => $q['store_id'],
+                        'transaction_id' => $transaction->id,
+                        'quantity' => $q['amount']
+                    ]);
+
+                }
+
+            } else {
+
+                $onShelf = StoreBook::firstOrCreate([
+                    'book_id' => $request->input('book_id'),
+                    'store_id' => Store::primary()->id
+                ])->balance;
+
+                if ($onShelf < $request->input('quantity')) {
 
                     return response([
                         'message' => 'error',
-                        'data' => 'Sale cannot exceed current book balance (' . $book->balance . ')'
+                        'data' => 'Sale quantity exceeds primary store balance'
                     ], 422);
 
                 }
-            }
 
-            $transaction = Transaction::create($request->all());
+                $transaction = Transaction::create([
+                    'invoice' => $request->input('invoice'),
+                    'book_id' => $request->input('book_id'),
+                    'transaction_on' => $request->input('transaction_on'),
+                    'type' => $request->input('type'),
+                    'quantity' => $request->input('quantity')
+                ]);
 
-            if ($transaction->type === TransactionType::SALE) {
+                $storeBook = StoreBook::where([
+                    'store_id' => Store::primary()->id,
+                    'book_id' => $request->input('book_id')
+                ])->first();
 
-                $dailySale = DailySale::where('date_of', Carbon::parse($transaction->transaction_on))->first();
+                $storeBook->balance = $storeBook->balance - $request->input('quantity');
+                $storeBook->save();
 
-                if ($dailySale) {
-
-                    $dailySale->transactions()->save($transaction);
-
-                } else {
-
-                    return response([
-                        'message' => 'error',
-                        'data' => 'Daily sale not found'
-                    ], 404);
-
-                }
+                StoreTransaction::create([
+                    'store_id' => Store::primary()->id,
+                    'transaction_id' => $transaction->id,
+                    'quantity' => $request->input('quantity')
+                ]);
 
             }
 
@@ -128,8 +196,8 @@ class TransactionController extends Controller
 
             $transaction = Transaction::find($request->input('id'));
             $book = $transaction->book;
-           
-            // Handle case when updated sale exceeds balance 
+
+            // Handle case when updated sale exceeds balance
             if (TransactionType::from($request->input('type')) === TransactionType::SALE) {
 
                 $resetBalance = match($transaction->type) {
@@ -167,7 +235,5 @@ class TransactionController extends Controller
             'data' => $transaction
         ]);
     }
-
-
 
 }

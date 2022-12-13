@@ -48,13 +48,17 @@ const actions = {
         const transaction_on =
             `${parseInt(payload.date.date).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${(parseInt(payload.date.month) + 1).toLocaleString('en-US', { minimumIntegerDigits: 2 })}-${payload.date.year}`
 
-        return axios.post('/api/transactions', {
+        const data = {
             invoice: payload.invoice,
             transaction_on: transaction_on,
             book_id: payload.book_id,
             type: payload.type ? 'purchase' : 'sale',
-            quantity: payload.quantity,
-        }).then((response) => {
+            quantity: payload.type ? payload.store : payload.quantity,
+        }
+
+        console.log(data)
+
+        return axios.post('/api/transactions', data).then((response) => {
             return response.data
         }).catch((error) => {
             return error.response.data.message
