@@ -66,8 +66,8 @@
 
             <Cell name="invoice" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['invoice'].toLowerCase() }} </Cell>
             <Cell name="book_code" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['book_code'].toLowerCase() }} </Cell>
-            <LinkCell class="w-[90%]" name="book_title" :main="true" :hide="data.hide" :value="data['record']['book_title']" :to="'books/' + data['record']['book_id']">
-                <RouterLink :to="'books/' + data['record']['book_id']">
+            <LinkCell class="w-[90%]" name="book_title" :main="true" :hide="data.hide" :value="data['record']['book_title']" :to="'transactions/' + data['record']['id']">
+                <RouterLink :to="'/transactions/' + data['record']['id']">
                     {{ data['record']['book_title'] }}
                 </RouterLink>
             </LinkCell>

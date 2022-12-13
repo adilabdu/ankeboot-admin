@@ -6,6 +6,8 @@ use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -22,6 +24,15 @@ class Transaction extends Model
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function stores(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Store::class,
+            'store_transactions'
+        )
+            ->withTimestamps();
     }
 
     public function daily_sale(): BelongsTo

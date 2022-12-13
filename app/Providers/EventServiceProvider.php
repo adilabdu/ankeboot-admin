@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Events\NewSubscriberRegistered;
 use App\Models\Book;
+use App\Models\StoreBook;
 use App\Models\Transaction;
 use App\Observers\BookObserver;
+use App\Observers\StoreBookObserver;
 use App\Observers\TransactionObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -35,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
     {
         Book::observe(BookObserver::class);
         Transaction::observe(TransactionObserver::class);
+        StoreBook::observe(StoreBookObserver::class);
     }
 
     /**
