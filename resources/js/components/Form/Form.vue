@@ -29,7 +29,13 @@
                 modal ? 'sm:rounded-b-none' : ''
             ]"
             @submit.prevent="submit"
-            class="p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
+            class="relative p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
+
+            <div v-if="isMounting" class="top-0 left-0 w-full h-full rounded-lg backdrop-blur absolute z-10">
+
+                <LoadingIndicator component-class="border border-border-light shadow-sm" />
+
+            </div>
 
             <div v-if="titleLayout === 'contained' || smallerThanMd" class="flex flex-col gap-1">
                 <h1 class="text-base">{{ title }}</h1>
@@ -78,6 +84,8 @@
 <script setup>
 
     import { computed } from "vue";
+    import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+    import LoadingIndicator from "../LoadingIndicator.vue";
 
     const props = defineProps({
         title: {
@@ -104,6 +112,10 @@
             type: Boolean,
             default: false
         },
+        mounting: {
+            type: Boolean,
+            default: false
+        },
         titleLayout: {
             type: String,
             default: 'panel'
@@ -117,8 +129,7 @@
     const emits = defineEmits(['cancel'])
 
     const isLoading = computed(() => props.loading)
-
-    import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+    const isMounting = computed(() => props.mounting)
 
     const breakpoints = useBreakpoints(breakpointsTailwind)
 

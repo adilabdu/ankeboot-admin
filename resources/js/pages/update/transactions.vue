@@ -1,13 +1,13 @@
 <template>
 
-    <Form title-layout="panel" title="Register new Transaction" :submit="updateTransaction">
+    <Form :mounting="!! ! transactionData.book_title" title-layout="panel" title="Register new Transaction" :submit="updateTransaction">
 
         <template #subtitle>
             Search through the book records and select the item to register a new transaction for.
             Do not forget to specify the transaction type (purchase / sale).
         </template>
 
-        <TextInput v-if="store.state.transaction.transaction" disabled v-model="store.state.transaction.transaction.book.title" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
+        <TextInput disabled v-model="transactionData.book_title" class="w-full" placeholder="Book title for Transaction" label="Book for Transaction" />
 
         <div class="flex gap-8 w-full">
             <TextInput required v-model="transactionData.invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
@@ -97,11 +97,12 @@
     onMounted(() => {
 
         getTransaction(useRoute().params.id).then(() => {
-            
-            const transaction = store.state.transaction.transaction
-            
+
+            const transaction = store.state.transaction.transaction.transaction
+
             transactionData.value.id = transaction.id
-            transactionType.value.type = transaction.type === 'purchase' ? true : false
+            transactionType.value.type = transaction.type === 'purchase'
+            transactionData.value.book_title = transaction.book.title
             transactionData.value.book_id = transaction.id
             transactionData.value.quantity = transaction.quantity
             transactionData.value.invoice = transaction.invoice
@@ -110,7 +111,7 @@
                 month: new Date(transaction.transaction_on).getMonth(),
                 year: new Date(transaction.transaction_on).getFullYear(),
             }
-        
+
         })
 
     })

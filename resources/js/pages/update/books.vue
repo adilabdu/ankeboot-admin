@@ -1,6 +1,6 @@
 <template>
 
-    <Form title="Register new Book" :submit="updateBook">
+    <Form :mounting="!! ! bookData.title" title="Register new Book" :submit="updateBook">
 
         <TextInput required label="Book title" placeholder="Insert new book title" v-model="bookData.title"/>
         <TextInput label="አማርኛ አርእስት" placeholder="የአማርኛ አርእስቱን ያስገቡ" v-model="bookData.alternate_title"/>
