@@ -29,9 +29,9 @@
                 modal ? 'sm:rounded-b-none' : ''
             ]"
             @submit.prevent="submit"
-            class="relative p-6 bg-white overflow-hidden rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
+            class="relative p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
 
-            <div v-if="isMounting" class="top-0 left-0 w-full h-full backdrop-blur absolute z-10">
+            <div v-if="isMounting" class="top-0 left-0 w-full h-full rounded-lg backdrop-blur absolute z-10">
 
                 <LoadingIndicator component-class="border border-border-light shadow-sm" />
 
