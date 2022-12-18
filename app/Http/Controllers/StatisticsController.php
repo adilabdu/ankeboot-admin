@@ -235,11 +235,13 @@ class StatisticsController extends Controller
                 ->sortByDesc('transaction.transaction_on')
                 ->first();
 
+            $storeBook = StoreBook::where('store_id', $request->input('store_id'));
+
             return response([
                 'message' => 'ok',
                 'data' => [
-                    'total_copies' => StoreBook::where('store_id', $request->input('store_id'))->sum('balance'),
-                    'books_count' => Store::where('id', $request->input('store_id'))->first()->books->count(),
+                    'total_copies' => $storeBook->sum('balance'),
+                    'books_count' => $storeBook->count(),
                     'latest_transaction' => $latest ? [
                         'book_title' => $latest->transaction->book->title,
                         'type' => $latest->transaction->type,
