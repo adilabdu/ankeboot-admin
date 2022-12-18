@@ -8,10 +8,14 @@ use App\Models\DailySale;
 use App\Models\Deposit;
 use App\Models\SalesReceipt;
 use App\Models\MailingList;
+use App\Models\Store;
+use App\Models\StoreBook;
+use App\Models\StoreTransaction;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class StatisticsController extends Controller
@@ -198,7 +202,7 @@ class StatisticsController extends Controller
                 )->count();
 
         } catch (Exception $exception) {
-        
+
             return response([
                 'message' => 'error',
                 'data' => $exception->getMessage()
@@ -213,6 +217,46 @@ class StatisticsController extends Controller
                 'count_last_month' => $entries_last_month
             ]
         ], 200);
+
+    }
+
+    public function store(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'store_id' => 'required|exists:stores,id'
+        ]);
+
+        try {
+
+            $latest = StoreTransaction::with('transaction', 'transaction.book')
+                ->where('store_id', $request->input('store_id'))
+                ->get()
+                ->sortByDesc('transaction.transaction_on')
+                ->first();
+
+            return response([
+                'message' => 'ok',
+                'data' => [
+                    'total_copies' => StoreBook::where('store_id', $request->input('store_id'))->sum('balance'),
+                    'books_count' => Store::where('id', $request->input('store_id'))->first()->books->count(),
+                    'latest_transaction' => $latest ? [
+                        'book_title' => $latest->transaction->book->title,
+                        'type' => $latest->transaction->type,
+                        'quantity' => $latest->quantity,
+                        'on' => $latest->transaction->transaction_on
+                    ] : null
+                ]
+            ]);
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
 
     }
 

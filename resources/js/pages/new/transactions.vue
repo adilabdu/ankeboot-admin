@@ -9,7 +9,9 @@
 
         <ItemSearchInput
             required
-            v-model="transactionData.book_id"
+            @click="toggleNewBookModal"
+            v-model:form-data="transactionData.book_id"
+            v-model:selected="book_title"
             selectable="id"
             placeholder="Search for book item with (code, title)"
             label="Book for Transaction"
@@ -121,6 +123,8 @@
 
     </Teleport>
 
+    <CreateBookModal :show="openNewBookModal" @close="toggleNewBookModal" @data="getBookData" />
+
 </template>
 
 <script setup>
@@ -136,9 +140,20 @@
     import Modal from "../../components/Modal.vue";
     import ItemSearchInput from "../../components/Form/ItemSearchInput.vue"
     import Dropdown from "../../components/Dropdown.vue";
-    import transaction from "../../store/modules/transaction";
+    import CreateBookModal from "../../views/CreateBookModal.vue"
 
     const books = computed(() => store.state.book.books)
+
+    const openNewBookModal = ref(false)
+    function toggleNewBookModal() {
+        openNewBookModal.value = !openNewBookModal.value
+    }
+
+    const book_title = ref(null)
+    function getBookData(payload) {
+        book_title.value = payload.title
+        transactionData.value.book_id = payload.id
+    }
 
     const storesData = ref([
         {

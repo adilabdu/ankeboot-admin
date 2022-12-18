@@ -1,6 +1,6 @@
 <template>
 
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-6 gap-4">
+    <div class="grid sm:grid-cols-1 sm:w-full sm:place-items-center md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-6 gap-4">
 
         <template v-for="store in stores">
             <StoreItemCard :store="store" />
@@ -12,53 +12,53 @@
             </svg>
         </button>
 
-        <Teleport v-if="modalState" to="#top-view">
+    </div>
 
-            <Modal>
+    <Teleport v-if="modalState" to="#top-view">
 
-                <div id="formModal" ref="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
+        <Modal>
 
-                    <Form
-                        modal
-                        @cancel="toggleModal"
-                        :submit="submitNewStore"
-                        class="h-full w-full rounded-b-none"
-                        title="Register new Store (Warehouse)"
-                        subtitle="Fill in the information of the new store or warehouse to be registered. Address information is optional but recommended to avoid duplicate entries."
-                        title-layout="contained"
-                    >
+            <div id="formModal" ref="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
 
-                        <div class="flex w-full gap-8">
-                            <TextInput v-model="newStore.name" class="grow" required placeholder="New Store Name" label="Store (Warehouse) name" />
-                            <SwitchInput v-model="newStore.primary" label-location="top" label="Primary" />
+                <Form
+                    modal
+                    @cancel="toggleModal"
+                    :submit="submitNewStore"
+                    class="h-full w-full rounded-b-none"
+                    title="Register new Store (Warehouse)"
+                    subtitle="Fill in the information of the new store or warehouse to be registered. Address information is optional but recommended to avoid duplicate entries."
+                    title-layout="contained"
+                >
+
+                    <div class="flex w-full gap-8">
+                        <TextInput v-model="newStore.name" class="grow" required placeholder="New Store Name" label="Store (Warehouse) name" />
+                        <SwitchInput v-model="newStore.primary" label-location="top" label="Primary" />
+                    </div>
+
+                    <Collapsable open collapse-direction="down" :label="['Address information', 'Address information']">
+
+                        <div class="w-full flex sm:flex-col gap-8">
+                            <TextInput v-model="newStore.address.sub_city" class="sm:w-full w-1/3" required placeholder="Sub-City" label="Sub-City" />
+                            <TextInput v-model="newStore.address.kebele" class="sm:w-full w-1/3" required placeholder="Kebele" label="Kebele" />
+                            <TextInput v-model="newStore.address.house_number" class="sm:w-full w-1/3" placeholder="House No." label="House No." />
                         </div>
 
-                        <Collapsable open collapse-direction="down" :label="['Address information', 'Address information']">
+                        <div class="w-full sm:flex-col flex gap-8">
+                            <TextInput v-model="newStore.address.country" class="sm:w-full w-1/2" required placeholder="Country" label="Country" />
+                            <TextInput v-model="newStore.address.city" class="sm:w-full w-1/2" required placeholder="City" label="City" />
+                        </div>
 
-                            <div class="w-full flex sm:flex-col gap-8">
-                                <TextInput v-model="newStore.address.sub_city" class="sm:w-full w-1/3" required placeholder="Sub-City" label="Sub-City" />
-                                <TextInput v-model="newStore.address.kebele" class="sm:w-full w-1/3" required placeholder="Kebele" label="Kebele" />
-                                <TextInput v-model="newStore.address.house_number" class="sm:w-full w-1/3" placeholder="House No." label="House No." />
-                            </div>
+                    </Collapsable>
 
-                            <div class="w-full sm:flex-col flex gap-8">
-                                <TextInput v-model="newStore.address.country" class="sm:w-full w-1/2" required placeholder="Country" label="Country" />
-                                <TextInput v-model="newStore.address.city" class="sm:w-full w-1/2" required placeholder="City" label="City" />
-                            </div>
+                </Form>
 
-                        </Collapsable>
-
-                    </Form>
-
-                </div>
+            </div>
 
 
 
-            </Modal>
+        </Modal>
 
-        </Teleport>
-
-    </div>
+    </Teleport>
 
 </template>
 

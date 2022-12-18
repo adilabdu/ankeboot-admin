@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class ConsignmentController extends Controller
 {
@@ -131,7 +132,7 @@ class ConsignmentController extends Controller
                 $settlement->type = 'settlement';   // For each record, add `type: settlement`
             });
 
-            $consignmentHistory = $transactions->merge($settlements)
+            $consignmentHistory = $transactions->concat($settlements)
                 ->sortBy('transaction_on')
                 ->values()
                 ->all();
@@ -169,14 +170,14 @@ class ConsignmentController extends Controller
 
         try {
 
-            $payable = Book::find($request->input('book_id'))->payable();
+            $max_payable = Book::find($request->input('book_id'))->max_payable();
 
-            if ($request->input('quantity') > $payable) {
+            if ($request->input('quantity') > $max_payable) {
 
                 return response([
                     'message' => 'error',
-                    'data' => 'Maximum payable quantity is ' . $payable
-                ]);
+                    'data' => 'Maximum payable quantity is ' . $max_payable
+                ], 422);
 
             }
 

@@ -49,19 +49,25 @@
 
                         <li @click="notificationAction(unread.type, unread.id)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b ">
 
-                            <div class="w-12 flex justify-center items-center">
-                                <div class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
-                                    +
+                            <div class="w-12 flex justify-center items-start">
+                                <div class="grid place-items-center w-9 h-9 bg-green-100 rounded-full">
+                                    <div class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                                        </svg>
+                                    </div>
                                 </div>
                             </div>
                             <div v-if="unread.type = 'App\\Notifications\\NewSubscriberRegistered'" class="grow flex flex-col gap-1">
-                                <p class="font-medium">New Subscriber</p>
+                                <div class="flex items-center justify-between">
+                                    <p class="font-medium">New Subscriber</p>
+                                    <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
+                                </div>
                                 <p class="text-subtitle">
                                     <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
                                     You can find them in the subscribers list.
                                 </p>
                             </div>
-                            <div class="text-subtitle">1h</div>
 
                         </li>
 
@@ -132,6 +138,10 @@
     import store from "../store"
     import router from "../router"
     import axios from "axios";
+    import { local_time_ago } from "../utils";
+    import { format, render, cancel, register } from 'timeago.js';
+
+    register('my-locale', local_time_ago)
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const user = computed(() => store.state.auth.user)

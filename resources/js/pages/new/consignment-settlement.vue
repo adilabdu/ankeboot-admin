@@ -85,7 +85,7 @@
             })
             .catch(error => {
 
-                alert(`Error while registering settlement ${error.response.data.message}`)
+                alert(`Error while registering settlement: ${error.response.data.data}`)
 
             })
 

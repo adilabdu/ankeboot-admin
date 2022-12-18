@@ -146,10 +146,10 @@ const actions = {
         }).then((response) => {
 
             commit('getBook', response.data.data)
-        
+
         }).catch((error) => {
 
-                
+
             router.push({ name: 'Books' }).then(() => {
 
                 if (error.response.status === 500) {
@@ -165,7 +165,7 @@ const actions = {
                         type: 'error',
                         message: error.response.data.message
                     })
-                    
+
                 }
 
             })
@@ -179,10 +179,10 @@ const actions = {
         }).then((response) => {
 
             commit('getBooksStats', response.data.data)
-        
+
         }).catch((error) => {
 
-            
+
 
         })
 

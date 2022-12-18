@@ -44,7 +44,7 @@
         :data="transactions"
         :center="['code', 'quantity']"
         :right="[]"
-        :sortable="['transaction_type']"
+        :sortable="['transaction_type', 'transaction_date']"
         :searchable="['book_title', 'transaction_date']"
         :hideable="false"
         :hide="['book_id', 'id']"

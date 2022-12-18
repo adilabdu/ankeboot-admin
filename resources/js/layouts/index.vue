@@ -130,7 +130,9 @@
 
     onMounted(() => {
 
-        !! localStorage.getItem('connection') ? '' : localStorage.setItem('connection', 'mysql')
+        if (!! ! localStorage.getItem('connection')) {
+            localStorage.setItem('connection', 'mysql')
+        }
 
     })
 
