@@ -41,8 +41,8 @@
             <div class="text-sm font-normal flex flex-col" v-if="statistics">
                 <template v-if="statistics['latest_transaction']">
                     <div class="flex items-center gap-4">
-                        <p class="text-xl font-medium whitespace-nowrap max-w-[18rem] truncate">{{ statistics['latest_transaction']['book'] }}</p>
-                        <svg v-if="statistics['latest_transaction']['transaction_type'] === 'sale'" class="stroke-2 stroke-red-600 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <p class="text-xl font-medium whitespace-nowrap max-w-[18rem] truncate">{{ statistics['latest_transaction']['book_title'] }}</p>
+                        <svg v-if="statistics['latest_transaction']['type'] === 'sale'" class="stroke-2 stroke-red-600 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <svg v-else class="w-5 h-5 stroke-2 stroke-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -51,11 +51,11 @@
                     </div>
                     <div class="flex gap-4">
                         <p class="text-xs">
-                            {{ statistics['latest_transaction']['transaction_quantity'] }}
+                            {{ statistics['latest_transaction']['quantity'] }}
                             <span v-if="statistics['latest_transaction']['transaction_quantity'] > 1">copies</span>
                             <span v-else>copy</span>
                         </p>
-                        <p class="text-subtitle text-xs">{{ new Date(statistics['latest_transaction']['transaction_on']).toLocaleDateString() }}</p>
+                        <p class="text-subtitle text-xs">{{ new Date(statistics['latest_transaction']['on']).toLocaleDateString() }}</p>
                     </div>
                 </template>
                 <span v-else class="text-3xl font-medium text-subtitle scale-75 origin-left">N/A</span>

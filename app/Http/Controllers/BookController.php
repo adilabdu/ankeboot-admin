@@ -7,6 +7,9 @@ use App\Enums\PurchaseType;
 use App\Enums\TransactionType;
 use App\Models\Book;
 use App\Models\Log;
+use App\Models\Store;
+use App\Models\StoreBook;
+use App\Models\StoreTransaction;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -50,6 +53,34 @@ class BookController extends Controller
             ], 500);
 
         }
+    }
+
+    public function stores(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'id' => 'required|exists:books,id'
+        ]);
+
+        try {
+
+            $stores = StoreBook::with('store')
+                ->where('book_id', $request->input('id'))
+                ->get();
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'success',
+            'data' => $stores
+        ]);
     }
 
     public function post(Request $request): Response|Application|ResponseFactory
@@ -99,11 +130,12 @@ class BookController extends Controller
             $book = Book::create($book_data);
 
             if ($request->has('transaction_invoice')) {
-                $book->transactions()
+
+                $transaction = $book->transactions()
                     ->save(new Transaction([
                         'invoice' => $request->input('transaction_invoice'),
                         'transaction_on' => $request->input('transaction_on'),
-                        'type' => $request->input('transaction_type'),
+                        'type' => TransactionType::PURCHASE,
                         'quantity' => $request->input('transaction_quantity'),
                     ])
                 );
@@ -136,7 +168,7 @@ class BookController extends Controller
         $request->validate([
             'id' => 'required|exists:books,id',
             'code' => [
-                'required', 
+                'required',
                 Rule::unique('books')->ignore(Book::find($request->input('id')), 'code')
             ],
             'type' => [
@@ -198,7 +230,7 @@ class BookController extends Controller
 
     public function delete(Request $request)
     {
-        
+
         $request->validate([
             'id' => 'required|exists:books,id',
         ]);
@@ -208,14 +240,14 @@ class BookController extends Controller
             $book = Book::query()
                 ->where('id', $request->input('id'))
                 ->delete();
-        
+
         } catch (Exception $e) {
-            
+
             return response([
                 'message' => 'error',
                 'data' => $e->getMessage(),
             ], 500);
-        
+
         }
 
         return response([

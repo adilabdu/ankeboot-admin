@@ -318,7 +318,7 @@
 
   <div class="w-full flex flex-col sm:gap-4" :class="[title ? 'gap-4' : '']">
 
-    <div class="flex gap-8 sm:flex-col sm:items-start justify-between items-start sm:gap-3">
+    <div v-if="!condensed" class="flex gap-8 sm:flex-col sm:items-start justify-between items-start sm:gap-3">
       <div class="flex flex-col justify-between sm:gap-1">
         <h1 v-if="title" class="text-base font-medium capitalize">{{ title }}</h1>
         <h2 class="text-subtitle text-justify">

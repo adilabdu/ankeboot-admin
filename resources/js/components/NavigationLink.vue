@@ -45,7 +45,7 @@
             default: (props) => props.label
         },
         number: {
-            type: Number
+            type: [Number, String]
         }
 
     })

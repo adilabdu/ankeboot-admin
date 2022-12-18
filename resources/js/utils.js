@@ -91,9 +91,9 @@ function digitToWritten(digit) {
 
     let integerWritten = ''
     for (let i = 0; i < integerStack.length; i++) {
-        
+
         if (i === 0) {
-            integerWritten = integerStack[i] === '0' ? '' : ones[integerStack[i]]  
+            integerWritten = integerStack[i] === '0' ? '' : ones[integerStack[i]]
         } else if (i % 3 === 1) {
             integerWritten = (integerStack[i] === '0' ? '' : integerStack[i] === '1' && integerStack[i-1] === '0' ? ten : (tens[integerStack[i]])) + ' ' + integerWritten
         } else if (i % 3 === 2) {
@@ -191,8 +191,30 @@ function footerWords() {
 
 }
 
+const local_time_ago = (number, index, totalSec) => {
+    // number: the timeago / timein number;
+    // index: the index of array below;
+    // totalSec: total seconds between date to be formatted and today's date;
+    return [
+        ['just now', 'right now'],
+        ['%s secs ago', 'in %s secs'],
+        ['1 min ago', 'in 1 min'],
+        ['%s mins ago', 'in %s mins'],
+        ['1 hour ago', 'in 1 hour'],
+        ['%s hours ago', 'in %s hours'],
+        ['1 day ago', 'in 1 day'],
+        ['%s days ago', 'in %s days'],
+        ['1 week ago', 'in 1 week'],
+        ['%s weeks ago', 'in %s weeks'],
+        ['1 month ago', 'in 1 mnt'],
+        ['%s months ago', 'in %s months'],
+        ['1 year ago', 'in 1 year'],
+        ['%s years ago', 'in %s years']
+    ][index];
+};
+
 export {
-    ethiopianDate, digitToWritten,
+    local_time_ago, ethiopianDate, digitToWritten,
     ethiopianMonths, ethiopianDays, months, days,
     formatDate, getRandomInt, footerWords, formatPrice,
     formatNumber, arrayToStrings, formatNumberToTwoIntegerPlaces

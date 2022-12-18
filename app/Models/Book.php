@@ -57,7 +57,18 @@ class Book extends Model
         return -1;
     }
 
-    public function payable(): int
+    public function max_payable(): int|null
+    {
+        if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
+
+            return $this['balance'] + $this->payable();
+
+        }
+
+        return null;
+    }
+
+    public function payable(): int|null
     {
 
         if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
@@ -70,7 +81,7 @@ class Book extends Model
 
         }
 
-        return -1;
+        return null;
     }
 
 }

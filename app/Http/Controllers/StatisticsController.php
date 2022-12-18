@@ -227,41 +227,29 @@ class StatisticsController extends Controller
             'store_id' => 'required|exists:stores,id'
         ]);
 
-        // TODO: Run these queries, for a given store "store_id"
-        // - Number of distinct book titles in store_id
-        // - Total copies of items in store_id inventory
-        // - Last Transaction in store_id
-
         try {
 
-            $bookStore = StoreBook::with('book')
-                ->where('store_id', $request->input('store_id'));
+            $latest = StoreTransaction::with('transaction', 'transaction.book')
+                ->where('store_id', $request->input('store_id'))
+                ->get()
+                ->sortByDesc('transaction.transaction_on')
+                ->first();
 
-            $total_copies = $bookStore->sum('balance');
-            $books_count = $bookStore->count();
+            $storeBook = StoreBook::where('store_id', $request->input('store_id'));
 
-            if (StoreTransaction::where('store_id', $request->input('store_id'))->count()) {
-
-                $latest = StoreTransaction::with(
-                    'transaction',
-                    'transaction.book'
-                )
-                    ->where('store_id', $request->input('store_id'))
-                    ->get()->sortByDesc('transaction.transaction_on')
-                    ->first();
-
-                $latest_transaction = [
-                    'book' => $latest->transaction->book->title,
-                    'transaction_type' => $latest->transaction->type->value,
-                    'transaction_on' => $latest->transaction->transaction_on,
-                    'transaction_quantity' => $latest->quantity
-                ];
-
-            } else {
-
-                $latest_transaction = null;
-
-            }
+            return response([
+                'message' => 'ok',
+                'data' => [
+                    'total_copies' => $storeBook->sum('balance'),
+                    'books_count' => $storeBook->count(),
+                    'latest_transaction' => $latest ? [
+                        'book_title' => $latest->transaction->book->title,
+                        'type' => $latest->transaction->type,
+                        'quantity' => $latest->quantity,
+                        'on' => $latest->transaction->transaction_on
+                    ] : null
+                ]
+            ]);
 
         } catch (Exception $exception) {
 
@@ -272,14 +260,6 @@ class StatisticsController extends Controller
 
         }
 
-        return response([
-            'message' => 'ok',
-            'data' => [
-                'total_copies' => $total_copies,
-                'books_count' => $books_count,
-                'latest_transaction' => $latest_transaction
-            ]
-        ]);
-
     }
+
 }

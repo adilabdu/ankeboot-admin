@@ -22,25 +22,23 @@
             <SwitchInput class="px-3" label-location="top" v-model="bookData.type" label="Consignment"/>
         </div>
 
-        <Collapsable open @open="toggleTransactionRegistration" :label="['Register first transaction', 'Register first transaction later']">
+        <Collapsable :open="false" collapse-direction="down" @open="toggleTransactionRegistration" :label="['Register first transaction', 'Register first transaction']">
 
-            <div class="border-b border-border-light w-full py-1 w-[95%] m-auto"></div>
-
-            <div class="flex sm:flex-col gap-8 w-full">
-                <TextInput required v-model="transactionData.transaction_invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
-                <DatePicker required v-model="transactionData.transaction_on" class="w-full" label="Transaction date" />
-            </div>
-
-            <div class="flex items-center gap-8 w-full">
-                <TextInput v-model="transactionData.transaction_quantity" required class="w-full" placeholder="Quantity of items in transaction" label="Item Quantity" />
-                <SwitchInput class="px-3 opacity-50" label-location="top" v-model="transaction_type.transaction_type" label="Purchase"/>
+            <div class="bg-wallpaper rounded-md text-subtitle font-medium flex gap-2 items-center w-full h-48 items-center justify-center">
+                <p>First transaction registration form</p>
+                <label class="text-2xs leading-none px-1.5 py-0.5 mt-0.5 font-semibold rounded-md text-red-600 bg-red-200">beta</label>
             </div>
 
         </Collapsable>
-        <Collapsable :open="false" @open="toggleSupplierRegistration" :label="['Register item supplier', 'Register item supplier later']">
+        <Collapsable :open="false" collapse-direction="down" @open="toggleSupplierRegistration" :label="['Register item supplier', 'Register item supplier later']">
 
             <div class="bg-wallpaper rounded-md text-subtitle font-medium flex w-full h-48 items-center justify-center">
                 Supplier registration form
+            </div>
+
+            <div class="bg-wallpaper rounded-md text-subtitle font-medium flex gap-2 items-center w-full h-48 items-center justify-center">
+                <p>First transaction registration form</p>
+                <label class="text-2xs leading-none px-1.5 py-0.5 mt-0.5 font-semibold rounded-md text-red-600 bg-red-200">beta</label>
             </div>
 
         </Collapsable>

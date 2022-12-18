@@ -1,6 +1,6 @@
 <template>
 
-    <RouterLink class="hover:shadow-md duration-150 transition-shadow shadow-sm flex flex-col items-center justify-center gap-4 h-64 bg-white rounded-xl border-border-light p-4" :to="`stores/${store['id']}`">
+    <RouterLink class="hover:shadow-md duration-150 transition-shadow shadow-sm flex flex-col items-center justify-center gap-4 h-64 bg-white rounded-xl border-border-light p-4 sm:max-w-[248px]" :to="`stores/${store['id']}`">
 
         <div class="shade h-14 w-14 rounded-full grid place-items-center" :class="[store['primary'] === 1 ? 'icon-primary' : 'icon-warehouse']">
             <div class="icon-bg h-12 w-12 rounded-full grid place-items-center">

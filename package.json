@@ -21,6 +21,7 @@
         "@vueuse/core": "^9.0.0",
         "chart.js": "^3.9.1",
         "ethiopian-date": "^0.0.6",
+        "timeago.js": "^4.0.2",
         "vue": "^3.2.37",
         "vue-router": "^4.1.2",
         "vue3-markdown-it": "^1.0.10",

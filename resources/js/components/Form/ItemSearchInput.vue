@@ -6,7 +6,7 @@
                 {{ label }}
                 <span v-if="required" class="text-red-600">*</span>
             </label>
-            <button @click="$emit('click')" type="button" class="px-2 text-brand-primary text-xs rounded-md">+ Create</button>
+            <button @click="$emit('click')" type="button" class="px-2 text-brand-primary text-xs rounded-md focus:outline-none hover:bg-border-light/25 transition-colors duration-300">+ Create</button>
         </div>
         <div v-if="selected" class="peer flex items-center justify-between focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md">
             <label class="">{{ selected }}</label>
@@ -54,7 +54,7 @@
             type: Boolean,
             default: false
         },
-        modelValue: {
+        formData: {
             type: [ String, Number ]
         },
         selectable: {
@@ -68,23 +68,25 @@
         searchLogic: {
             type: Function,
             required: true
+        },
+        selected: {
+            type: String
         }
     })
-    const emit = defineEmits(['click', 'update:modelValue'])
+    const emit = defineEmits(['click', 'update:formData', 'update:selected'])
 
     const searchResults = ref([])
     const searchQuery = ref('')
-    const selected = ref('')
 
     function selectSearchResult(search) {
-        emit('update:modelValue', search[props.selectable])
-        selected.value = search[props.displayData[0]]
+        emit('update:formData', search[props.selectable])
+        emit('update:selected', search[props.displayData[0]])
     }
 
     function resetSelected() {
-        selected.value = ''
+        emit('update:selected', '')
         searchQuery.value = ''
-        emit('update:modelValue', null)
+        emit('update:formData', null)
     }
 
     watch(searchQuery, () => {
@@ -100,9 +102,9 @@
 
     onMounted(() => {
 
-        if (!! props.modelValue) {
-            props.searchLogic(props.modelValue, '/api/books', 'id').then((response) => {
-                selected.value = response[props.displayData[0]]
+        if (!! props.formData) {
+            props.searchLogic(props.formData, '/api/books', 'id').then((response) => {
+                emit('update:selected', response[props.displayData[0]])
             })
         }
 
