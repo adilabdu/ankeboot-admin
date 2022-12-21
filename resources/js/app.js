@@ -3,6 +3,11 @@ import "../css/app.css"
 import store from "./store"
 import router from "./router/index"
 
+import.meta.glob([
+    '../assets/favicon/**',
+    '../assets/images/**',
+]);
+
 import App from "./App.vue"
 
 import './bootstrap'
