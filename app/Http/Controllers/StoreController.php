@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Address;
 use App\Models\Store;
 use App\Models\StoreBook;
+use App\Models\StoreTransaction;
+use App\Models\StoreTransfer;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -118,6 +120,45 @@ class StoreController extends Controller
         return response([
             'message' => 'ok',
             'data' => $storeList
+        ], 200);
+
+    }
+
+    public function history(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'id' => 'required|exists:stores,id'
+        ]);
+
+        try {
+
+            $storeTransaction = StoreTransaction::with('transaction')->where([
+                'store_id' => $request->input('id')
+            ])->get();
+
+            $storeTransfers = StoreTransfer::with('from', 'to')->where('from', $request->input('id'))
+                ->orWhere('to', $request->input('id'))
+                ->get();
+
+            $history = $storeTransaction
+                ->concat($storeTransfers)
+                ->sortBy('created_at')
+                ->values()
+                ->all();
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $history
         ], 200);
 
     }

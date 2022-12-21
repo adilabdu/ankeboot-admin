@@ -21,6 +21,55 @@
             <svg :class="[viewQuickActionsMenu ? 'scale-110 fill-zinc-300 stroke-zinc-600 stroke-1' : 'stroke-[1.5] stroke-subtitle']" @click="toggleQuickActionsView" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="transition-transform duration-300 group-hover:scale-110 group-hover:fill-zinc-300 group-hover:stroke-zinc-600 group-hover:stroke-1 w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
+
+            <div @click="toggleQuickActionsView" v-if="viewQuickActionsMenu" class="flex flex-col overflow-hidden absolute right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full animate-appear-down bg-white border border-border-light shadow-sm rounded-md">
+
+                <ul ref="quickActionsMenu" class="list scrollbar-mobile w-96 max-h-[350px] overflow-overlay min-h-[3rem] flex flex-col">
+
+                    <RouterLink to="new/books" class="grid grid-cols-7 px-4 pb-2.5 pt-4 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+
+                        <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-green-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="transition-colors duration-150 group-hover/quick-item:stroke-brand-primary stroke-green-600 w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+
+                        </div>
+
+                        <div class="col-span-6 flex flex-col gap-1">
+                            <p class="font-medium group-hover/quick-item:text-brand-primary transition-colors duration-150">New Book</p>
+                            <p class="text-subtitle">
+                                Register a new book into inventory.
+                                Go to "New Transaction" instead to add new book with first purchase
+                            </p>
+                        </div>
+
+                    </RouterLink>
+
+                    <RouterLink to="new/transactions" class="quick-item grid grid-cols-7 px-4 pt-2.5 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+
+                        <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-yellow-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="transition-colors duration-150 group-hover/quick-item:stroke-brand-primary stroke-yellow-600 w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                            </svg>
+
+                        </div>
+
+                        <div class="col-span-6 flex flex-col gap-1">
+                            <p class="font-medium group-hover/quick-item:text-brand-primary transition-colors duration-150">New Transaction</p>
+                            <p class="text-subtitle">
+                                Make a purchase or sale transaction of a new or existing item. Sale can only be made
+                                from a primary store
+                            </p>
+                        </div>
+
+                    </RouterLink>
+
+                </ul>
+
+            </div>
+
         </div>
 
         <!-- Notifications -->
@@ -151,6 +200,7 @@
     const viewHeaderMenu = ref(false)
     const headerMenu = ref(null)
     const notificationMenu = ref(null)
+    const quickActionsMenu = ref(null)
 
     function toggleNotificationsView() {
         viewNotificationsMenu.value = !viewNotificationsMenu.value
@@ -175,6 +225,12 @@
     onClickOutside(notificationMenu, () => {
         if (viewNotificationsMenu.value) {
             toggleNotificationsView()
+        }
+    })
+
+    onClickOutside(quickActionsMenu, () => {
+        if (viewQuickActionsMenu.value) {
+            toggleQuickActionsView()
         }
     })
 
@@ -246,10 +302,6 @@
         }
 
         toggleNotificationsView()
-
-    }
-
-    function toggleQuickActionsMenu() {
 
     }
 
@@ -331,6 +383,8 @@
         @apply bg-border-dark;
     }
 
-
+    .list .quick-item:last-child {
+        @apply pb-4;
+    }
 
 </style>

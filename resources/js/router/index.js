@@ -38,6 +38,8 @@ import New from "../pages/documents/new.vue"
 import MailingListLayout from "../pages/mailing-list/index.vue"
 import MailingLists from "../pages/mailing-list/all.vue"
 
+import ResourceLayout from "../pages/books/index.vue";
+
 const routes = [
     {
         path: '/',
@@ -250,6 +252,14 @@ const routes = [
                 component: MailingLists
             }
         ]
+    },
+    {
+        path: '/resources',
+        name: 'ResourceLayout',
+        component: ResourceLayout,
+        meta: {
+            requiresLogin: true
+        },
     }
 ]
 

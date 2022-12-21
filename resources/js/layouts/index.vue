@@ -8,33 +8,22 @@
 
                 <div class="flex flex-col">
                     <NavigationLink v-slot="props" label="dashboard" route="">
-                        <svg class="scale-90" width="18" height="18" viewBox="0 0 18 18" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 10H7C7.26522 10 7.51957 9.89464 7.70711 9.70711C7.89464 9.51957 8 9.26522 8 9V1C8 0.734784 7.89464 0.48043 7.70711 0.292893C7.51957 0.105357 7.26522 0 7 0H1C0.734784 0 0.48043 0.105357 0.292893 0.292893C0.105357 0.48043 0 0.734784 0 1V9C0 9.26522 0.105357 9.51957 0.292893 9.70711C0.48043 9.89464 0.734784 10 1 10ZM0 17C0 17.2652 0.105357 17.5196 0.292893 17.7071C0.48043 17.8946 0.734784 18 1 18H7C7.26522 18 7.51957 17.8946 7.70711 17.7071C7.89464 17.5196 8 17.2652 8 17V13C8 12.7348 7.89464 12.4804 7.70711 12.2929C7.51957 12.1054 7.26522 12 7 12H1C0.734784 12 0.48043 12.1054 0.292893 12.2929C0.105357 12.4804 0 12.7348 0 13V17ZM10 17C10 17.2652 10.1054 17.5196 10.2929 17.7071C10.4804 17.8946 10.7348 18 11 18H17C17.2652 18 17.5196 17.8946 17.7071 17.7071C17.8946 17.5196 18 17.2652 18 17V10C18 9.73478 17.8946 9.48043 17.7071 9.29289C17.5196 9.10536 17.2652 9 17 9H11C10.7348 9 10.4804 9.10536 10.2929 9.29289C10.1054 9.48043 10 9.73478 10 10V17ZM11 7H17C17.2652 7 17.5196 6.89464 17.7071 6.70711C17.8946 6.51957 18 6.26522 18 6V1C18 0.734784 17.8946 0.48043 17.7071 0.292893C17.5196 0.105357 17.2652 0 17 0H11C10.7348 0 10.4804 0.105357 10.2929 0.292893C10.1054 0.48043 10 0.734784 10 1V6C10 6.26522 10.1054 6.51957 10.2929 6.70711C10.4804 6.89464 10.7348 7 11 7Z" />
-                        </svg>
+                        <PresentationChartLineIcon :class="[props.active ? 'stroke-white' : 'stroke-black', 'stroke-[1.5] scale-90']" />
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="books">
-                        <svg class="scale-90" width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 20H18V18H3.012C2.55 17.988 2 17.805 2 17C2 16.195 2.55 16.012 3.012 16H18V2C18 0.897 17.103 0 16 0H3C1.794 0 0 0.799 0 3V17C0 19.201 1.794 20 3 20ZM2 6V3C2 2.195 2.55 2.012 3 2H16V14H2V6Z" />
-                            <path d="M5 4H14V6H5V4Z"/>
-                        </svg>
+                        <BookOpenIcon class="scale-90 stroke-[1.5]" :class="[props.active ? 'stroke-white' : 'stroke-black']" />
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="transactions">
-                        <svg class="scale-90" width="20" height="20" viewBox="0 0 20 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.5 19L1 14.5M1 14.5L5.5 10M1 14.5H14.5M14.5 1L19 5.5M19 5.5L14.5 10M19 5.5H5.5" :stroke="[props.active ? 'white' : 'black']" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <ArrowPathRoundedSquareIcon class="scale-90 stroke-[1.5]" :class="[props.active ? 'stroke-white' : 'stroke-black']" />
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="stores">
-                        <svg class="w-6 h-6 fill-transparent stroke-[1.5] scale-90" :class="[props.active ? 'stroke-white' : 'stroke-black']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z" />
-                        </svg>
+                        <BuildingStorefrontIcon class="stroke-[1.5] scale-90" :class="[props.active ? 'stroke-white' : 'stroke-black']" />
                     </NavigationLink>
                     <NavigationLink :number="store.state.daily_sale.unsubmitted" v-slot="props" label="daily sales" route="daily-sales">
-                        <svg class="scale-90" width="18" height="20" viewBox="0 0 18 20" :class="[props.active ? 'fill-white' : 'fill-black']" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 18V4C18 2.897 17.103 2 16 2H14V0H12V2H6V0H4V2H2C0.897 2 0 2.897 0 4V18C0 19.103 0.897 20 2 20H16C17.103 20 18 19.103 18 18ZM6 16H4V14H6V16ZM6 12H4V10H6V12ZM10 16H8V14H10V16ZM10 12H8V10H10V12ZM14 16H12V14H14V16ZM14 12H12V10H14V12ZM16 7H2V5H16V7Z" />
-                        </svg>
+                        <CalendarDaysIcon class="scale-90" :class="[props.active ? 'stroke-white stroke-2' : 'stroke-black stroke-[1.5]']" />
                     </NavigationLink>
                     <NavigationLink v-slot="props" label="consignments" route="consignments">
-                        <svg class="w-6 h-6 stroke-[1.5] fill-transparent" :class="[props.active ? 'stroke-white' : 'stroke-black']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6 stroke-[1.5] fill-transparent scale-95 origin-left" :class="[props.active ? 'stroke-white' : 'stroke-black']" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path class="fill-none" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495" />
                         </svg>
                     </NavigationLink>
@@ -56,6 +45,11 @@
                     <NavigationLink v-slot="props" label="mailing list" route="mailing-list">
                         <svg class="scale-90" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.5 10C14.5 11.657 15.507 13 16.75 13C17.993 13 19 11.657 19 10C19 7.9178 18.278 5.90003 16.957 4.29048C15.6361 2.68093 13.7979 1.57919 11.7557 1.17299C9.71355 0.766794 7.5937 1.08126 5.75737 2.06282C3.92104 3.04437 2.48187 4.63228 1.68506 6.55599C0.888253 8.47969 0.783114 10.6202 1.38756 12.6127C1.992 14.6052 3.26863 16.3265 4.99992 17.4833C6.73121 18.6401 8.81004 19.1608 10.8822 18.9567C12.9544 18.7526 14.8917 17.8363 16.364 16.364M14.5 10V6.25M14.5 10C14.5 11.1935 14.0259 12.3381 13.182 13.182C12.3381 14.0259 11.1935 14.5 10 14.5C8.80653 14.5 7.66194 14.0259 6.81802 13.182C5.97411 12.3381 5.5 11.1935 5.5 10C5.5 8.80652 5.97411 7.66193 6.81802 6.81802C7.66194 5.9741 8.80653 5.5 10 5.5C11.1935 5.5 12.3381 5.9741 13.182 6.81802C14.0259 7.66193 14.5 8.80652 14.5 10V10Z" :class="[props.active ? 'stroke-white' : 'stroke-black']" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </NavigationLink>
+                    <NavigationLink v-slot="props" label="resources" route="resources">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" :class="[props.active ? 'stroke-white' : 'stroke-black']" class="w-6 h-6 scale-90 origin-left">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
                         </svg>
                     </NavigationLink>
                 </div>
@@ -100,6 +94,13 @@
     import SwitchInput from "../components/Form/SwitchInput.vue"
     import ContentPage from "./content-page.vue"
     import Alert from "../components/Alert.vue"
+    import {
+        PresentationChartLineIcon,
+        BookOpenIcon,
+        ArrowPathRoundedSquareIcon,
+        BuildingStorefrontIcon,
+        CalendarDaysIcon
+    } from "@heroicons/vue/24/outline"
     import store from "../store"
     import { footerWords, getRandomInt } from "../utils";
     import axios from "axios";

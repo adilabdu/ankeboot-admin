@@ -6,8 +6,8 @@
         </svg>
     </p>
 
-    <div v-else class="w-full flex gap-6">
-        <div class="w-1/2 flex flex-col gap-4">
+    <div v-else class="w-full flex sm:flex-col gap-6">
+        <div class="sm:w-full w-1/2 flex flex-col gap-4">
             <ItemCard
                 v-if="!loading"
                 class=""
@@ -51,7 +51,7 @@
             </ItemCard>
         </div>
 
-        <div v-if="book.transactions.length > 0" class="w-1/2 flex flex-col gap-10">
+        <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-10">
             <div class="flex justify-center w-full">
                 <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
             </div>
@@ -140,7 +140,7 @@
             </Table>
         </div>
 
-        <div v-else class="min-h-24 flex flex-col items-center justify-center gap-2 font-medium text-subtitle py-8 h-fit w-1/2">
+        <div v-else class="min-h-24 flex flex-col items-center justify-center gap-2 font-medium text-subtitle py-8 h-fit w-1/2 sm:w-full">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 my-2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
             </svg>
