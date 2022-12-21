@@ -10,6 +10,7 @@ use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreTransferController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
@@ -102,7 +103,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('stores')->group(function () {
         Route::get('/', [StoreController::class, 'index']);
+        Route::get('/history', [StoreController::class, 'history']);
+        Route::get('/balance', [StoreTransferController::class, 'balance']);
         Route::post('/', [StoreController::class, 'post']);
+        Route::post('/transfer', [StoreTransferController::class, 'create']);
         Route::get('/list', [StoreController::class, 'list']);
         Route::get('/statistics', [StatisticsController::class, 'store']);
     });
