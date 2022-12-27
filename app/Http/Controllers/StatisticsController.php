@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionType;
+use App\Helpers\Helper;
 use App\Models\Book;
 use App\Models\Credit;
 use App\Models\DailySale;
@@ -11,12 +13,14 @@ use App\Models\MailingList;
 use App\Models\Store;
 use App\Models\StoreBook;
 use App\Models\StoreTransaction;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class StatisticsController extends Controller
 {
@@ -64,6 +68,161 @@ class StatisticsController extends Controller
             ]);
 
         }
+
+    }
+
+    public function book(Request $request): Response|Application|ResponseFactory
+    {
+
+        /**
+         * TODO: Write statements for these queries
+         *
+         * 1. Total quantity of books purchased
+         * 2. Total quantity sold
+         * 3. Sold this month (Change from last month)
+         */
+
+        $request->validate([
+            'id' => 'required|exists:books,id'
+        ]);
+
+        try {
+
+            $transactions = Book::find($request->input('id'))->transactions;
+            $sold_last_month = $transactions->filter(function ($t) {
+                return $t->type === TransactionType::SALE &&
+                    $t->transaction_on >= Carbon::today()->subMonth();
+            })->sum('quantity');
+            $sold_before_last_month = $transactions->filter(function ($t) {
+                return $t->type === TransactionType::SALE &&
+                    $t->transaction_on >= Carbon::today()->subMonth()->subMonth() &&
+                    $t->transaction_on < Carbon::today()->subMonth();
+            })->sum('quantity');
+
+            return response([
+                'message' => 'ok',
+                'data' => [
+                    'total_sold' => $transactions->filter(function ($t) {
+                        return $t->type === TransactionType::SALE;
+                    })->sum('quantity'),
+                    'total_purchased' => $transactions->filter(function ($t) {
+                        return $t->type === TransactionType::PURCHASE;
+                    })->sum('quantity'),
+                    'sold_last_month' => [
+                        'quantity' => $sold_last_month,
+                        'change_rate' => $sold_before_last_month > 0 ?
+                            (1 - ($sold_last_month / $sold_before_last_month)) :
+                            null
+                    ],
+                ]
+            ]);
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+    }
+
+    public function sales(): Response|Application|ResponseFactory
+    {
+
+        // Get sales of the last 12 months
+        $response = [];
+
+        $months = [
+            'jan', 'feb', 'mar',
+            'apr', 'may', 'jun',
+            'jul', 'aug', 'sep',
+            'oct', 'nov', 'dec'
+        ];
+
+        $month = Carbon::today()->month;
+        $year = Carbon::today()->year;
+
+        try {
+
+            $transactions = Transaction::all();
+
+            for ($m = $month; $m >= ($month - 11); $m--) {
+
+                $curr_month = $months[Helper::monthMapper($m)];
+
+                $response[$curr_month] =
+                    $transactions->filter(function ($t) use ($m, $year) {
+                        return ($t->transaction_on->month === (Helper::monthMapper($m) + 1)) &&
+                            ($t->transaction_on->year === Helper::yearMapper($m, $year)) &&
+                            ($t->type === TransactionType::SALE);
+                    })->sum('quantity');
+
+            }
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $response
+        ]);
+
+    }
+
+    public function purchases(): Response|Application|ResponseFactory
+    {
+
+        // Get sales of the last 12 months
+        $response = [];
+
+        $months = [
+            'jan', 'feb', 'mar',
+            'apr', 'may', 'jun',
+            'jul', 'aug', 'sep',
+            'oct', 'nov', 'dec'
+        ];
+
+        $month = Carbon::today()->month;
+        $year = Carbon::today()->year;
+
+        try {
+
+            $transactions = Transaction::all();
+
+            for ($m = $month; $m >= ($month - 11); $m--) {
+
+                $curr_month = $months[Helper::monthMapper($m)];
+
+                $response[$curr_month] =
+                    $transactions->filter(function ($t) use ($m, $year) {
+                        return ($t->transaction_on->month === (Helper::monthMapper($m) + 1)) &&
+                            ($t->transaction_on->year === Helper::yearMapper($m, $year)) &&
+                            ($t->type === TransactionType::PURCHASE);
+                    })->sum('quantity');
+
+            }
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $response
+        ]);
 
     }
 
