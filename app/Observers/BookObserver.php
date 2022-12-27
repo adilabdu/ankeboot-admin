@@ -6,6 +6,7 @@ use App\Enums\ActivityType;
 use App\Models\Book;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log as LaravelLog;
 
 class BookObserver
 {
@@ -20,11 +21,18 @@ class BookObserver
      */
     public function created(Book $book): void
     {
-        $book->logs()->save(new Log([
-            'type' => ActivityType::CREATE,
-//            'user_id' => Auth::user()->id,
-            'user_id' => 1
-        ]));
+        if (Auth::user()) {
+
+            $book->logs()->save(new Log([
+                'type' => ActivityType::CREATE,
+                'user_id' => Auth::user()->id,
+            ]));
+
+        } else {
+
+            LaravelLog::info('Book created from an unauthorized / unauthenticated origin');
+
+        }
     }
 
     /**
