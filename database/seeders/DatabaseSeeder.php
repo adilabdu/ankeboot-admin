@@ -114,6 +114,21 @@ class DatabaseSeeder extends Seeder
 
             DB::beginTransaction();
 
+            // Create Daily Sales from `September 11`
+            $date = Carbon::createFromDate('September 11 2022');
+
+            while ($date <= Carbon::today()) {
+
+                DailySale::create([
+                    'date_of' => $date
+                ]);
+
+                $date->addDay();
+
+            }
+
+
+            // Update Daily Sale records
             foreach (DailySale::all() as $dailySale) {
 
                 if (Carbon::createFromDate($dailySale->date_of) == Carbon::yesterday()) {
