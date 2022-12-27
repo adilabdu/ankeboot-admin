@@ -1,6 +1,6 @@
 <template>
 
-  <div class="flex flex-col gap-4 bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
+  <div class="flex flex-col justify-between gap-4 bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
 
     <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>
