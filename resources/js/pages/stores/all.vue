@@ -18,7 +18,10 @@
 
     </div>
 
-    <QuickTransferToShop />
+    <div class="flex sm:flex-col gap-4">
+        <QuickTransferToShop />
+        <div class="w-1/2 sm:hidden"></div>
+    </div>
 
     <Teleport v-if="modalState" to="#top-view">
 

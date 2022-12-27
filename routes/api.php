@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [BookController::class, 'index']);
         Route::get('/categories', [CategoryController::class, 'index']);
         Route::get('/statistics', [StatisticsController::class, 'books']);
+        Route::get('/statistics/book', [StatisticsController::class, 'book']);
         Route::get('/stores', [BookController::class, 'stores']);
         Route::get('/search', [SearchController::class, 'books']);
         Route::post('/', [BookController::class, 'post']);
@@ -109,6 +110,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/transfer', [StoreTransferController::class, 'create']);
         Route::get('/list', [StoreController::class, 'list']);
         Route::get('/statistics', [StatisticsController::class, 'store']);
+    });
+
+    Route::prefix('statistics')->group(function () {
+        Route::get('/sales', [StatisticsController::class, 'sales']);
+        Route::get('/purchases', [StatisticsController::class, 'purchases']);
     });
 
 });

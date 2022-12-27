@@ -26,7 +26,7 @@
 
                 <ul ref="quickActionsMenu" class="list scrollbar-mobile w-96 max-h-[350px] overflow-overlay min-h-[3rem] flex flex-col">
 
-                    <RouterLink to="new/books" class="grid grid-cols-7 px-4 pb-2.5 pt-4 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+                    <RouterLink to="/new/books" class="grid grid-cols-7 px-4 pb-2.5 pt-4 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
 
                         <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-green-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
 
@@ -46,7 +46,7 @@
 
                     </RouterLink>
 
-                    <RouterLink to="new/transactions" class="quick-item grid grid-cols-7 px-4 pt-2.5 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+                    <RouterLink to="/new/transactions" class="quick-item grid grid-cols-7 px-4 pt-2.5 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
 
                         <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-yellow-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
 

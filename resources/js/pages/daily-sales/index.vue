@@ -2,9 +2,11 @@
 
     <ContentPage>
 
-        <div class="flex flex-col h-fit w-full gap-8">
+        <div :class="[childRoute ? 'flex-col-reverse' : 'flex-col']" class="flex h-fit w-full gap-8">
 
-            <router-view></router-view>
+            <div class="w-full flex flex-col gap-8">
+                <router-view></router-view>
+            </div>
             <DateNavigation :loading="! posted" />
 
         </div>
@@ -15,10 +17,11 @@
 
 <script setup>
 
-    import { onBeforeUnmount, onMounted, ref } from "vue";
+    import { onBeforeUnmount, onMounted, ref, computed } from "vue";
     import ContentPage from "../../layouts/content-page.vue"
     import DateNavigation from "../../components/DateNavigation.vue"
     import store from "../../store"
+    import { onBeforeRouteUpdate, useRoute } from "vue-router";
 
     const controller = new AbortController()
 
@@ -32,13 +35,23 @@
             if (response.data.message === 'ok') {
 
                 store.dispatch('setUnsubmitted', response.data.data['unsubmitted_count'])
-                posted.value = true
+                    .then(() => {
+                        posted.value = true
+                    })
 
             }
 
         })
 
     }
+
+    const childRoute = ref(false)
+    onBeforeRouteUpdate((to, from, next) => {
+
+        childRoute.value = !! to.params.id
+        next()
+
+    })
 
     onMounted(() => {
 

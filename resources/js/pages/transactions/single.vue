@@ -52,6 +52,42 @@
                     </div>
                 </div>
 
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-3">
+
+                        <RouterLink :to="'/books/' + record.transaction.book.id" class="group hover:bg-border-dark/50 bg-border-dark/25 transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-lg w-full">
+
+                            <BookOpenIcon class="w-6 h-6" />
+
+                            <label class="font-medium flex items-center gap-2">
+                                Go to Book Details
+                                <ArrowRightIcon class="w-4 h-4 -translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 duration-150" />
+                            </label>
+
+                        </RouterLink>
+
+                        <component
+                            :is="record.transaction.book.type === 'consignment' ? 'router-link' : 'span'"
+                            :to="'/consignments/' + record.transaction.book.id"
+                            class="group transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-lg w-full"
+                            :class="[record.transaction.book.type === 'cash' ? 'bg-white border' : 'bg-border-dark/25 hover:bg-border-dark/50']"
+                        >
+
+                            <CogIcon class="w-6 h-6 stroke-sub" :class="{ 'stroke-black/50' : record.transaction.book.type === 'cash' }" />
+
+                            <label
+                                class="font-medium flex items-center gap-2"
+                                :class="{ 'text-black/50' : record.transaction.book.type === 'cash' }"
+                            >
+                                Go to Consignment Details
+                                <ArrowRightIcon v-if="record.transaction.book.type === 'consignment'" class="w-4 h-4 -translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100 duration-150" />
+                            </label>
+
+                        </component>
+
+                    </div>
+                </div>
+
             </div>
 
             <LoadingIndicator v-else />
@@ -70,6 +106,7 @@
     import Modal from "../../components/Modal.vue"
     import router from "../../router"
     import { useRoute } from "vue-router";
+    import { BookOpenIcon, CogIcon, ArrowRightIcon } from "@heroicons/vue/24/outline"
     import LoadingIndicator from "../../components/LoadingIndicator.vue";
 
     const record = ref(null)

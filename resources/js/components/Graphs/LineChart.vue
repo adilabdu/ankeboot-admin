@@ -12,22 +12,9 @@
 
     </div>
 
-    <div class="grow w-full flex items-center justify-center mt-1">
+    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2 min-h-[8rem]">
 
-        <div class="w-64 h-8 text-subtitle rounded-xl relative bg-wallpaper flex items-center">
-            <div :class="[optionA ? 'translate-x-0' : 'translate-x-full']" class="transition-transform duration-300 absolute h-full border-4 border-wallpaper w-1/2 rounded-xl bg-border-dark"></div>
-            <button @click="toggleOption(true)" :class="[optionA ? 'text-black font-medium' : 'text-subtitle']" class="transition-colors duration-300 relative focus:outline-none w-1/2 text-xs rounded-lg h-full">Individuals</button>
-            <button @click="toggleOption(false)" :class="[optionA ? 'text-subtitle' : 'text-black font-medium']" class="transition-colors duration-300 relative focus:outline-none w-1/2 rounded-lg h-full text-xs">Organizations</button>
-        </div>
-
-    </div>
-
-    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2 min-h-[7rem]">
-
-<!--        <h1 class="absolute w-full text-center text-subtitle font-medium mt-1">Title about Graph</h1>-->
-
-        <canvas v-if="optionA" class="max-w-full max-h-full" ref="canvas"></canvas>
-        <canvas v-else ref="canvasTwo"></canvas>
+        <canvas v-if="optionA" class="max-w-full max-h-full" ref="canvas" />
 
     </div>
 
@@ -130,18 +117,6 @@
             }
         });
     }
-
-    watch(optionA, () => {
-
-        alert(canvas.value.innerHeight)
-
-        // if (optionA.value) {
-        //     renderCanvas(canvas.value)
-        // } else {
-        //     canvas.value = null
-        // }
-
-    })
 
     onMounted(() => {
         renderCanvas(canvas.value)
