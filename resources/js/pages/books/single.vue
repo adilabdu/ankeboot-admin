@@ -6,150 +6,193 @@
         </svg>
     </p>
 
-    <div v-else class="w-full flex sm:flex-col gap-6">
-        <div class="sm:w-full w-1/2 flex flex-col gap-4">
-            <ItemCard
-                v-if="!loading"
-                class=""
-                :title="book.title"
-                :heading="true"
-            >
+    <div v-else class="flex flex-col gap-6">
 
-                <template #action>
-                    <button @click="goToUpdate" class="focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 h-fit md:w-fit px-6 py-2.5 bg-brand-primary rounded-lg text-white flex justify-between sm:justify-center items-center gap-2 sm:w-full">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.1329 5C15.5109 4.622 15.7189 4.12 15.7189 3.586C15.7189 3.052 15.5109 2.55 15.1329 2.172L13.5469 0.586C13.1689 0.208 12.6669 0 12.1329 0C11.5989 0 11.0969 0.208 10.7199 0.585L0.0878906 11.184V15.599H4.50089L15.1329 5ZM12.1329 2L13.7199 3.585L12.1299 5.169L10.5439 3.584L12.1329 2ZM2.08789 13.599V12.014L9.12789 4.996L10.7139 6.582L3.67489 13.599H2.08789Z" fill="white"/>
-                        </svg>
-                        <span class="font-medium whitespace-nowrap">
+        <div class="grid grid-cols-4 md:grid-cols-1 gap-2">
+            <InfoCard :loading="!! ! bookStatistics" class="col-span-1" label="Total Quantities Purchased">
+                <template v-if="!! bookStatistics">
+                    {{ bookStatistics['total_purchased'] }}
+                </template>
+            </InfoCard>
+
+            <InfoCard :loading="!! ! bookStatistics" class="col-span-1" label="Total Quantities Sold">
+                <template v-if="!! bookStatistics">
+                    {{ bookStatistics['total_sold'] }}
+                </template>
+            </InfoCard>
+
+            <InfoCard :loading="!! ! bookStatistics" class="col-span-1" label="Sold this Month">
+                <span>{{ bookStatistics['sold_last_month']['quantity'] }}</span>
+                <span v-if="bookStatistics['sold_last_month']['change_rate'] === null" />
+                <span v-else-if="bookStatistics['sold_last_month']['change_rate'] > 0" class="leading-none flex items-center text-xs px-2 py-1 rounded-lg bg-red-100 text-red-700 font-medium">
+                    {{ Math.round(bookStatistics['sold_last_month']['change_rate'] * 100) }}%
+                    <ArrowSmallDownIcon class="w-4 h-4" />
+                </span>
+                <span v-else class="leading-none flex items-center text-xs px-2 py-1 rounded-lg bg-green-100 text-green-700 font-medium">
+                    {{ Math.round(Math.abs(bookStatistics['sold_last_month']['change_rate']) * 100) }}%
+                    <ArrowSmallUpIcon class="w-4 h-4" />
+                </span>
+            </InfoCard>
+
+            <InfoCard :loading="!! ! stores" class="col-span-1" label="Balance in store">
+                <template v-if="!! stores">
+                    {{ stores.filter(store => store.store_primary)[0] ? stores.filter(store => store.store_primary)[0].balance : 0 }}
+                </template>
+            </InfoCard>
+        </div>
+
+        <div class="w-full flex sm:flex-col gap-6">
+            <div class="sm:w-full w-1/2 flex flex-col gap-4">
+                <ItemCard
+                    v-if="!loading"
+                    class=""
+                    :title="book.title"
+                    :heading="true"
+                >
+
+                    <template #action>
+                        <button @click="goToUpdate" class="focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 h-fit md:w-fit px-6 py-2.5 bg-brand-primary rounded-lg text-white flex justify-between sm:justify-center items-center gap-2 sm:w-full">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.1329 5C15.5109 4.622 15.7189 4.12 15.7189 3.586C15.7189 3.052 15.5109 2.55 15.1329 2.172L13.5469 0.586C13.1689 0.208 12.6669 0 12.1329 0C11.5989 0 11.0969 0.208 10.7199 0.585L0.0878906 11.184V15.599H4.50089L15.1329 5ZM12.1329 2L13.7199 3.585L12.1299 5.169L10.5439 3.584L12.1329 2ZM2.08789 13.599V12.014L9.12789 4.996L10.7139 6.582L3.67489 13.599H2.08789Z" fill="white"/>
+                            </svg>
+                            <span class="font-medium whitespace-nowrap">
                             Update information
                         </span>
-                    </button>
-                </template>
+                        </button>
+                    </template>
 
-                <template #rows>
-                    <ItemDescription :description="book.code" label="code" />
-                    <ItemDescription :description="book.title" label="title" />
-                    <ItemDescription :description="book['alternate_title']" label="alternate title" />
-                    <ItemDescription :description="book.author" label="author" />
-                    <ItemDescription :description="book.category" label="category" />
-                    <ItemDescription
-                        label="balance"
-                        :description="book.balance + ' copies'"
-                        class="tabular-nums font-medium"
-                    />
-                    <ItemDescription :description="book.type" label="purchase type" />
-                    <ItemDescription label="supplier">
-                        <div v-if="book['supplier']">
-                            {{ book['supplier']['name'] }}
-                        </div>
-                        <p v-else class="text-brand-primary text-xs cursor-pointer">Register a Supplier</p>
-                    </ItemDescription>
-                    <ItemDescription :description="new Date(book['created_at']).toDateString()" label="registration date" />
-                    <ItemDescription :description="new Date(book['updated_at']).toDateString()" label="last updated" />
-                </template>
+                    <template #rows>
+                        <ItemDescription :description="book.code" label="code" />
+                        <ItemDescription :description="book.title" label="title" />
+                        <ItemDescription label="alternate title">
+                            <span v-if="book['alternate_title']">{{ book['alternate_title'] }}</span>
+                            <span v-else class="text-subtitle">N/A</span>
+                        </ItemDescription>
+                        <ItemDescription label="author">
+                            <span v-if="book.author">{{ book.author }}</span>
+                            <span v-else class="text-subtitle">N/A</span>
+                        </ItemDescription>
+                        <ItemDescription :description="book.category" label="category" />
+                        <ItemDescription
+                            label="balance"
+                            :description="book.balance + ' copies'"
+                            class="tabular-nums font-medium"
+                        />
+                        <ItemDescription :description="book.type" label="purchase type" />
+                        <ItemDescription label="supplier">
+                            <div v-if="book['supplier']">
+                                {{ book['supplier']['name'] }}
+                            </div>
+                            <button v-else class="text-brand-primary text-xs cursor-pointer">Register a Supplier</button>
+                        </ItemDescription>
+                        <ItemDescription :description="new Date(book['created_at']).toDateString()" label="registration date" />
+                        <ItemDescription :description="new Date(book['updated_at']).toDateString()" label="last updated" />
+                    </template>
 
-            </ItemCard>
-        </div>
-
-        <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-10">
-            <div class="flex justify-center w-full">
-                <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
+                </ItemCard>
             </div>
-            <Table
-                condensed
-                v-if="book && toggleStock"
-                title="Stock record"
-                :data="book.transactions"
-                :center="['type', 'date', 'invoice']"
-                :right="[]"
-                :sortable="['date', 'quantity']"
-                :searchable="[]"
-                :hideable="false"
-                :hide="['id']"
-                :hide-labels="['id']"
-                :actions="true"
-                @table-button-click="handleTableButton"
-                @edit="handleEdit"
-                @delete="handleDelete"
-            >
 
-                <template #action>
+            <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-10">
+                <div class="flex justify-center w-full">
+                    <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
+                </div>
+                <Table
+                    condensed
+                    v-if="book && toggleStock"
+                    title="Stock record"
+                    :data="book.transactions"
+                    :center="['type', 'date', 'invoice']"
+                    :right="[]"
+                    :sortable="['date', 'quantity']"
+                    :searchable="[]"
+                    :hideable="false"
+                    :hide="['id']"
+                    :hide-labels="['id']"
+                    :actions="true"
+                    @table-button-click="handleTableButton"
+                    @edit="handleEdit"
+                    @delete="handleDelete"
+                >
 
-                    <!-- <template></template> -->
+                    <template #action>
 
-                </template>
+                        <!-- <template></template> -->
 
-                <template #description>
-                    <p class="text-xs">
-                        <span class="text-subtitle">{{ book.title }}</span>
-                    </p>
-                </template>
+                    </template>
 
-                <template #rows="data">
+                    <template #description>
+                        <p class="text-xs">
+                            <span class="text-subtitle">{{ book.title }}</span>
+                        </p>
+                    </template>
 
-                    <Cell name="invoice" :hide="data.hide" class="w-[4%] text-xs font-semibold text-subtitle text-center">{{ data['record']['invoice'].toLowerCase() }} </Cell>
-                    <Cell name="quantity" :main="true" :hide="data.hide" class="w-[88%] text-xs font-semibold text-subtitle">{{ data['record']['quantity'] }} </Cell>
-                    <EnumCell class="w-[4%]" name="type" :hide="data.hide" :colors="['red', 'green']" :options="['sale', 'purchase']" :value="data['record']['type']" />
-                    <DateCell class="w-[4%]" name="date" :hide="data.hide" :value="data['record']['date']" />
+                    <template #rows="data">
 
-                </template>
+                        <Cell name="invoice" :hide="data.hide" class="w-[4%] text-xs font-semibold text-subtitle text-center">{{ data['record']['invoice'].toLowerCase() }} </Cell>
+                        <Cell name="quantity" :main="true" :hide="data.hide" class="w-[88%] text-xs font-semibold text-subtitle">{{ data['record']['quantity'] }} </Cell>
+                        <EnumCell class="w-[4%]" name="type" :hide="data.hide" :colors="['red', 'green']" :options="['sale', 'purchase']" :value="data['record']['type']" />
+                        <DateCell class="w-[4%]" name="date" :hide="data.hide" :value="data['record']['date']" />
 
-            </Table>
-            <Table
-                condensed
-                v-if="stores && ! toggleStock"
-                title="Store Records"
-                :data="stores"
-                :center="[]"
-                :right="[]"
-                :sortable="[]"
-                :searchable="[]"
-                :hideable="false"
-                :hide="['store_id']"
-                :hide-labels="['store_id', 'store_primary']"
-                :actions="false"
-                @table-button-click="handleTableButton"
-                @edit="handleEdit"
-                @delete="handleDelete"
-            >
+                    </template>
 
-                <template #action>
+                </Table>
+                <Table
+                    condensed
+                    v-if="stores && ! toggleStock"
+                    title="Store Records"
+                    :data="stores"
+                    :center="[]"
+                    :right="[]"
+                    :sortable="[]"
+                    :searchable="[]"
+                    :hideable="false"
+                    :hide="['store_id']"
+                    :hide-labels="['store_id', 'store_primary']"
+                    :actions="false"
+                    @table-button-click="handleTableButton"
+                    @edit="handleEdit"
+                    @delete="handleDelete"
+                >
 
-                    <!-- <template></template> -->
+                    <template #action>
 
-                </template>
+                        <!-- <template></template> -->
 
-                <template #description>
-                    <p class="text-xs">
-                        <span class="text-subtitle">{{ book.title }}</span>
-                    </p>
-                </template>
+                    </template>
 
-                <template #rows="data">
+                    <template #description>
+                        <p class="text-xs">
+                            <span class="text-subtitle">{{ book.title }}</span>
+                        </p>
+                    </template>
 
-                    <LinkCell class="w-[80%]" name="store" :main="true" :hide="data.hide" :value="data['record']['store']" :to="'/stores/' + data['record']['store_id']">
-                        <RouterLink :to="'/stores/' + data['record']['store_id']">
-                            {{ data['record']['store'] }}
-                        </RouterLink>
-                    </LinkCell>
-                    <EnumCell class="w-fit" name="store_primary" :hide="data.hide" :colors="['green', 'stone']" :options="['primary', 'warehouse']" :value="data['record']['store_primary']" />
-                    <Cell name="balance" :hide="data.hide" class="w-[10%] text-xs font-semibold text-black text-center">{{ data['record']['balance'] }} </Cell>
+                    <template #rows="data">
 
-                </template>
+                        <LinkCell class="w-[80%]" name="store" :main="true" :hide="data.hide" :value="data['record']['store']" :to="'/stores/' + data['record']['store_id']">
+                            <RouterLink :to="'/stores/' + data['record']['store_id']">
+                                {{ data['record']['store'] }}
+                            </RouterLink>
+                        </LinkCell>
+                        <EnumCell class="w-fit" name="store_primary" :hide="data.hide" :colors="['green', 'stone']" :options="['primary', 'warehouse']" :value="data['record']['store_primary']" />
+                        <Cell name="balance" :hide="data.hide" class="w-[10%] text-xs font-semibold text-black text-center">{{ data['record']['balance'] }} </Cell>
 
-            </Table>
+                    </template>
+
+                </Table>
+            </div>
+
+            <div v-else class="min-h-24 flex flex-col items-center justify-center gap-2 font-medium text-subtitle py-8 h-fit w-1/2 sm:w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 my-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+                </svg>
+                <h3 class="text-black">No transaction history</h3>
+                <h5 class="font-normal sm:w-full w-[24rem] text-center">
+                    There has not been any transactions made (purchase or sale)
+                    for this item. Stock and store records will appear here as transactions are preformed.
+                </h5>
+            </div>
         </div>
 
-        <div v-else class="min-h-24 flex flex-col items-center justify-center gap-2 font-medium text-subtitle py-8 h-fit w-1/2 sm:w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 my-2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-            </svg>
-            <h3 class="text-black">No transaction history</h3>
-            <h5 class="font-normal sm:w-full w-[24rem] text-center">
-                There has not been any transactions made (purchase or sale)
-                for this item. Stock and store records will appear here as transactions are preformed.
-            </h5>
-        </div>
     </div>
 
 </template>
@@ -165,6 +208,8 @@
     import ItemCard from "../../components/ItemCard.vue";
     import ItemDescription from "../../components/ItemDescription.vue";
     import Toggle from "../../components/Toggle.vue"
+    import InfoCard from "../../components/InfoCard.vue"
+    import { ArrowSmallUpIcon, ArrowSmallDownIcon } from "@heroicons/vue/20/solid";
     import { useRoute } from "vue-router"
     import axios from "axios";
     import router from "../../router"
@@ -235,10 +280,32 @@
 
     }
 
+    const bookStatistics = ref(null)
+    function fetchBookStatistics() {
+
+        axios.get('/api/books/statistics/book', {
+            params: {
+                id: useRoute().params.id
+            }
+        })
+            .then(response => {
+
+                bookStatistics.value = response.data.data
+
+            })
+            .catch(error => {
+
+                alert(`Error while fetching book statistics: ${error}`)
+
+            })
+
+    }
+
     onMounted(() => {
 
         fetchBook()
         fetchStores()
+        fetchBookStatistics()
 
     })
 
