@@ -9,7 +9,7 @@
             ]"
                 >
                     <!-- Date Cards -->
-                    <template v-if="! dataLoading" v-for="i in 6">
+                    <template v-if="(! dataLoading) && (!! dailySales)" v-for="i in 6">
 
                         <DateLinkCard :daily-sale="dailySales[i-1]"/>
 
@@ -102,7 +102,7 @@
 
     }
 
-    const dailySales = ref([])
+    const dailySales = ref(null)
 
     onMounted(() => {
 
