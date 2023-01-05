@@ -71,7 +71,7 @@ class DailySaleController extends Controller
             DailySale::latest('date_of')
                 ->first()
                 ->date_of ??
-            'August 09, 2022'
+            'August 09, 2021'
             );
         $count = 0;
 
