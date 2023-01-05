@@ -30,8 +30,6 @@
             '#4B8D2C20' : '#FF810020'
     })
 
-    console.log('hello from App ', primaryColor.value)
-
     const color = {
         primary: 'red'
     }
