@@ -1,5 +1,9 @@
 import { toEthiopian } from "ethiopian-date"
 
+function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+}
+
 function formatNumber(num) {
     return num.toLocaleString('en', { useGrouping: true })
 }
@@ -214,7 +218,7 @@ const local_time_ago = (number, index, totalSec) => {
 };
 
 export {
-    local_time_ago, ethiopianDate, digitToWritten,
+    delay, local_time_ago, ethiopianDate, digitToWritten,
     ethiopianMonths, ethiopianDays, months, days,
     formatDate, getRandomInt, footerWords, formatPrice,
     formatNumber, arrayToStrings, formatNumberToTwoIntegerPlaces
