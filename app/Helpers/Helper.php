@@ -21,7 +21,7 @@ class Helper
     public static function yearMapper($month, $this_year): int
     {
 
-        if ($month < 0) {
+        if ($month <= 0) {
 
             return $this_year - 1;
 
