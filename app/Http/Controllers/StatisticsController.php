@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PurchaseType;
 use App\Enums\TransactionType;
 use App\Helpers\Helper;
 use App\Models\Book;
@@ -132,7 +133,10 @@ class StatisticsController extends Controller
     {
 
         // Get sales of the last 12 months
-        $response = [];
+        $response = [
+            'by_items' => [],
+            'by_receipts' => []
+        ];
 
         $months = [
             'jan', 'feb', 'mar',
@@ -147,17 +151,24 @@ class StatisticsController extends Controller
         try {
 
             $transactions = Transaction::all();
+            $dailySales = SalesReceipt::all();
 
             for ($m = $month; $m >= ($month - 11); $m--) {
 
                 $curr_month = $months[Helper::monthMapper($m)];
 
-                $response[$curr_month] =
+                $response['by_items'][$curr_month] =
                     $transactions->filter(function ($t) use ($m, $year) {
                         return ($t->transaction_on->month === (Helper::monthMapper($m) + 1)) &&
                             ($t->transaction_on->year === Helper::yearMapper($m, $year)) &&
                             ($t->type === TransactionType::SALE);
                     })->sum('quantity');
+
+                $response['by_receipts'][$curr_month] =
+                    $dailySales->filter(function ($d) use ($m, $year) {
+                        return ($d->daily_sale->date_of->month === (Helper::monthMapper($m) + 1)) &&
+                            ($d->daily_sale->date_of->year === Helper::yearMapper($m, $year));
+                    })->sum('amount');
 
             }
 
@@ -173,6 +184,53 @@ class StatisticsController extends Controller
         return response([
             'message' => 'ok',
             'data' => $response
+        ]);
+
+    }
+
+    public function consignmentSales(): Response|Application|ResponseFactory
+    {
+
+        // Get all the transactions count within the last year
+        // Filter and count the consignment sales
+        // Return ratio
+
+        try {
+
+            $salesLastYear = Transaction::with('book')
+                ->where('transaction_on', '>', Carbon::today()->subYear())
+                ->get()
+                ->filter(function ($transaction) {
+                    return $transaction->type === TransactionType::SALE;
+                });
+
+            if ($salesLastYear->count() > 0) {
+
+                $consignmentSalesLastYear = $salesLastYear->filter(function ($transaction) {
+                    return $transaction->book->type === 'consignment' && $transaction->type === TransactionType::SALE;
+                });
+
+            } else {
+
+                return response([
+                    'message' => 'ok',
+                    'data' => 0
+                ]);
+
+            }
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'data' => $consignmentSalesLastYear->count() / $salesLastYear->count()
         ]);
 
     }
