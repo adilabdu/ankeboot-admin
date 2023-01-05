@@ -19,7 +19,9 @@
           <div class="h-32 w-2 bg-border-dark rounded-full relative">
             <div v-if="values" :style="'height: ' + values[i-1] + '%'" class="absolute w-full bottom-0 rounded-full bg-brand-primary z-10 animate-grow-up origin-bottom"></div>
           </div>
-          <label v-if="values" :class="[values[i-1] === 100 ? 'text-brand-primary' : 'text-subtitle']" class="text-xs capitalize">{{ labels[i-1] }}</label>
+          <label v-if="values === null" class="text-subtitle text-xs capitalize">N/A</label>
+          <label v-else :class="[values[i-1] === 100 ? 'text-brand-primary' : 'text-subtitle']" class="text-xs capitalize">{{ labels[i-1] }}</label>
+
 
         </div>
 
@@ -34,6 +36,7 @@
 <script setup>
 
   import { computed } from "vue"
+  import { months } from '../../utils'
 
   const props = defineProps({
     title: {
@@ -45,8 +48,8 @@
       default: 'Sales made within the previous 12 months'
     },
     data: {
-      type: Array,
-      default: Object
+      type: [Object, null],
+      required: true
     }
   })
 

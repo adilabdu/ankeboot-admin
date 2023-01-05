@@ -12,9 +12,16 @@
 
     </div>
 
-    <div ref="canvasWrapper" class="relative flex grow max-h-[50%] -m-2 min-h-[8rem]">
+    <div class="w-full h-fit grid place-items-center">
 
-        <canvas v-if="optionA" class="max-w-full max-h-full" ref="canvas" />
+        <Toggle v-model="itemCount" :labels="['By Item Count', 'By Receipt']"/>
+
+    </div>
+
+    <div class="relative flex grow max-h-[50%] -m-2 h-[8rem] relative">
+
+        <canvas v-if="! itemCount" class="absolute max-w-full max-h-full" ref="canvas" id="canvas" />
+        <canvas v-else class="absolute max-w-full max-h-full" ref="canvasTwo" id="canvasTwo" />
 
     </div>
 
@@ -24,8 +31,9 @@
 
 <script setup>
 
-    import { ref, onMounted, watch } from "vue";
+    import { ref, watch, computed, nextTick } from "vue";
     import Chart from "chart.js/auto"
+    import Toggle from "../Toggle.vue";
 
     const props = defineProps({
         title: {
@@ -37,12 +45,16 @@
             default: 'Sales made within the previous 12 months'
         },
         data: {
-            type: Array,
+            type: [Object, null],
             required: true
+        },
+        loading: {
+            type: Boolean,
+            default: false
         },
         backgroundColor: {
             type: String,
-            default: '#FF810000'
+            default: '#FF810020'
         },
         displayYGrid: {
             type: Boolean,
@@ -50,41 +62,47 @@
         }
     });
 
-    const optionA = ref(true)
-    function toggleOption(value) {
-        optionA.value = value
-    }
+    const fetching = computed(() => props.loading)
+    const data = computed(() => props.data)
+    const values = computed(() => {
+        if (props.data) {
+
+            return Object.values(data.value).map((value) => {
+                return (value / Math.max(...Object.values(data.value))) * 100
+            })
+
+        }
+
+        return null
+    })
 
     const canvas = ref(null)
     const canvasTwo = ref(null)
     const context = ref(null)
-    const canvasWrapper = ref(null)
+    const contextTwo = ref(null)
     const myChart = ref(null)
-    const ratios = [5550, 3911, 4390, 5591, 9100, 4911, 3192, 8912, 8310, 6381, 3984, 5299]
-    const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
-    function renderCanvas(renderedCanvas) {
+    const itemCount = ref(true)
 
-        context.value = renderedCanvas.getContext('2d')
+    function renderCanvas(canvas, context, attribute) {
+
+        context.value = canvas.value.getContext('2d')
 
         myChart.value = new Chart(context.value, {
             type: 'line',
             data: {
-                labels: [
-                    'Jan', 'Feb', 'Mar',
-                    'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep',
-                    'Oct', 'Nov', 'Dec'
-                ],
+                labels: Object.keys(data.value[attribute]),
                 datasets: [{
-                    data: props.data,
+                    data: data.value[attribute],
                     borderColor: '#FF8100',
                     borderWidth: 3,
-                    tension: 0.3,
-                    cubicInterpolationMode: 'monotone',
+                    borderJoinStyle: 'round',
+                    borderCapStyle: 'round',
+                    tension: 0,
+                    cubicInterpolationMode: 'default',
                     fill: true,
                     backgroundColor: props.backgroundColor,
-                    pointRadius: 2
+                    pointRadius: 1.5
                 }]
             },
             options: {
@@ -118,8 +136,40 @@
         });
     }
 
-    onMounted(() => {
-        renderCanvas(canvas.value)
+    watch(fetching, () => {
+
+        if (! fetching.value) {
+
+            if (! itemCount.value) {
+
+                renderCanvas(canvas, context, 'by_receipts')
+
+            } else {
+
+                renderCanvas(canvasTwo, contextTwo, 'by_items')
+
+            }
+
+        }
+
+    })
+
+    watch(itemCount, () => {
+
+        if (! itemCount.value) {
+
+            nextTick(() => {
+                renderCanvas(canvas, context, 'by_receipts')
+            })
+
+        } else {
+
+            nextTick(() => {
+                renderCanvas(canvasTwo, contextTwo, 'by_items')
+            })
+
+        }
+
     })
 
 </script>
