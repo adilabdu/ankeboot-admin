@@ -114,6 +114,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('statistics')->group(function () {
         Route::get('/sales', [StatisticsController::class, 'sales']);
+        Route::get('/sales/consignments', [StatisticsController::class, 'consignmentSales']);
         Route::get('/purchases', [StatisticsController::class, 'purchases']);
     });
 
