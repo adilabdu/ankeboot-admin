@@ -17,8 +17,8 @@
         </div>
 
         <!-- Quick Actions -->
-        <div v-if="authenticated" class="sm:hidden relative -mr-3 w-12 h-12 rounded-full flex items-center justify-center group">
-            <svg :class="[viewQuickActionsMenu ? 'scale-110 fill-zinc-300 stroke-zinc-600 stroke-1' : 'stroke-[1.5] stroke-subtitle']" @click="toggleQuickActionsView" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="transition-transform duration-300 group-hover:scale-110 group-hover:fill-zinc-300 group-hover:stroke-zinc-600 group-hover:stroke-1 w-6 h-6">
+        <div v-if="authenticated" class="sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center group">
+            <svg :class="[viewQuickActionsMenu ? 'scale-110 stroke-black stroke-[1.25]' : 'stroke-[1.5] stroke-subtitle']" @click="toggleQuickActionsView" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="transition-transform duration-300 group-hover:scale-110 group-hover:stroke-black group-hover:stroke-[1.25] w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
 
@@ -67,6 +67,70 @@
                     </RouterLink>
 
                 </ul>
+
+            </div>
+
+        </div>
+
+        <!-- Quick Navigation -->
+        <div v-if="authenticated" class="sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center group">
+            <ArrowTopRightOnSquareIcon @click="toggleQuickNavigationsView" :class="[viewQuickNavigationsMenu && !! book ? 'scale-110 stroke-black stroke-2' : 'scale-100 stroke-subtitle stroke-[1.75]', !! book ? 'group-hover:scale-110 group-hover:stroke-black group-hover:stroke-2' : '']" class="w-6 h-6 transition-transform duration-300" />
+
+            <div @click="toggleQuickNavigationsView" v-if="viewQuickNavigationsMenu" class="flex flex-col overflow-hidden absolute right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full animate-appear-down bg-white border border-border-light shadow-sm rounded-[0.75rem]">
+
+                <div ref="quickNavigationsMenu" class="grid grid-cols-2 min-w-[32rem] gap-1.5 p-[0.5rem]">
+
+                    <RouterLink :to="'/books/' + book.id" class="quick-link col-span-1 row-span-1 group hover:bg-border-dark/50 bg-border-dark/25 transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-tl-[0.25rem] w-full">
+
+                        <BookOpenIcon class="w-6 h-6" />
+
+                        <label class="font-medium flex items-center gap-2">
+                            Go to Book Details
+                            <ArrowRightIcon class="w-4 h-4 -translate-x-full opacity-0 quick-link-arrow duration-150" />
+                        </label>
+
+                    </RouterLink>
+
+                    <component
+                        @click="(event) => { event.preventDefault() }"
+                        :is="book.type === 'consignment' ? 'router-link' : 'span'"
+                        :to="'/consignments/' + book.id"
+                        class="quick-link col-span-1 row-span-1 group transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-tr-[0.25rem] w-full"
+                        :class="[book.type === 'consignment' ? 'bg-border-dark/25 hover:bg-border-dark/50' : 'bg-white border opacity-50']"
+                    >
+
+                        <CogIcon class="w-6 h-6" />
+
+                        <label class="font-medium flex items-center gap-2">
+                            Go to Consignment Details
+                            <ArrowRightIcon v-if="book.type === 'consignment'" class="w-4 h-4 -translate-x-full opacity-0 quick-link-arrow duration-150" />
+                        </label>
+
+                    </component>
+
+                    <RouterLink :to="'/new/transactions/' + book.id" class="quick-link col-span-1 row-span-1 group hover:bg-border-dark/50 bg-border-dark/25 transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-bl-[0.25rem] w-full">
+
+                        <ArrowPathRoundedSquareIcon class="w-6 h-6" />
+
+                        <label class="font-medium flex items-center gap-2">
+                            Make New Transaction
+                            <ArrowRightIcon class="w-4 h-4 -translate-x-full opacity-0 quick-link-arrow duration-150" />
+                        </label>
+
+                    </RouterLink>
+
+                    <RouterLink :to="'/update/books/' + book.id" class="quick-link col-span-1 row-span-1 group hover:bg-border-dark/50 bg-border-dark/25 transition-colors duration-150 min-h-[6rem] flex flex-col justify-around px-4 py-3 rounded-br-[0.25rem] w-full">
+
+                        <ArrowPathIcon class="w-6 h-6" />
+
+                        <label class="font-medium flex items-center gap-2">
+                            Update Book Details
+                            <ArrowRightIcon class="w-4 h-4 -translate-x-full opacity-0 quick-link-arrow duration-150" />
+                        </label>
+
+                    </RouterLink>
+
+                </div>
 
             </div>
 
@@ -186,6 +250,7 @@
     import { onClickOutside } from "@vueuse/core"
     import store from "../store"
     import router from "../router"
+    import { ArrowTopRightOnSquareIcon, ArrowPathIcon, BookOpenIcon, ArrowRightIcon, CogIcon, ArrowPathRoundedSquareIcon } from "@heroicons/vue/24/outline"
     import axios from "axios";
     import { local_time_ago } from "../utils";
     import { format, render, cancel, register } from 'timeago.js';
@@ -194,13 +259,16 @@
 
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const user = computed(() => store.state.auth.user)
+    const book = computed(() => store.state.book.book)
 
     const viewNotificationsMenu = ref(false)
     const viewQuickActionsMenu = ref(false)
+    const viewQuickNavigationsMenu = ref(false)
     const viewHeaderMenu = ref(false)
     const headerMenu = ref(null)
     const notificationMenu = ref(null)
     const quickActionsMenu = ref(null)
+    const quickNavigationsMenu = ref(null)
 
     function toggleNotificationsView() {
         viewNotificationsMenu.value = !viewNotificationsMenu.value
@@ -208,6 +276,10 @@
 
     function toggleQuickActionsView() {
         viewQuickActionsMenu.value = !viewQuickActionsMenu.value
+    }
+
+    function toggleQuickNavigationsView() {
+        viewQuickNavigationsMenu.value = !viewQuickNavigationsMenu.value
     }
 
     function toggleView() {
@@ -231,6 +303,12 @@
     onClickOutside(quickActionsMenu, () => {
         if (viewQuickActionsMenu.value) {
             toggleQuickActionsView()
+        }
+    })
+
+    onClickOutside(quickNavigationsMenu, () => {
+        if (viewQuickNavigationsMenu.value) {
+            toggleQuickNavigationsView()
         }
     })
 
@@ -385,6 +463,12 @@
 
     .list .quick-item:last-child {
         @apply pb-4;
+    }
+
+    .quick-link:hover .quick-link-arrow {
+
+        @apply translate-x-0 opacity-100;
+
     }
 
 </style>
