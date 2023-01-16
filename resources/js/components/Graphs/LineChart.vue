@@ -82,7 +82,7 @@
     const contextTwo = ref(null)
     const myChart = ref(null)
 
-    const itemCount = ref(true)
+    const itemCount = ref(false)
 
     function renderCanvas(canvas, context, attribute) {
 
@@ -99,7 +99,7 @@
                     borderJoinStyle: 'round',
                     borderCapStyle: 'round',
                     tension: 0,
-                    cubicInterpolationMode: 'default',
+                    cubicInterpolationMode: 'monotone',
                     fill: true,
                     backgroundColor: props.backgroundColor,
                     pointRadius: 1.5
