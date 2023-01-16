@@ -88,16 +88,35 @@ class StoreTransferController extends Controller
     {
 
         $request->validate([
-            'book_id' => 'required|exists:books,id',
-            'store_id' => 'required|exists:stores,id'
+            'book_id' => 'required_without:store_id|exists:books,id',
+            'store_id' => 'required_without:book_id|exists:stores,id'
         ]);
 
         try {
 
-            $balance = StoreBook::where([
-                'store_id' => $request->input('store_id'),
-                'book_id' => $request->input('book_id')
-            ])->first();
+            if ($request->has('book_id')) {
+
+                $balance = StoreBook::where([
+                    'book_id' => $request->input('book_id')
+                ]);
+
+                if ($request->has('store_id')) {
+
+                    $balance->where([
+                        'book_id' => $request->input('book_id')
+                    ]);
+
+                }
+
+            } else {
+
+                $balance = StoreBook::where([
+                    'store_id' => $request->input('store_id')
+                ]);
+
+            }
+
+            $balance = $balance->first();
 
             return response([
                 'message' => 'ok',
