@@ -39,7 +39,7 @@
 
 <script setup>
 
-    import { ref, watch, onMounted } from "vue"
+    import { ref, watch, onMounted, computed } from "vue"
 
     const props = defineProps({
         label: {
@@ -92,6 +92,16 @@
         searchQuery.value = ''
         emit('update:formData', null)
     }
+
+    const computedSelected = computed(() => props.selected)
+    const computedFormData = computed(() => props.formData)
+    watch(computedSelected, () => {
+
+        if (!! ! computedSelected.value && !! ! computedFormData.value) {
+            searchQuery.value = ''
+        }
+
+    })
 
     watch(searchQuery, () => {
 
