@@ -68,6 +68,18 @@ class Book extends Model
         return null;
     }
 
+    public function max_returnable(): int|null
+    {
+
+        if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
+
+            return $this['balance'] + min($this->payable(), 0);
+
+        }
+
+        return null;
+    }
+
     public function payable(): int|null
     {
 
