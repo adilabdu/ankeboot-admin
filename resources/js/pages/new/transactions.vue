@@ -8,6 +8,7 @@
         </template>
 
         <ItemSearchInput
+            v-if="! book_id"
             required
             @click="toggleNewBookModal"
             v-model:form-data="transactionData.book_id"
@@ -17,6 +18,7 @@
             label="Book for Transaction"
             :search-logic="searchBooks"
         />
+        <TextPlaceholder v-else required :value="book_title" label="Book for Transaction" />
 
         <div class="flex sm:flex-col gap-8 w-full">
             <TextInput required v-model="transactionData.invoice" class="w-full" placeholder="Transaction receipt invoice number" label="Transaction Invoice" />
@@ -129,9 +131,10 @@
 
 <script setup>
 
-    import { onMounted, ref, computed, watch } from "vue";
+    import { onMounted, onBeforeUnmount, ref, computed, watch } from "vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
+    import TextPlaceholder from "../../components/Form/TextPlaceholder.vue"
     import SwitchInput from "../../components/Form/SwitchInput.vue";
     import store from "../../store"
     import router from "../../router"
@@ -141,6 +144,7 @@
     import ItemSearchInput from "../../components/Form/ItemSearchInput.vue"
     import Dropdown from "../../components/Dropdown.vue";
     import CreateBookModal from "../../views/CreateBookModal.vue"
+    import { useRoute } from "vue-router";
 
     const books = computed(() => store.state.book.books)
 
@@ -175,6 +179,34 @@
         quantity: transactionType.value.type ? storeSum() : '',
         invoice: ''
     })
+
+    function resetTransactionForm() {
+
+        storesData.value = [
+            {
+                store_id: '',
+                amount: 0
+            }
+        ]
+
+        transactionData.value = {
+            book_id: '',
+            date: {
+                date: '',
+                month: '',
+                year: ''
+            },
+            quantity: transactionType.value.type ? storeSum() : '',
+            invoice: ''
+        }
+
+        transactionType.value = {
+            type: false
+        }
+
+        book_title.value = null
+
+    }
 
     function addStore() {
         storesData.value.push({
@@ -246,15 +278,11 @@
 
                 store.dispatch('pushAlert', {
                     type: 'success',
-                    message: `Transaction successfully added for ${response.data.book_id}`
-                }).then(() => {
-
-                    store.dispatch('getBooks')
-                        .then(() => {
-                            router.push({ name: 'Book', params: { id: response.data.book.id } })
-                        })
-
+                    message: `Transaction successfully added for ${book_title.value}`
                 })
+
+                resetTransactionForm()
+
 
             } else if (response.message === 'error') {
 
@@ -313,9 +341,41 @@
         })
     }
 
+    const book_id = computed(() => useRoute().params.book_id)
+    console.log(`hello world ${book_id.value}`)
+
     onMounted(() => {
 
         getStores()
+
+        if (!! useRoute().params.book_id) {
+
+            axios.get('/api/books/', {
+                params: {
+                    id: useRoute().params.book_id
+                }
+            }).then(response => {
+
+                getBookData({
+                    id: response.data.data.id,
+                    title: response.data.data.title
+                })
+                store.dispatch('setBook', response.data.data)
+
+            }).catch(error => {
+
+                alert(`Error while fetching book ${error}`)
+                router.go(-1)
+
+            })
+
+        }
+
+    })
+
+    onBeforeUnmount(() => {
+
+        store.dispatch('destroyBook')
 
     })
 
