@@ -73,7 +73,14 @@ const routes = [
             {
                 path: 'transactions',
                 name: 'CreateTransaction',
-                component: CreateTransaction
+                component: CreateTransaction,
+                children: [
+                    {
+                        path: ':book_id',
+                        name: 'CreateTransactionForBook',
+                        component: CreateTransaction
+                    }
+                ]
             }
         ]
     },
