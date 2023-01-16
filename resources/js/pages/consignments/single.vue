@@ -183,15 +183,27 @@
 
         <div class="sm:w-full w-1/2 gap-2 flex flex-col">
 
-            <button @click="openSettlementFormModal" v-if="consignmentHistory && consignmentHistory.history.length > 0" class="hover:bg-white transition-colors duration-500 w-full h-[86px] grid place-items-center p-4 rounded-xl border-dashed border-2 border-border-dark">
+            <div class="grid grid-cols-2 gap-2">
 
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-subtitle stroke-[1.5] w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <button @click="openSettlementFormModal" v-if="consignmentHistory && consignmentHistory.history.length > 0" class="col-span-1 hover:bg-white transition-colors duration-500 w-full h-[86px] grid place-items-center p-4 rounded-xl border-dashed border-2 border-border-dark">
 
-                <h3 class="text-subtitle font-medium">Make a settlement</h3>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-subtitle stroke-[1.5] w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
 
-            </button>
+                    <span class="text-subtitle font-medium">Make a settlement</span>
+
+                </button>
+
+                <button @click="openReturnFormModal" v-if="consignmentHistory && consignmentHistory.history.length > 0" class="col-span-1 hover:bg-white transition-colors duration-500 w-full h-[86px] grid place-items-center p-4 rounded-xl border-dashed border-2 border-border-dark">
+
+                    <ArrowUturnLeftIcon class="stroke-subtitle stroke-[1.5] w-4 h-4" />
+
+                    <span class="text-subtitle font-medium">Return items</span>
+
+                </button>
+
+            </div>
 
             <ul v-if="consignmentHistory" class="w-full gap-2 flex flex-col-reverse justify-end">
 
@@ -214,14 +226,16 @@
                                     <span v-if="record.type==='settlement'">Settled</span>
                                     <span v-if="record.type==='sale'">Sold</span>
                                     <span v-if="record.type==='purchase'">Received</span>
+                                    <span v-if="record.type==='return'">Returned</span>
                                     <span class="text-subtitle">&nbsp;{{ record.quantity }} {{ record.quantity > 1 ? 'copies' : 'copy' }}</span>
                                 </h3>
                                 <h5 class="text-subtitle text-xs">
-                                    {{ record.type==='settlement' ? record.receipt : record.invoice }}
+                                    {{ record.type==='settlement' || record.type ==='return' ? record.receipt : record.invoice }}
                                 </h5>
                                 <label v-if="record.type==='purchase'" class="w-fit text-2xs leading-none font-semibold text-center whitespace-nowrap text-green-600">purchase</label>
                                 <label v-if="record.type==='sale'" class="w-fit text-2xs leading-none font-semibold text-center whitespace-nowrap text-red-600">sale</label>
                                 <label v-if="record.type==='settlement'" class="w-fit text-2xs leading-none font-semibold text-center whitespace-nowrap text-yellow-600">settlement</label>
+                                <label v-if="record.type==='return'" class="w-fit text-2xs leading-none font-semibold text-center whitespace-nowrap text-gray-600">return</label>
 
                             </div>
                             <div class="flex flex-col items-center gap-1">
@@ -308,6 +322,8 @@
 
     <ConsignmentSettlementForm @close="openSettlementFormModal(false)" :show="viewSettlementForm" v-if="consignmentHistory" :book="{ title: consignmentHistory.book.title, id: consignmentHistory.book.id }" />
 
+    <ConsignmentReturnForm @close="openReturnFormModal(false)" :show="viewReturnForm" v-if="consignmentHistory && viewReturnForm" :book="{ title: consignmentHistory.book.title, id: consignmentHistory.book.id }" />
+
     <InfoModalCard :open="viewInfoModalCard" @close="toggleInfoModalCardView" title="Why is the payable amount below zero?">
 
         <template #description>
@@ -322,7 +338,7 @@
 
 <script setup>
 
-    import { ref, onMounted } from "vue"
+    import { ref, onMounted, onBeforeUnmount } from "vue"
     import { useRoute } from "vue-router"
     import store from "../../store"
     import router from "../../router";
@@ -334,9 +350,11 @@
     import TextInput from "../../components/Form/TextInput.vue"
     import Collapsable from "../../components/Collapsable.vue"
     import ConsignmentSettlementForm from "../../pages/new/consignment-settlement.vue"
+    import ConsignmentReturnForm from "../../pages/new/consignment-return.vue"
     import InfoModalCard from "../../components/InfoModalCard.vue"
     import { ethiopianDate, months, ethiopianMonths } from "../../utils";
     import { onClickOutside } from "@vueuse/core";
+    import { ArrowUturnLeftIcon } from "@heroicons/vue/24/solid";
 
     const loading = ref(false)
     const consignmentHistory = ref(null)
@@ -346,6 +364,11 @@
     const viewSettlementForm = ref(false)
     function openSettlementFormModal(open=true) {
         viewSettlementForm.value = open
+    }
+
+    const viewReturnForm = ref(false)
+    function openReturnFormModal(open=true) {
+        viewReturnForm.value = open
     }
 
     function toggleDateLocale() {
@@ -418,6 +441,7 @@
 
             consignmentHistory.value = response.data.body
             consigner.value = response.data.body.book.supplier
+            store.dispatch('setBook', response.data.body.book)
 
         }).catch((error) => {
 
@@ -450,6 +474,12 @@
                 { transaction_on: 'unsettled' }
 
         })
+
+    })
+
+    onBeforeUnmount(() => {
+
+        store.dispatch('destroyBook')
 
     })
 
