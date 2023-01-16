@@ -92,7 +92,7 @@
                 </ItemCard>
             </div>
 
-            <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-10">
+            <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-6">
                 <div class="flex justify-center w-full">
                     <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
                 </div>
@@ -130,7 +130,7 @@
 
                         <Cell name="invoice" :hide="data.hide" class="w-[4%] text-xs font-semibold text-subtitle text-center">{{ data['record']['invoice'].toLowerCase() }} </Cell>
                         <Cell name="quantity" :main="true" :hide="data.hide" class="w-[88%] text-xs font-semibold text-subtitle">{{ data['record']['quantity'] }} </Cell>
-                        <EnumCell class="w-[4%]" name="type" :hide="data.hide" :colors="['red', 'green']" :options="['sale', 'purchase']" :value="data['record']['type']" />
+                        <EnumCell class="w-[4%]" name="type" :hide="data.hide" :colors="['red', 'green', 'gray']" :options="['sale', 'purchase', 'return']" :value="data['record']['type']" />
                         <DateCell class="w-[4%]" name="date" :hide="data.hide" :value="data['record']['date']" />
 
                     </template>
