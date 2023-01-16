@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ConsignmentController;
+use App\Http\Controllers\ConsignmentReturnController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\SearchController;
@@ -80,7 +81,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('consignments')->group(function () {
         Route::get('/', [ConsignmentController::class, 'index']);
         Route::get('/books', [ConsignmentController::class, 'books']);
-        Route::post('/', [ConsignmentController::class, 'create']);
+        Route::post('/', [ConsignmentController::class, 'settle']);
+        Route::get('/returns', [ConsignmentReturnController::class, 'index']);
+        Route::post('/return', [ConsignmentController::class, 'return']);
         Route::get('/history', [ConsignmentController::class, 'history']);
     });
 
@@ -106,6 +109,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [StoreController::class, 'index']);
         Route::get('/history', [StoreController::class, 'history']);
         Route::get('/balance', [StoreTransferController::class, 'balance']);
+        Route::get('/book', [StoreTransferController::class, 'book']);
         Route::post('/', [StoreController::class, 'post']);
         Route::post('/transfer', [StoreTransferController::class, 'create']);
         Route::get('/list', [StoreController::class, 'list']);
