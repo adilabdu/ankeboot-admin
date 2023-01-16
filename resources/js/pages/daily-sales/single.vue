@@ -234,7 +234,7 @@
 
                 <div class="relative flex sm:flex-col items-start justify-center w-full gap-2">
                     <SwitchInput v-if="index !== 0" v-model="sale.is_manual" label-location="top" class="px-2" label="Manual receipt" />
-                    <TextInput
+                    <PriceInput
                         class="w-2/5 sm:w-full"
                         required
                         :label="
@@ -284,7 +284,7 @@
                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                             </svg>
                         </button>
-                        <TextInput class="w-1/3 sm:w-full" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
+                        <PriceInput class="w-1/3 sm:w-full" required label="Deposit Amount" v-model="deposit.amount" placeholder="Total deposit amount in ETB" />
                         <DatePicker label="Deposit date" required v-model="deposit.deposited_on" class="w-1/3 sm:w-full" />
                         <Dropdown :hide-label-on-mobile=false required v-model="deposit.type" :list="['cash', 'withholding', 'cheque', 'transfer', 'credit', 'card']" placeholder="Choose the type of Deposit" label-direction="top" label="Deposit type" class="!w-1/3 sm:!w-full h-16" />
                     </div>
@@ -321,7 +321,7 @@
                                 <path d="M4.80078 6.73334H6.40078V13.1333H4.80078V6.73334ZM8.00078 6.73334H9.60078V13.1333H8.00078V6.73334Z" fill="#FF8100"/>
                             </svg>
                         </button>
-                        <TextInput class="w-1/3 sm:w-full" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
+                        <PriceInput class="w-1/3 sm:w-full" required label="Expense Amount" v-model="expense.amount" placeholder="Total expense amount in ETB" />
                         <TextInput class="w-2/3 sm:w-full" required label="Expense Receipt" v-model="expense.receipt" placeholder="Payment voucher receipt issued for expense (PV****)" />
                     </div>
                     <div class="flex items-start justify-start w-full gap-2">
@@ -447,6 +447,7 @@
     import Collapsable from "../../components/Collapsable.vue"
     import TextAreaInput from "../../components/Form/TextAreaInput.vue"
     import TextInput from "../../components/Form/TextInput.vue";
+    import PriceInput from "../../components/Form/PriceInput.vue";
     import Table from "../../components/Table/Table.vue"
     import Cell from "../../components/Table/Cell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
