@@ -143,9 +143,73 @@ const actions = {
             params: {
                 id: payload
             }
-        }).then((response) => {
+        }).then(async (response) => {
 
-            commit('getBook', response.data.data)
+            if (response.data.data.type === 'consignment') {
+
+                await axios.get('/api/consignments/returns', {
+                    params: {
+                        book_id: payload
+                    }
+                }).then((res) => {
+
+                    commit('getBook', {
+                        id: response.data.data.id,
+                        code: response.data.data.code,
+                        type: response.data.data.type,
+                        title: response.data.data.title,
+                        author: response.data.data.author,
+                        alternate_title: response.data.data.alternate_title,
+                        category: response.data.data.category,
+                        balance: response.data.data.balance,
+                        supplier: response.data.data.supplier,
+                        transactions: [
+                            ...response.data.data.transactions,
+                            ...res.data.data.map(data => {
+
+                                return {
+                                    id: null,
+                                    invoice: data.receipt,
+                                    quantity: data.quantity,
+                                    transaction_on: data.transaction_on,
+                                    type: 'return',
+                                    created_at: data.created_at,
+                                    updated_at: data.updated_at
+                                }
+
+                            })
+                        ]
+                            .sort((a, b) => {
+                                return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                            }),
+                        created_at: response.data.data['created_at'],
+                        updated_at: response.data.data['updated_at']
+                    })
+
+                    console.log([
+                        ...response.data.data.transactions,
+                        ...res.data.data.map(data => {
+
+                            return {
+                                id: null,
+                                quantity: data.quantity,
+                                transaction_on: data.transaction_on,
+                                invoice: data.receipt,
+                                type: 'return'
+                            }
+
+                        })
+                    ]
+                        .sort((a, b) => {
+                            return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+                        }))
+
+                })
+
+            }
+            else {
+                commit('getBook', response.data.data)
+            }
 
         }).catch((error) => {
 
@@ -170,6 +234,12 @@ const actions = {
 
             })
         })
+    },
+
+    setBook(context, payload) {
+
+        context.commit('getBook', payload)
+
     },
 
     async getBooksStats({ commit }) {
@@ -230,7 +300,7 @@ const mutations = {
             category: payload.category,
             balance: payload.balance,
             supplier: payload.supplier,
-            transactions: payload.transactions.map((transaction) => {
+            transactions: payload.transactions?.map((transaction) => {
                 return {
                     id: transaction.id,
                     invoice: transaction.invoice,

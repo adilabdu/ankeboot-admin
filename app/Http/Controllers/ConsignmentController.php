@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Enums\ConsignmentAction;
 use App\Enums\PurchaseType;
+use App\Http\Requests\ConsignmentReturnRequest;
 use App\Models\Book;
+use App\Models\ConsignmentReturn;
 use App\Models\ConsignmentSettlement;
+use App\Models\StoreBook;
 use App\Models\Transaction;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ConsignmentController extends Controller
@@ -126,13 +130,21 @@ class ConsignmentController extends Controller
                 'book_id', $request->input('book_id')
             )->get();
 
+            $returns = ConsignmentReturn::where(
+                'book_id', $request->input('book_id')
+            )->get()->each(function ($return) {
+                $return->type = 'return'; // For each record, add `type: return`
+            });
+
             $settlements = ConsignmentSettlement::where(
                 'book_id', $request->input('book_id')
             )->get()->each(function ($settlement) {
                 $settlement->type = 'settlement';   // For each record, add `type: settlement`
             });
 
-            $consignmentHistory = $transactions->concat($settlements)
+            $consignmentHistory = $transactions
+                ->concat($settlements)
+                ->concat($returns)
                 ->sortBy('transaction_on')
                 ->values()
                 ->all();
@@ -158,7 +170,7 @@ class ConsignmentController extends Controller
 
     }
 
-    public function create(Request $request): Response|Application|ResponseFactory
+    public function settle(Request $request): Response|Application|ResponseFactory
     {
 
         $request->validate([
@@ -184,6 +196,55 @@ class ConsignmentController extends Controller
             $consignmentRecord = ConsignmentSettlement::create($request->all());
 
         } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'body' => $exception->getMessage()
+            ]);
+
+        }
+
+        return response([
+            'message' => 'ok',
+            'body' => $consignmentRecord
+        ]);
+
+    }
+
+    public function return(ConsignmentReturnRequest $request): Response|Application|ResponseFactory
+    {
+
+        try {
+
+            DB::beginTransaction();
+
+            $sum = 0;
+
+            foreach ($request->input('quantity') as $store) {
+
+                $sum += $store['amount'];
+
+                $storeBook = StoreBook::where([
+                    'store_id' => $store['store_id'],
+                    'book_id' => $request->input('book_id')
+                ])->first();
+
+                $storeBook->balance = $storeBook->balance - $store['amount'];
+                $storeBook->save();
+
+            }
+
+            $consignmentRecord = ConsignmentReturn::create(
+                array_merge($request->only('book_id', 'transaction_on', 'receipt'), [
+                    'quantity' => $sum
+                ])
+            );
+
+            DB::commit();
+
+        } catch (Exception $exception) {
+
+            DB::rollBack();
 
             return response([
                 'message' => 'error',
