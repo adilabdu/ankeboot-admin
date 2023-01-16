@@ -5,12 +5,12 @@
         <div class="grid grid-cols-3 gap-2 sm:grid-rows-3 sm:grid-cols-1">
             <BarChart
                 :data="monthlyPurchases"
-                :loading="!! ! monthlyPurchases"
+                :loading="chartsLoading"
                 title="Monthly Purchases"
                 subtitle="Purchases made within the past 12 months"
             />
             <DonutChart
-                :loading="!! ! yearlyConsignmentSales"
+                :loading="chartsLoading"
                 :ratio="yearlyConsignmentSales"
                 subtitle="Ratio of consignment to cash sales within the last year"
                 title="Rate of Consignment Sales"
@@ -19,17 +19,17 @@
                     second: `Percentage of consignment sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`
                 }"
             />
-            <LineChart :data="monthlySales" :loading="!! ! monthlySales" />
-            <PieChart
-                :loading="!! ! yearlyConsignmentSales"
-                :ratio="yearlyConsignmentSales"
-                subtitle="Ratio of consignment to cash sales within the last year"
-                title="Rate of Consignment Sales"
-                :legends="{
-                    first: `Percentage of cash sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`,
-                    second: `Percentage of consignment sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`
-                }"
-            />
+<!--            <PieChart-->
+<!--                :loading="!! ! yearlyConsignmentSales"-->
+<!--                :ratio="yearlyConsignmentSales"-->
+<!--                subtitle="Ratio of consignment to cash sales within the last year"-->
+<!--                title="Rate of Consignment Sales"-->
+<!--                :legends="{-->
+<!--                    first: `Percentage of cash sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`,-->
+<!--                    second: `Percentage of consignment sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`-->
+<!--                }"-->
+<!--            />-->
+            <LineChart :data="monthlySales" :loading="chartsLoading" />
         </div>
 
         <ActionMenu />
@@ -40,7 +40,7 @@
 
 <script setup>
 
-    import { onMounted, ref } from "vue";
+import {computed, onMounted, ref} from "vue";
     import ContentPage from "../layouts/content-page.vue";
     import InfoCard from "../components/InfoCard.vue";
     import BarChart from "../components/Graphs/BarChart.vue";
@@ -100,6 +100,12 @@
             })
 
     }
+
+    const chartsLoading = computed(() => {
+        return !! ! monthlyPurchases.value &&
+            !! ! monthlySales.value &&
+            !! ! yearlyConsignmentSales.value
+    })
 
     function getLastYear() {
 
