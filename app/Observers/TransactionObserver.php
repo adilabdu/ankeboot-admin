@@ -22,11 +22,18 @@ class TransactionObserver
      */
     public function created(Transaction $transaction): void
     {
-        $transaction->logs()->save(new Log([
-            'type' => ActivityType::CREATE,
-            'user_id' => Auth::user()->id,
-        ]));
+        if (Auth::user()) {
 
+            $transaction->logs()->save(new Log([
+                'type' => ActivityType::CREATE,
+                'user_id' => Auth::user()->id,
+            ]));
+
+        } else {
+
+            LaravelLog::info('Transaction created from an unauthorized / unauthenticated origin');
+
+        }
     }
 
     /**
