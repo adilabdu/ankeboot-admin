@@ -9,11 +9,11 @@
 
         <title>Ankeboot Admin</title>
 
-{{--        <link rel="apple-touch-icon" sizes="180x180" href="{{ Vite::asset('resources/assets/favicon/apple-touch-icon.png') }}">--}}
-{{--        <link rel="icon" type="image/png" sizes="32x32" href="{{ Vite::asset('resources/assets/favicon/favicon-32x32.png') }}">--}}
-{{--        <link rel="icon" type="image/png" sizes="16x16" href="{{ Vite::asset('resources/assets/favicon/favicon-16x16.png')  }}">--}}
-{{--        <link rel="icon" type="image/x-icon" href="{{ Vite::asset('resources/assets/favicon/favicon.ico') }}">--}}
-{{--        <link rel="manifest" href="{{ Vite::asset('resources/assets/favicon/site.webmanifest') }}">--}}
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ Vite::asset('resources/assets/favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ Vite::asset('resources/assets/favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ Vite::asset('resources/assets/favicon/favicon-16x16.png')  }}">
+        <link rel="icon" type="image/x-icon" href="{{ Vite::asset('resources/assets/favicon/favicon.ico') }}">
+        <link rel="manifest" href="{{ Vite::asset('resources/assets/favicon/site.webmanifest') }}">
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
