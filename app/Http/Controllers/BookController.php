@@ -228,7 +228,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): Response|Application|ResponseFactory
     {
 
         $request->validate([
