@@ -101,13 +101,12 @@
 
 <script setup>
 
-    import { onMounted, ref, watch, computed } from "vue";
+    import { onMounted, ref, computed } from "vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
     import TextSearchInput from "../../components/Form/TextSearchInput.vue";
     import SwitchInput from "../../components/Form/SwitchInput.vue";
     import Collapsable from "../../components/Collapsable.vue";
-    import DatePicker from "../../components/Form/DatePicker.vue";
     import FileInput from "../../components/Form/FileInput.vue";
     import store from "../../store"
     import router from "../../router"
@@ -149,7 +148,7 @@
 
     }
 
-    const registerTransaction = ref(true)
+    const registerTransaction = ref(false)
     function toggleTransactionRegistration(state) {
         registerTransaction.value = state
     }
