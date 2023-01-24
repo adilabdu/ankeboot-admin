@@ -16,7 +16,8 @@ import Store from "../pages/stores/single.vue"
 import FormLayout from "../layouts/form-content-page.vue";
 import CreateBook from "../pages/new/books.vue";
 import CreateTransaction from "../pages/new/transactions.vue";
-import UpdateBook from "../pages/update/books.vue";
+import UpdateBooks from "../pages/update/books/index.vue";
+import UpdateBook from "../pages/update/books/books.vue";
 import UpdateTransaction from "../pages/update/transactions.vue"
 
 import TransactionLayout from "../pages/transactions/index.vue"
@@ -92,6 +93,11 @@ const routes = [
             requiresLogin: true
         },
         children: [
+            {
+                path: 'books',
+                name: 'UpdateBooks',
+                component: UpdateBooks
+            },
             {
                 path: 'books/:id',
                 name: 'UpdateBook',
