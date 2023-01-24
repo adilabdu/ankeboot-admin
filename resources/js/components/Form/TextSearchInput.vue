@@ -11,7 +11,7 @@
             :required="required" type="text"
             :placeholder="placeholder"
             class="peer focus:outline-brand-primary sm:focus:outline-none focus:outline focus:outline-2 focus:outline-offset-2 h-10 w-full p-2 border border-border-light rounded-md" />
-        <ul v-if="filteredTerms.length > 0" ref="searchOptions" class="scrollbar peer-focus:inline hidden active:inline absolute w-full max-h-[12.5rem] overflow-auto rounded-md border border-border-light shadow-md bg-white bottom-0 translate-y-full -mb-2 z-20">
+        <ul v-if="filteredTerms.length > 0" ref="searchOptions" class="scrollbar-brand peer-focus:inline hidden active:inline absolute w-full max-h-[12.5rem] overflow-auto rounded-md border border-border-light shadow-md bg-white bottom-0 translate-y-full -mb-2 z-20">
             <template v-for="search in filteredTerms">
                 <li tabindex="0" @click="selectSearchResult(search)" class="flex cursor-pointer hover:text-brand-primary w-full h-10 items-center px-2 hover:bg-brand-secondary">
                     {{ search }}
