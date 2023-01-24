@@ -36,8 +36,16 @@ module.exports = {
                 'grow-up': 'growUp 300ms ease-out',
                 'scale-up': 'scaleUp 75ms ease-out',
                 'appear-down': 'appearDown 75ms ease-out',
+                'ring': 'ring 350ms ease-out forwards'
             },
             keyframes: {
+                ring: {
+                    '0%': { transform: 'rotate(0deg)', transformOrigin: 'top' },
+                    '25%': { transform: 'rotate(10deg) scale(102.5%)', transformOrigin: 'top' },
+                    '50%': { transform: 'rotate(-10deg) scale(105%)', transformOrigin: 'top' },
+                    '75%': { transform: 'rotate(10deg) scale(107.5%)', transformOrigin: 'top' },
+                    '100%': { transform: 'rotate(0deg) scale(110%)', transformOrigin: 'top' }
+                },
                 rotate: {
                     '0%': { transform: 'rotate(0deg)' },
                     '100%': { transform: 'rotate(360deg)' },
