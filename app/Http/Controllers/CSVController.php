@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\PurchaseType;
 use App\Enums\TransactionType;
 use App\Http\Requests\InsertDailySaleTransactionsRequest;
+use App\Jobs\ProcessItemList;
 use App\Models\Book;
 use App\Models\DailySale;
 use App\Models\Transaction;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
@@ -35,70 +37,40 @@ class CSVController extends Controller
             ]
         ]);
 
-        try {
+        $records = $this->arrayFromCSV($request->file('file'));
 
-            $records = $this->arrayFromCSV($request->file('file'));
+        Validator::validate($records, [
+            '*.code' => [
+                'required',
+            ],
+            '*.type' => [
+                'required',
+                new Enum(PurchaseType::class)
+            ],
+            '*.title' => 'required|string',
+            '*.author' => 'string',
+            '*.category' => 'string',
+        ], [
+            '*.code.required' => 'The code field at #:position is required',
+            '*.type.required' => 'The type field at #:position is required',
+            '*.title.required' => 'The title field at #:position is required',
+            '*.type.Illuminate\Validation\Rules\Enum' =>
+                'Invalid type field at #:position specified. Valid types are `consignment` or `cash`',
+            '*.title.string' => 'The title field at #:position needs to be a string',
+            '*.author.string' => 'The author field at #:position needs to be a string',
+            '*.category.string' => 'The category field at #:position needs to be a string',
+        ]);
 
-            Validator::validate($records, [
-                '*.code' => [
-                    'required',
-                ],
-                '*.type' => [
-                    'required',
-                    new Enum(PurchaseType::class)
-                ],
-                '*.title' => 'required|string',
-                '*.author' => 'string',
-                '*.category' => 'string',
-                '*.balance' => 'required|numeric'
-            ], [
-                '*.code.required' => 'The code field at #:position is required',
-                '*.type.required' => 'The type field at #:position is required',
-                '*.title.required' => 'The title field at #:position is required',
-                '*.balance.required' => 'The balance field at #:position is required',
-                '*.type.Illuminate\Validation\Rules\Enum' =>
-                    'Invalid type field at #:position specified. Valid types are `consignment` or `cash`',
-                '*.title.string' => 'The title field at #:position needs to be a string',
-                '*.author.string' => 'The author field at #:position needs to be a string',
-                '*.category.string' => 'The category field at #:position needs to be a string',
-                '*.balance.numeric' => 'The balance field at #:position needs to be a number'
-            ]);
-
-            DB::beginTransaction();
-
-            foreach ($records as $i => $record) {
-
-                Validator::validate($record, [
-                    'code' => 'unique:books,code'
-                ], [
-                    'code.unique' => 'The code at #'. $i + 1 . ' has already been taken'
-                ]);
-
-                Book::create($record);
-
-            }
-
-            DB::commit();
-
-        } catch (Exception $e) {
-
-            DB::rollBack();
-
-            return response([
-                'message' => 'error',
-                'data' => $e->getMessage()
-            ], 500);
-
-        }
+        ProcessItemList::dispatch($records, Auth::user());
 
         return response([
             'message' => 'ok',
-            'data' => count($records) . ' records inserted'
+            'data' => 'File is being processed'
         ], 200);
 
     }
 
-    public function insertTransactions(Request $request): Response|Application|ResponseFactory
+    public function insertPurchases(Request $request): Response|Application|ResponseFactory
     {
 
         // TODO: insert transaction records from CSV input
@@ -158,7 +130,7 @@ class CSVController extends Controller
                 if (TransactionType::from($record['type']) === TransactionType::SALE) {
 
                     $dailySale = DailySale::where(
-                        'date_of', 
+                        'date_of',
                         $request->input('transaction_date') ??
                         new Carbon($record['transaction_date'])
                     )->first();
@@ -170,7 +142,7 @@ class CSVController extends Controller
                             // dd($request->input('transaction_date') ?? new Carbon($record['transaction_date']));
 
                             $dailySale = new DailySale();
-                            
+
                             $dailySale->date_of = $request->input('transaction_date') ??
                                 new Carbon($record['transaction_date']);
 
@@ -180,8 +152,8 @@ class CSVController extends Controller
 
                             return response([
                                 'message' => 'error',
-                                'data' => 'Daily sale record for ' . 
-                                    ($request->input('transaction_date') ?? new Carbon($record['transaction_date'])) . 
+                                'data' => 'Daily sale record for ' .
+                                    ($request->input('transaction_date') ?? new Carbon($record['transaction_date'])) .
                                     ' does not exist'
                             ], 422);
 
