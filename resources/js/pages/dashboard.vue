@@ -32,7 +32,9 @@
             <LineChart :data="monthlySales" :loading="chartsLoading" />
         </div>
 
-        <ActionMenu />
+        <div class="min-h-fit">
+            <ActionMenu />
+        </div>
 
     </ContentPage>
 
