@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
 use App\Models\MailingList;
 
-class NewSubscriberRegistered extends Notification
+class NewSubscriberRegistered extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -29,7 +29,7 @@ class NewSubscriberRegistered extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['database', 'telegram'];
     }
@@ -54,7 +54,7 @@ class NewSubscriberRegistered extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [
             'mailing_list_id' => $this->mailingList->id,
@@ -64,15 +64,15 @@ class NewSubscriberRegistered extends Notification
         ];
     }
 
-    public function toTelegram($notifiable)
+    public function toTelegram($notifiable): TelegramMessage
     {
         return TelegramMessage::create()
                 ->to($notifiable->telegram_chat_id)
                 ->content(
-                    'New subscriber registered! *' . 
-                    $this->mailingList->name . 
-                    '* has joined the mailing list on ' . 
-                    $this->mailingList->created_at->format('d/m/Y H:i:s') . 
+                    'New subscriber registered! *' .
+                    $this->mailingList->name .
+                    '* has joined the mailing list on ' .
+                    $this->mailingList->created_at->format('d/m/Y H:i:s') .
                     '.'
                 );
     }
