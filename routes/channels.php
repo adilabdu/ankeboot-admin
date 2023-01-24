@@ -18,6 +18,5 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('mailing-list', function ($user) {
-    \Illuminate\Support\Facades\Log::info('Inside channels config');
     return true;
 });
