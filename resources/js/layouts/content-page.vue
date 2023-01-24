@@ -1,6 +1,6 @@
 <template>
 
-    <div id="contentPage" class="content-page-container overflow-y-auto grow px-12 py-8 sm:px-4 xs:px-2 gap-8 flex flex-col w-full max-w-[1920px]">
+    <div id="contentPage" class="scrollbar-brand overflow-y-auto grow px-12 py-8 sm:px-4 xs:px-2 gap-8 flex flex-col w-full max-w-[1920px]">
         <div class="print:hidden px-4 gap-3 -mb-3 bg-white w-fit min-h-[2rem] flex items-center justify-center border border-border-light shadow-sm rounded-lg">
             <template v-for="(route, index) in routes">
                 <RouterLink class="hover:text-brand-primary focus:outline-none" v-if="route === '' && index !== routes.length - 1" :to="{ name: 'Dashboard' }">Home</RouterLink>
@@ -69,32 +69,5 @@
 </script>
 
 <style scoped>
-
-    .content-page-container::-webkit-scrollbar {
-        width: 16px;
-    }
-    .content-page-container::-webkit-scrollbar-corner {
-        background: rgba(0,0,0,0);
-    }
-    .content-page-container::-webkit-scrollbar-thumb {
-        background-color: rgba(116,116,116,0.5);
-        border-radius: 6px;
-        border: 4px solid rgba(0,0,0,0);
-        background-clip: content-box;
-        transition: all;
-        transition-duration: 1s;
-    }
-
-    .content-page-container::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(116,116,116,1);
-    }
-
-    .content-page-container::-webkit-scrollbar-track {
-        background-color: rgba(0,0,0,0);
-    }
-
-    .content-page-container:hover .content-page-container::-webkit-scrollbar-thumb {
-        background-color: rgba(116,116,116,1) !important;
-    }
 
 </style>
