@@ -2,6 +2,7 @@ const state = {
 
     navigationOpened: false,
     contentLoading: false,
+    minimizeNavigation: false
 
 }
 
@@ -14,6 +15,12 @@ const actions = {
     toggleNavigation(context, payload) {
 
         context.commit('toggleNavigation', payload)
+
+    },
+
+    toggleNavigationMinimize(context, payload) {
+
+        context.commit('toggleNavigationMinimize', payload)
 
     },
 
@@ -35,6 +42,17 @@ const mutations = {
         }
 
         state.navigationOpened = !state.navigationOpened
+
+    },
+
+    toggleNavigationMinimize(state, payload) {
+
+        if (payload) {
+            state.minimizeNavigation = payload
+            return
+        }
+
+        state.minimizeNavigation = !state.minimizeNavigation
 
     },
 
