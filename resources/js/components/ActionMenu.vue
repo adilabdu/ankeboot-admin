@@ -1,8 +1,8 @@
 <template>
 
-    <div class="overflow-hidden rounded-2xl w-full min-h-96 sm:h-fit bg-white border border-border-light shadow-md grid grid-cols-3 grid-rows-2 sm:grid-cols-1 sm:grid-rows-6">
+    <div class="overflow-hidden rounded-2xl w-full bg-white border border-border-light shadow-md grid grid-cols-3 grid-rows-2 sm:grid-cols-1 sm:grid-rows-6">
 
-        <RouterLink to="new/books" class="overflow-ellipsis max-h-fit cursor-pointer p-8 col-span-1 row-span-1 border-r border-b sm:border-r-0 border-border-light flex flex-col justify-between hover:bg-wallpaper/75 group">
+        <RouterLink to="new/books" class="overflow-ellipsis cursor-pointer p-8 col-span-1 row-span-1 border-r border-b sm:border-r-0 border-border-light flex flex-col justify-between hover:bg-wallpaper/75 group">
 
             <div class="grid place-items-center w-12 h-12 bg-green-100 rounded-lg mb-3 group-hover:bg-brand-secondary transition-colors duration-300 ">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="group-hover:stroke-brand-primary stroke-green-400 stroke-2 w-5 h-5 transition-colors duration-300 ">
