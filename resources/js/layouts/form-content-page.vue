@@ -29,12 +29,12 @@
                             <path d="M18.414 6.707H3.828L9.121 1.414L7.707 0L0 7.707L7.707 15.414L9.121 14L3.828 8.707H18.414V6.707Z" />
                         </svg>
                     </RouterLink>
-                    <div :class="[isUpdateTransaction ? 'ring-1 ring-brand-primary bg-brand-secondary text-brand-primary' : '']" class="focus:outline-none flex items-center flex-row-reverse justify-between p-3 w-full text-right rounded-md group">
+                    <li :class="[isUpdateTransaction ? 'ring-1 ring-brand-primary bg-brand-secondary text-brand-primary' : '']" class="focus:outline-none flex items-center flex-row-reverse justify-between p-3 w-full text-right rounded-md group">
                         Update an existing Transaction
                         <svg width="19" height="16" viewBox="0 0 19 16" :class="[isUpdateTransaction ? '!opacity-100' : '']" class="opacity-0 fill-brand-primary" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18.414 6.707H3.828L9.121 1.414L7.707 0L0 7.707L7.707 15.414L9.121 14L3.828 8.707H18.414V6.707Z" />
                         </svg>
-                    </div>
+                    </li>
                 </ul>
 
             </div>
@@ -51,7 +51,6 @@
     import { useRoute } from "vue-router";
     import ContentPage from "./content-page.vue";
 
-    const isUpdateBook = computed(() => useRoute().name === 'UpdateBook')
     const isUpdateTransaction = computed(() => useRoute().name === 'UpdateTransaction')
 
 </script>

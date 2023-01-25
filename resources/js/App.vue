@@ -15,10 +15,8 @@
 
 <script setup>
 
-    import { computed, ref } from "vue"
-    import { useRoute } from "vue-router"
+    import { computed } from "vue"
     import Layout from "./layouts/index.vue";
-    import Login from "./pages/login.vue";
 
     const primaryColor = computed(() => {
         return localStorage.getItem('connection') === 'remote_mysql' ?
@@ -37,14 +35,5 @@
 </script>
 
 <style>
-
-    /*:root {*/
-    /*    --primary-color: v-bind('color.primary');*/
-    /*    --secondary-color: v-bind('secondaryColor');*/
-    /*}*/
-
-    .hello {
-        color: v-bind('color.primary')
-    }
 
 </style>

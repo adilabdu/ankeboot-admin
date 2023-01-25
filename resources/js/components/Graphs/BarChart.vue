@@ -36,7 +36,6 @@
 <script setup>
 
   import { computed } from "vue"
-  import { months } from '../../utils'
 
   const props = defineProps({
     title: {

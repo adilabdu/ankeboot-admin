@@ -29,7 +29,7 @@
 
 <script setup>
 
-    import { computed, ref } from "vue"
+    import { computed } from "vue"
     import { useRoute } from "vue-router"
     import store from "../store"
     import Modal from "../components/Modal.vue"

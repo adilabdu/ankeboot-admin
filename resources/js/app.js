@@ -15,9 +15,6 @@ import './bootstrap'
 import { useFavicon } from "@vueuse/core"
 import favicon from "../assets/favicon/favicon.ico";
 
-console.log(favicon)
-
-
 useFavicon().value = favicon;
 
 store.dispatch("getUser")

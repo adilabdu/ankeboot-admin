@@ -48,72 +48,72 @@
 
 <script setup>
 
-import { ref } from "vue";
-import { onClickOutside } from "@vueuse/core";
+    import { ref } from "vue";
+    import { onClickOutside } from "@vueuse/core";
 
-const props = defineProps({
-  modelValue: {
-    type: [String, Number]
-  },
-  list: {
-    type: Array,
-    default: [ 5, 10, 25, 'All' ]
-  },
-  resource_list: {
-    type: Object,
-    default: null
-  },
-  dropDirection: {
-    type: String,
-    default: 'down',
-  },
-  label: {
-    type: String,
-    default: '',
-  },
-  labelDirection: {
-      type: String,
-      default: 'right'
-  },
-  placeholder: {
-      type: String,
-      default: null
-  },
-  required: {
-      type: Boolean,
-      default: false
-  },
-  hideLabelOnMobile: {
-      type: Boolean,
-      default: true,
-  }
-})
+    const props = defineProps({
+      modelValue: {
+        type: [String, Number]
+      },
+      list: {
+        type: Array,
+        default: [ 5, 10, 25, 'All' ]
+      },
+      resource_list: {
+        type: Object,
+        default: null
+      },
+      dropDirection: {
+        type: String,
+        default: 'down',
+      },
+      label: {
+        type: String,
+        default: '',
+      },
+      labelDirection: {
+          type: String,
+          default: 'right'
+      },
+      placeholder: {
+          type: String,
+          default: null
+      },
+      required: {
+          type: Boolean,
+          default: false
+      },
+      hideLabelOnMobile: {
+          type: Boolean,
+          default: true,
+      }
+    })
 
-const emit = defineEmits(['update:modelValue'])
+    const emit = defineEmits(['update:modelValue'])
 
-const showList = ref(false)
+    const showList = ref(false)
 
-function toggleHideList() {
-  showList.value = !showList.value
-}
+    function toggleHideList() {
+      showList.value = !showList.value
+    }
 
-const selected = ref(null)
-function setChoice(index) {
-  toggleHideList()
-  if (props.resource_list) {
-      emit('update:modelValue', props.list[index][props.resource_list.value])
-      selected.value = props.list[index][props.resource_list.display]
-  } else {
-      emit('update:modelValue', props.list[index])
-  }
-}
+    const selected = ref(null)
+    function setChoice(index) {
+      toggleHideList()
+      if (props.resource_list) {
+          emit('update:modelValue', props.list[index][props.resource_list.value])
+          selected.value = props.list[index][props.resource_list.display]
+      } else {
+          emit('update:modelValue', props.list[index])
+      }
+    }
 
-const dropdown = ref(null)
-onClickOutside(dropdown, (event) => {
-  if (showList.value) {
-    toggleHideList()
-  }
-})
+    const dropdown = ref(null)
+    onClickOutside(dropdown, (event) => {
+      if (showList.value) {
+        toggleHideList()
+      }
+    })
 
 </script>
 

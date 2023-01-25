@@ -17,11 +17,11 @@
 
 <script setup>
 
-    import { onBeforeUnmount, onMounted, ref, computed } from "vue";
+    import { onBeforeUnmount, onMounted, ref } from "vue";
     import ContentPage from "../../layouts/content-page.vue"
     import DateNavigation from "../../components/DateNavigation.vue"
     import store from "../../store"
-    import { onBeforeRouteUpdate, useRoute } from "vue-router";
+    import { onBeforeRouteUpdate } from "vue-router";
 
     const controller = new AbortController()
 

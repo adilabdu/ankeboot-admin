@@ -129,9 +129,6 @@
     import { ref, onMounted, onBeforeUnmount } from "vue"
     import { formatPrice } from "../../utils";
     import InfoCard from "../../components/InfoCard.vue"
-    import DropDown from "../../components/Dropdown.vue"
-    import BarChart from "../../components/Graphs/BarChart.vue";
-    import LineChart from "../../components/Graphs/LineChart.vue";
     import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/20/solid"
     import axios from "axios";
     import store from "../../store";

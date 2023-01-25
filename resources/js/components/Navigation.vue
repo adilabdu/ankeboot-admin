@@ -35,7 +35,6 @@
     import store from "../store"
     import { onClickOutside } from "@vueuse/core";
     import { computed, ref } from "vue"
-    import logo from "../../assets/favicon/android-chrome-512x512.png"
 
     const props = defineProps({
         minimize: {

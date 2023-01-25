@@ -1,6 +1,6 @@
 <script setup>
 
-  import { ref, onMounted, computed } from "vue";
+  import { computed } from "vue";
 
   import Cell from "./Cell.vue"
 

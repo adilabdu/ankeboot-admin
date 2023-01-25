@@ -109,7 +109,6 @@
     import store from "../../store"
     import router from "../../router"
     import ConfirmationModal from "../../components/ConfirmationModal.vue";
-    import { onBeforeRouteLeave } from "vue-router";
     import { formatNumber } from "../../utils";
 
     const deleteModal = ref(false)

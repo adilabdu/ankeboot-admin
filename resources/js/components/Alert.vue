@@ -14,7 +14,7 @@
 
 <script setup>
 
-    import { onBeforeUnmount, ref, watch } from "vue";
+    import { ref, watch } from "vue";
     import store from "../store";
 
     const props = defineProps({
@@ -48,7 +48,7 @@
         setTimeout(() => {
             store.dispatch('popAlert')
         }, 5010)
-        
+
     })
 
 </script>

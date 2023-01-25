@@ -433,7 +433,7 @@
 
 <script setup>
 
-    import { onMounted, ref, watch, computed } from "vue";
+    import { onMounted, ref } from "vue";
     import router from "../../router"
     import { useRoute, onBeforeRouteUpdate } from "vue-router";
     import ItemCard from "../../components/ItemCard.vue"
@@ -592,7 +592,7 @@
 
 
         await axios.post('/api/daily-sales/update', payload)
-            .then((response) => {
+            .then(() => {
 
                 router.push({ name: 'DailySales' })
                 store.dispatch('pushAlert', {

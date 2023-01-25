@@ -96,7 +96,7 @@
 
     <script setup>
 
-      import { ref, computed, onMounted } from "vue";
+      import { ref, computed } from "vue";
       import { onClickOutside } from "@vueuse/core";
 
       const props = defineProps({
@@ -220,7 +220,7 @@
       }
 
       const datepicker = ref(null)
-      onClickOutside(datepicker, (event) => {
+      onClickOutside(datepicker, () => {
         if (showPicker.value) {
           toggleWhichPicker()
           togglePicker()

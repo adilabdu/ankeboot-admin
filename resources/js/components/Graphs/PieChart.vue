@@ -51,8 +51,8 @@
 
 <script setup>
 
-import {computed, ref} from "vue";
-import {delay} from "../../utils";
+    import {computed, ref} from "vue";
+    import { delay } from "../../utils";
 
     const props = defineProps({
         title: {

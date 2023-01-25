@@ -16,7 +16,7 @@
                     </template>
 
                     <!-- Date Cards loading -->
-                    <template v-else v-for="i in 6">
+                    <template v-else v-for="_ in 6">
 
                         <LoadingCard />
 
@@ -55,7 +55,7 @@
 
 <script setup>
 
-    import { onMounted, ref, watch, computed } from "vue";
+    import { onMounted, ref, computed } from "vue";
     import { onBeforeRouteUpdate } from "vue-router";
     import DateLinkCard from "./DateLinkCard.vue"
     import LoadingCard from "./LoadingCard.vue"

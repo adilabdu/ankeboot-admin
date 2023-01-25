@@ -90,9 +90,7 @@
     import Table from "../../components/Table/Table.vue"
     import Cell from "../../components/Table/Cell.vue"
     import LinkCell from "../../components/Table/LinkCell.vue"
-    import EnumCell from "../../components/Table/EnumCell.vue"
     import DateCell from "../../components/Table/DateCell.vue"
-    import Modal from "../../components/Modal.vue";
     import ConfirmationModal from "../../components/ConfirmationModal.vue";
 
     const statistics = ref(null)

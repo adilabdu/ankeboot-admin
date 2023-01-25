@@ -95,7 +95,6 @@
     import SwitchInput from "../../components/Form/SwitchInput.vue"
     import Collapsable from "../../components/Collapsable.vue"
     import QuickTransferToShop from "../../views/QuickTransferToShop.vue"
-    import router from "../../router";
     import { getCurrentInstance } from 'vue'
 
     const stores = ref([])
@@ -125,7 +124,7 @@
     function submitNewStore() {
 
         axios.post('/api/stores', newStore.value)
-            .then(response => {
+            .then(() => {
 
                 const instance = getCurrentInstance();
                 instance?.proxy?.$forceUpdate();

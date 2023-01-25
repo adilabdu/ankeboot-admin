@@ -25,13 +25,12 @@
 
 <script setup>
 
-    import { onMounted, ref, computed } from "vue";
+    import { onMounted, ref } from "vue";
     import Form from "../../components/Form/Form.vue";
     import TextInput from "../../components/Form/TextInput.vue";
     import SwitchInput from "../../components/Form/SwitchInput.vue";
     import store from "../../store"
     import DatePicker from "../../components/Form/DatePicker.vue";
-    import ItemSearchInput from "../../components/Form/ItemSearchInput.vue"
     import { useRoute } from "vue-router";
     import router from "../../router";
 

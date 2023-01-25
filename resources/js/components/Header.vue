@@ -292,7 +292,7 @@
     } from "@heroicons/vue/24/solid"
     import axios from "axios";
     import { local_time_ago } from "../utils";
-    import { format, render, cancel, register } from 'timeago.js';
+    import { format, register } from 'timeago.js';
 
     register('my-locale', local_time_ago)
 

@@ -44,12 +44,9 @@
 
 import {computed, onMounted, ref} from "vue";
     import ContentPage from "../layouts/content-page.vue";
-    import InfoCard from "../components/InfoCard.vue";
     import BarChart from "../components/Graphs/BarChart.vue";
     import DonutChart from "../components/Graphs/DonutChart.vue";
-    import PieChart from "../components/Graphs/PieChart.vue";
     import LineChart from "../components/Graphs/LineChart.vue";
-    import { formatNumber } from "../utils";
     import ActionMenu from "../components/ActionMenu.vue";
 
     const monthlySales = ref(null)

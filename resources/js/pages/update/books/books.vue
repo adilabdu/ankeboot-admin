@@ -44,7 +44,6 @@
     import store from "../../../store"
     import router from "../../../router"
     import Collapsable from "../../../components/Collapsable.vue";
-    import DatePicker from "../../../components/Form/DatePicker.vue";
     import { useRoute } from "vue-router";
 
     const loading = computed(() => store.state.book.loading)
@@ -137,7 +136,7 @@
             bookData.value.alternate_title = book.alternate_title
             bookData.value.author = book.author
             bookData.value.category = book.category
-            bookData.value.type = book.type === 'cash' ? false : true
+            bookData.value.type = book.type !== 'cash'
             bookData.value.code = book.code
 
         })

@@ -8,7 +8,6 @@
   import Dropdown from "../Dropdown.vue";
   import SearchBar from "../SearchBar.vue";
   import DatePicker from "../Form/DatePicker.vue";
-  // import ItemDescription from "../ItemDescription.vue";
 
   const props = defineProps({
     data: {
