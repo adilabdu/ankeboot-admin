@@ -4,7 +4,9 @@
 
         <File class="w-1/2 sm:w-full sm:scale-[.45] sm:origin-top-left" :date="formatDate(form.document_date)" :no="form.ref_no" :title="form.title">
 
-            <Markdown v-if="form.content" :source="form.content" />
+            <pre class="font-basic" v-if="form.content" :contenteditable="true">
+                {{ form.content }}
+            </pre>
             <div class="flex flex-col" v-else>
                 <div :class="[focused.content ? 'animate-pulse bg-gray-400/75' : '']" class="w-full bg-gray-400/25 inline-block h-56" />
                 <div :class="[focused.content ? 'animate-pulse bg-gray-400/75' : '']" class="w-3/4 bg-gray-400/25 inline-block h-5" />
@@ -34,14 +36,13 @@
 
 <script setup>
 
-    import { ref, computed } from "vue"
+    import { ref } from "vue"
     import { formatDate } from "../../utils"
     import File from "../../layouts/file.vue"
     import Form from "../../components/Form/Form.vue"
     import TextInput from "../../components/Form/TextInput.vue"
     import TextAreaInput from "../../components/Form/TextAreaInput.vue"
     import DatePicker from "../../components/Form/DatePicker.vue"
-    import Markdown from 'vue3-markdown-it'
 
     const form = ref({
         title: "",
