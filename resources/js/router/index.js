@@ -1,51 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from "../store"
 
-import ContentPage from '../layouts/content-page.vue'
-import Dashboard from '../pages/dashboard.vue'
-import Login from '../pages/login.vue'
-
-import BookLayout from "../pages/books/index.vue";
-import Books from "../pages/books/all.vue";
-import Book from "../pages/books/single.vue";
-
-import StoreLayout from "../pages/stores/index.vue";
-import Stores from "../pages/stores/all.vue";
-import Store from "../pages/stores/single.vue"
-
-import FormLayout from "../layouts/form-content-page.vue";
-import CreateBook from "../pages/new/books.vue";
-import CreateTransaction from "../pages/new/transactions.vue";
-import UpdateBooks from "../pages/update/books/index.vue";
-import UpdateBook from "../pages/update/books/books.vue";
-import UpdateTransaction from "../pages/update/transactions.vue"
-
-import TransactionLayout from "../pages/transactions/index.vue"
-import Transactions from "../pages/transactions/all.vue"
-import Transaction from "../pages/transactions/single.vue"
-
-import DailySaleLayout from "../pages/daily-sales/index.vue"
-import DailySales from "../pages/daily-sales/all.vue"
-import DailySale from "../pages/daily-sales/single.vue"
-
-import ConsignmentLayout from "../pages/consignments/index.vue"
-import Consignments from "../pages/consignments/all.vue"
-import Consignment from "../pages/consignments/single.vue"
-
-import DocumentLayout from "../pages/documents/index.vue"
-import EmployeeHire from "../pages/documents/employee-hire.vue"
-import New from "../pages/documents/new.vue"
-
-import MailingListLayout from "../pages/mailing-list/index.vue"
-import MailingLists from "../pages/mailing-list/all.vue"
-
-import ResourceLayout from "../pages/books/index.vue";
-
 const routes = [
     {
         path: '/',
         name: 'Dashboard',
-        component: Dashboard,
+        component: () => import('../pages/dashboard.vue'),
         meta: {
             requiresLogin: true
         }
@@ -53,7 +13,7 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: Login,
+        component: () => import('../pages/login.vue'),
         meta: {
             requiresGuest: true
         }
@@ -61,7 +21,7 @@ const routes = [
     {
         path: '/new',
         name: 'NewFormLayout',
-        component: FormLayout,
+        component: () => import("../layouts/form-content-page.vue"),
         meta: {
             requiresLogin: true
         },
@@ -69,17 +29,17 @@ const routes = [
             {
                 path: 'books',
                 name: 'CreateBook',
-                component: CreateBook
+                component: () => import("../pages/new/books.vue")
             },
             {
                 path: 'transactions',
                 name: 'CreateTransaction',
-                component: CreateTransaction,
+                component: () => import("../pages/new/transactions.vue"),
                 children: [
                     {
                         path: ':book_id',
                         name: 'CreateTransactionForBook',
-                        component: CreateTransaction
+                        component: () => import("../pages/new/transactions.vue")
                     }
                 ]
             }
@@ -88,7 +48,7 @@ const routes = [
     {
         path: '/update',
         name: 'UpdateFormLayout',
-        component: FormLayout,
+        component: () => import("../layouts/form-content-page.vue"),
         meta: {
             requiresLogin: true
         },
@@ -96,24 +56,24 @@ const routes = [
             {
                 path: 'books',
                 name: 'UpdateBooks',
-                component: UpdateBooks
+                component: () => import("../pages/update/books/index.vue")
             },
             {
                 path: 'books/:id',
                 name: 'UpdateBook',
-                component: UpdateBook
+                component: () => import("../pages/update/books/books.vue")
             },
             {
                 path: 'transactions/:id',
                 name: 'UpdateTransaction',
-                component: UpdateTransaction
+                component: () => import("../pages/update/transactions.vue")
             }
         ]
     },
     {
         path: '/books',
         name: 'BookLayout',
-        component: BookLayout,
+        component: () => import("../pages/books/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -121,19 +81,19 @@ const routes = [
             {
                 path: '',
                 name: 'Books',
-                component: Books
+                component: () => import("../pages/books/all.vue")
             },
             {
                 path: ':id',
                 name: 'Book',
-                component: Book
+                component: () => import("../pages/books/single.vue")
             }
         ],
     },
     {
         path: '/stores',
         name: 'StoreLayout',
-        component: StoreLayout,
+        component: () => import("../pages/stores/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -141,19 +101,19 @@ const routes = [
             {
                 path: '',
                 name: 'Stores',
-                component: Stores
+                component: () => import("../pages/stores/all.vue")
             },
             {
                 path: ':id',
                 name: 'Store',
-                component: Store
+                component: () => import("../pages/stores/single.vue")
             }
         ],
     },
     {
         path: '/transactions',
         name: 'TransactionLayout',
-        component: TransactionLayout,
+        component: () => import("../pages/transactions/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -161,19 +121,19 @@ const routes = [
             {
                 path: '',
                 name: 'Transactions',
-                component: Transactions
+                component: () => import("../pages/transactions/all.vue")
             },
             {
                 path: ':id',
                 name: 'Transaction',
-                component: Transaction
+                component: () => import("../pages/transactions/single.vue")
             }
         ],
     },
     {
         path: '/credit-sales',
         name: 'CreditSales',
-        component: ContentPage,
+        component: () => import('../layouts/content-page.vue'),
         meta: {
             requiresLogin: true
         }
@@ -181,7 +141,7 @@ const routes = [
     {
         path: '/daily-sales',
         name: 'DailySaleLayout',
-        component: DailySaleLayout,
+        component: () => import("../pages/daily-sales/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -189,19 +149,19 @@ const routes = [
             {
                 path: '',
                 name: 'DailySales',
-                component: DailySales
+                component: () => import("../pages/daily-sales/all.vue")
             },
             {
                 path: ':id',
                 name: 'DailySale',
-                component: DailySale
+                component: () => import("../pages/daily-sales/single.vue")
             },
         ],
     },
     {
         path: '/suppliers',
         name: 'Suppliers',
-        component: ContentPage,
+        component: () => import('../layouts/content-page.vue'),
         meta: {
             requiresLogin: true
         }
@@ -209,7 +169,7 @@ const routes = [
     {
         path: '/consignments',
         name: 'ConsignmentLayout',
-        component: ConsignmentLayout,
+        component: () => import("../pages/consignments/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -217,19 +177,19 @@ const routes = [
             {
                 path: '',
                 name: 'Consignments',
-                component: Consignments
+                component: () => import("../pages/consignments/all.vue")
             },
             {
                 path: ':id',
                 name: 'Consignment',
-                component: Consignment
+                component: () => import("../pages/consignments/single.vue")
             }
         ]
     },
     {
         path: '/documents',
         name: 'DocumentLayout',
-        component: DocumentLayout,
+        component: () => import("../pages/documents/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -237,19 +197,19 @@ const routes = [
             {
                 path: 'file/employee-hire',
                 name: 'EmployeeHire',
-                component: EmployeeHire
+                component: () => import("../pages/documents/employee-hire.vue")
             },
             {
                 path: 'file/new',
                 name: 'New',
-                component: New
+                component: () => import("../pages/documents/new.vue")
             }
         ]
     },
     {
         path: '/mailing-list',
         name: 'MailingListLayout',
-        component: MailingListLayout,
+        component: () => import("../pages/mailing-list/index.vue"),
         meta: {
             requiresLogin: true
         },
@@ -257,19 +217,19 @@ const routes = [
             {
                 path: '',
                 name: 'MailingLists',
-                component: MailingLists
+                component: () => import("../pages/mailing-list/all.vue")
             },
             {
                 path: ':id',
                 name: 'MailingList',
-                component: MailingLists
+                component: () => import("../pages/mailing-list/all.vue")
             }
         ]
     },
     {
         path: '/resources',
         name: 'ResourceLayout',
-        component: ResourceLayout,
+        component: () => import("../pages/books/index.vue"),
         meta: {
             requiresLogin: true
         },
