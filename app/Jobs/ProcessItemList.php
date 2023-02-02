@@ -46,9 +46,9 @@ class ProcessItemList implements ShouldQueue
      */
     public function handle(): void
     {
-        try {
+        $now = Carbon::now();
 
-            $now = Carbon::now();
+        try {
 
             DB::beginTransaction();
 
@@ -68,12 +68,10 @@ class ProcessItemList implements ShouldQueue
 
             }
 
-            $time_elapsed = $now->diffInSeconds(Carbon::now());
-
             Notification::send($this->user, new QueueJobFinished([
-                'title' => 'Register ',
+                'description' => 'You have successfully added ' . count($this->records) . ' new book items into your records',
                 'status' => 'success',
-                'time' => $time_elapsed
+                'time' => $now->diffInMicroseconds(Carbon::now())
             ]));
 
             DB::commit();
@@ -83,6 +81,16 @@ class ProcessItemList implements ShouldQueue
             DB::rollBack();
 
             LaravelLog::info("Error while processing file...{$e}");
+
+            Notification::send($this->user, new QueueJobFinished([
+                'description' => 'An error occurred while inserting your book items.',
+                'error' => [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode()
+                ],
+                'status' => 'error',
+                'time' => $now->diffInMicroseconds(Carbon::now())
+            ]));
 
         }
     }
