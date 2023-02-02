@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Events\NewSubscriberRegistered;
+use App\Events\SubscriberRegistered;
+use App\Listeners\SendNewSubscriberNotifications;
 use App\Models\Book;
 use App\Models\StoreBook;
 use App\Models\Transaction;
@@ -24,8 +25,11 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
-            NewSubscriberRegistered::class,
         ],
+
+        SubscriberRegistered::class => [
+            SendNewSubscriberNotifications::class,
+        ]
     ];
 
     /**
@@ -33,7 +37,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         Book::observe(BookObserver::class);
         Transaction::observe(TransactionObserver::class);
@@ -45,7 +49,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    public function shouldDiscoverEvents()
+    public function shouldDiscoverEvents(): bool
     {
         return false;
     }

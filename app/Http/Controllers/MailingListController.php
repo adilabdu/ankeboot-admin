@@ -12,8 +12,6 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
-use App\Notifications\NewSubscriberRegistered;
 
 class MailingListController extends Controller
 {
@@ -91,9 +89,6 @@ class MailingListController extends Controller
         try {
 
                 $mailingList = MailingList::create($request->all());
-
-                Notification::send(User::all(), new NewSubscriberRegistered($mailingList));
-                \App\Events\NewSubscriberRegistered::dispatch($mailingList);
 
             } catch (Exception $e) {
 

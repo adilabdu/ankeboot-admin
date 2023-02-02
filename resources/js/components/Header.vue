@@ -149,10 +149,6 @@
         <!-- Notifications -->
         <div v-if="authenticated" class="cursor-pointer sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center">
 
-<!--            <svg :class="[viewNotificationsMenu ? 'scale-105' : '']" @click="toggleNotificationsView" width="20" height="20" viewBox="0 0 20 20" class="fill-transparent hover:scale-105 group transition-transform duration-300" xmlns="http://www.w3.org/2000/svg">-->
-<!--                <path :class="[viewNotificationsMenu ? 'stroke-black' : 'stroke-subtitle']" class="group-hover:stroke-black" d="M12.8565 15.082C14.7197 14.8614 16.5504 14.4217 18.3105 13.772C16.8199 12.1208 15.9962 9.9745 15.9995 7.75V7.05V7C15.9995 5.4087 15.3674 3.88258 14.2421 2.75736C13.1169 1.63214 11.5908 1 9.9995 1C8.4082 1 6.88208 1.63214 5.75686 2.75736C4.63164 3.88258 3.9995 5.4087 3.9995 7V7.75C4.00252 9.97463 3.17849 12.121 1.6875 13.772C3.4205 14.412 5.2475 14.857 7.1425 15.082M12.8565 15.082C10.9585 15.3071 9.04051 15.3071 7.1425 15.082M12.8565 15.082C13.0006 15.5319 13.0364 16.0094 12.9611 16.4757C12.8857 16.942 12.7013 17.384 12.4229 17.7656C12.1444 18.1472 11.7798 18.4576 11.3587 18.6716C10.9376 18.8856 10.4719 18.9972 9.9995 18.9972C9.52712 18.9972 9.06142 18.8856 8.64031 18.6716C8.21919 18.4576 7.85457 18.1472 7.57612 17.7656C7.29767 17.384 7.11326 16.942 7.03791 16.4757C6.96256 16.0094 6.9984 15.5319 7.1425 15.082" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>-->
-<!--            </svg>-->
-
             <div>
                 <BellIcon v-if="! viewNotificationsMenu" @click="toggleNotificationsView" class="hover:animate-ring hover:stroke-2 w-6 h-6 stroke-subtitle transition-transform duration-150" />
                 <BellIconSolid v-else class="w-7 h-7 fill-subtitle" />
@@ -176,18 +172,21 @@
 
                     <template v-else>
 
-                        <li @click="notificationAction(unread.type, unread.id)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b ">
+                        <li @click="notificationAction(unread.type, unread.id, unread.data)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b ">
 
                             <div class="w-12 flex justify-center items-start">
-                                <div class="grid place-items-center w-9 h-9 bg-green-100 rounded-full">
-                                    <div class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
+                                <div class="grid place-items-center w-9 h-9 rounded-full" :class="[ unread.data.status === 'error' && unread.type === 'App\\Notifications\\QueueJobFinished' ? 'bg-red-100' : 'bg-green-100' ]">
+                                    <div v-if="unread.type === 'App\\Notifications\\NewSubscriber'" class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                                         </svg>
                                     </div>
+                                    <div v-if="unread.type === 'App\\Notifications\\QueueJobFinished'" :class="[ unread.data.status === 'success' ? 'bg-green-200' : 'bg-red-200' ]" class="text-xl w-8 h-8 rounded-full flex items-center justify-center">
+                                        <WrenchIcon class="w-5 h-5 stroke-[1.5]" :class="[ unread.data.status === 'success' ? 'stroke-green-600' : 'stroke-red-600']" />
+                                    </div>
                                 </div>
                             </div>
-                            <div v-if="unread.type === 'App\\Notifications\\NewSubscriberRegistered'" class="grow flex flex-col gap-1">
+                            <div v-if="unread.type === 'App\\Notifications\\NewSubscriber'" class="grow flex flex-col gap-1">
                                 <div class="flex items-center justify-between">
                                     <p class="font-medium">New Subscriber</p>
                                     <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
@@ -197,15 +196,26 @@
                                     You can find them in the subscribers list.
                                 </p>
                             </div>
-                            <div v-else class="grow flex flex-col gap-1">
+                            <div v-else-if="unread.type === 'App\\Notifications\\QueueJobFinished'" class="grow flex flex-col gap-1">
                                 <div class="flex items-center justify-between">
-                                    <p class="font-medium">Queued Job Finished</p>
+                                    <p class="font-medium">Queued Job {{ unread.data.status === 'success' ? 'Finished' : 'Failed' }}</p>
                                     <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
                                 </div>
-                                <p class="text-subtitle">
-                                    <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
-                                    You can find them in the subscribers list.
-                                </p>
+                                <div v-if="unread.data.status === 'success'">
+                                    <p class="text-subtitle">
+                                        {{ unread.data.description }}.
+                                        Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
+                                    </p>
+                                </div>
+                                <div v-else class="">
+                                    <p class="text-subtitle">
+                                        {{ unread.data.description }}
+                                        Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
+                                        <span class="text-xs text-red-600">
+                                            (Error code {{ unread.data.error.code }})
+                                        </span>
+                                    </p>
+                                </div>
                             </div>
 
                         </li>
@@ -272,6 +282,14 @@
     <div :class="[inputFocused ? 'w-full' : 'w-0']" class="transition-width duration-150 border-b border-brand-primary"></div>
   </div>
 
+    <InfoModalCard :open="viewErrorNotificationInfoCard && !! errorData?.error" @close="viewErrorNotificationInfoCard =! viewErrorNotificationInfoCard" :title="errorData?.description">
+
+        <template #description>
+            {{ errorData.error.message }}
+        </template>
+
+    </InfoModalCard>
+
 </template>
 
 <script setup>
@@ -283,7 +301,7 @@
     import {
         UserCircleIcon, BellIcon, RocketLaunchIcon, EllipsisHorizontalCircleIcon,
         BookOpenIcon, ArrowRightIcon, CogIcon, ArrowPathRoundedSquareIcon,
-        ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon
+        ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon, WrenchIcon
     } from "@heroicons/vue/24/outline"
     import {
         UserCircleIcon as UserCircleIconSolid, BellIcon as BellIconSolid,
@@ -293,6 +311,7 @@
     import axios from "axios";
     import { local_time_ago } from "../utils";
     import { format, register } from 'timeago.js';
+    import InfoModalCard from "./InfoModalCard.vue";
 
     register('my-locale', local_time_ago)
 
@@ -399,11 +418,11 @@
             .catch()
     }
 
-    function notificationAction(type, id) {
+    function notificationAction(type, id, data) {
 
         switch (type) {
 
-            case 'App\\Notifications\\NewSubscriberRegistered':
+            case 'App\\Notifications\\NewSubscriber':
 
                 store.dispatch('toggleContentLoading', true)
 
@@ -415,6 +434,21 @@
                         store.dispatch('toggleContentLoading', false)
                     })
                 })
+                break;
+
+            case `App\\Notifications\\QueueJobFinished`:
+
+                if (data.status === 'error') {
+
+                    viewErrorNotificationInfoCard.value = true
+                    errorData.value = data
+
+                }
+
+                axios.post('/api/notifications/read', {
+                    id
+                })
+
                 break;
 
             default:
@@ -440,6 +474,9 @@
 
     })
 
+    const viewErrorNotificationInfoCard = ref(false)
+    const errorData = ref()
+
     onMounted(() => {
 
         if (authenticated.value) {
@@ -460,7 +497,7 @@
     })
 
     Echo.private('mailing-list')
-        .listen('NewSubscriberRegistered', (e) => {
+        .listen('SubscriberRegistered', (e) => {
 
             console.log('NewSubscriberRegistered event successfully fired ', e)
 
