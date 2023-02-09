@@ -92,7 +92,7 @@
                 </ItemCard>
             </div>
 
-            <div v-if="book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-6">
+            <div v-if="book && book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-6">
                 <div class="flex justify-center w-full">
                     <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
                 </div>
