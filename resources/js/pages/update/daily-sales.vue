@@ -2,9 +2,9 @@
 
     <Teleport to="#top-view">
 
-        <Modal @close="$emit('close')">
+        <Modal appear-from="top" @close="$emit('close')">
 
-            <div id="formModal" ref="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-t-lg sm:overflow-auto sm:max-h-[75%] sm:animate-slide-up-modal animate-scale-up">
+            <div id="formModal" ref="formModal" class="form-modal w-[45%] sm:w-full sm:rounded-b-lg sm:rounded-t-none sm:overflow-auto sm:max-h-[75%] sm:animate-slide-down-modal animate-scale-up">
 
                 <Form modal @cancel="$emit('close')" :submit="submitUpdate" class="h-full w-full rounded-b-none" title="Update Daily Sale" title-layout="contained">
 

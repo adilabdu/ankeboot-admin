@@ -31,6 +31,7 @@ module.exports = {
                 'slide-in': 'slideIn 150ms linear',
                 'slide-up': 'slideUp 100ms linear',
                 'slide-up-modal': 'slideUp 150ms ease-in',
+                'slide-down-modal': 'slideDown 150ms ease-out forwards',
                 'slide-out': 'slideOut 150ms linear',
                 'slide-in-from-left': 'slideInFromLeft 150ms linear',
                 'grow-up': 'growUp 300ms ease-out',
@@ -56,6 +57,10 @@ module.exports = {
                 },
                 slideUp: {
                     '0%': { transform: 'translateY(100%)' },
+                    '100%': { transform: 'translateY(0%)' }
+                },
+                slideDown: {
+                    '0%': { transform: 'translateY(-100%)' },
                     '100%': { transform: 'translateY(0%)' }
                 },
                 slideOut: {

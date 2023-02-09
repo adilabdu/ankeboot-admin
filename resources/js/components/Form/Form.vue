@@ -26,7 +26,7 @@
         <form
             :class="[
                 (titleLayout === 'panel' && largerThanSm) ? 'col-span-8' : '',
-                modal ? 'sm:rounded-b-none' : ''
+                modal ? 'sm:rounded-b-none sm:rounded-t-none' : ''
             ]"
             @submit.prevent="submit"
             class="relative p-6 bg-white rounded-lg shadow-sm border border-border-light flex flex-col gap-6" :title="title" submit="">
