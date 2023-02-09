@@ -16,6 +16,64 @@
             </svg>
         </div>
 
+        <!-- Reminders -->
+        <div v-if="authenticated" class="cursor-pointer sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center group">
+
+            <div>
+                <BellIcon v-if="! viewRemindersForm" @click="toggleRemindersFormView" class="hover:animate-ring hover:scale-110 hover:stroke-2 w-6 h-6 stroke-subtitle transition-transform duration-150" />
+                <BellIconSolid v-else class="w-7 h-7 fill-subtitle" />
+            </div>
+
+            <div @click="toggleRemindersFormView" v-if="viewRemindersForm" class="flex flex-col overflow-hidden absolute right-0 -mr-3 -mb-3 z-50 bottom-0 translate-y-full animate-appear-down bg-white border border-border-light shadow-sm rounded-md">
+
+                <ul ref="remindersForm" class="list scrollbar-mobile w-96 max-h-[350px] overflow-overlay min-h-[3rem] flex flex-col">
+
+                    <RouterLink to="/new/books" class="grid grid-cols-7 px-4 pb-2.5 pt-4 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+
+                        <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-green-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="transition-colors duration-150 group-hover/quick-item:stroke-brand-primary stroke-green-600 w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                            </svg>
+
+                        </div>
+
+                        <div class="col-span-6 flex flex-col gap-1">
+                            <p class="font-medium group-hover/quick-item:text-brand-primary transition-colors duration-150">New Book</p>
+                            <p class="text-subtitle">
+                                Register a new book into inventory.
+                                Go to "New Transaction" instead to add new book with first purchase
+                            </p>
+                        </div>
+
+                    </RouterLink>
+
+                    <RouterLink to="/new/transactions" class="quick-item grid grid-cols-7 px-4 pt-2.5 gap-2 focus:outline-none hover:bg-wallpaper/75 transition-colors duration-150 group/quick-item">
+
+                        <div class="grid place-items-center col-span-1 min-w-[1.75rem] w-9 h-9 rounded-full bg-yellow-100 group-hover/quick-item:bg-brand-secondary transition-colors duration-150">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="transition-colors duration-150 group-hover/quick-item:stroke-brand-primary stroke-yellow-600 w-5 h-5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                            </svg>
+
+                        </div>
+
+                        <div class="col-span-6 flex flex-col gap-1">
+                            <p class="font-medium group-hover/quick-item:text-brand-primary transition-colors duration-150">New Transaction</p>
+                            <p class="text-subtitle">
+                                Make a purchase or sale transaction of a new or existing item. Sale can only be made
+                                from a primary store
+                            </p>
+                        </div>
+
+                    </RouterLink>
+
+                </ul>
+
+            </div>
+
+        </div>
+
         <!-- Quick Actions -->
         <div v-if="authenticated" class="cursor-pointer sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center group">
 
@@ -150,8 +208,8 @@
         <div v-if="authenticated" class="cursor-pointer sm:hidden relative w-12 h-12 rounded-full flex items-center justify-center">
 
             <div>
-                <BellIcon v-if="! viewNotificationsMenu" @click="toggleNotificationsView" class="hover:animate-ring hover:stroke-2 w-6 h-6 stroke-subtitle transition-transform duration-150" />
-                <BellIconSolid v-else class="w-7 h-7 fill-subtitle" />
+                <InboxStackIcon v-if="! viewNotificationsMenu" @click="toggleNotificationsView" class="hover:stroke-2 w-6 h-6 stroke-subtitle transition-transform duration-150" />
+                <InboxStackIconSolid v-else class="w-7 h-7 fill-subtitle" />
             </div>
 
             <div v-if="(! loadingNotifications) && (unreadNotifications.length > 0)" class="top-2 right-2 text-white rounded-full flex items-center justify-center absolute w-4 h-4 bg-brand-primary font-medium text-[0.5rem]">
@@ -172,9 +230,9 @@
 
                     <template v-else>
 
-                        <li @click="notificationAction(unread.type, unread.id, unread.data)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b ">
+                        <li @click="notificationAction(unread.type, unread.id, unread.data)" v-for="unread in unreadNotifications" class="hover:bg-border-light/25 cursor-pointer flex gap-5 p-4 w-full border-b grid grid-cols-12">
 
-                            <div class="w-12 flex justify-center items-start">
+                            <div class="col-span-2 w-12 flex justify-center items-start">
                                 <div class="grid place-items-center w-9 h-9 rounded-full" :class="[ unread.data.status === 'error' && unread.type === 'App\\Notifications\\QueueJobFinished' ? 'bg-red-100' : 'bg-green-100' ]">
                                     <div v-if="unread.type === 'App\\Notifications\\NewSubscriber'" class="text-xl text-green-600 w-8 h-8 rounded-full bg-green-200 flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
@@ -184,37 +242,66 @@
                                     <div v-if="unread.type === 'App\\Notifications\\QueueJobFinished'" :class="[ unread.data.status === 'success' ? 'bg-green-200' : 'bg-red-200' ]" class="text-xl w-8 h-8 rounded-full flex items-center justify-center">
                                         <WrenchIcon class="w-5 h-5 stroke-[1.5]" :class="[ unread.data.status === 'success' ? 'stroke-green-600' : 'stroke-red-600']" />
                                     </div>
+                                    <div v-if="unread.type === 'App\\Notifications\\NewReminder'" class="bg-green-200 text-xl w-8 h-8 rounded-full flex items-center justify-center">
+                                        <BellAlertIcon class="w-5 h-5 stroke-[1.5] stroke-green-600" />
+                                    </div>
                                 </div>
                             </div>
-                            <div v-if="unread.type === 'App\\Notifications\\NewSubscriber'" class="grow flex flex-col gap-1">
-                                <div class="flex items-center justify-between">
-                                    <p class="font-medium">New Subscriber</p>
-                                    <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
-                                </div>
-                                <p class="text-subtitle">
-                                    <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
-                                    You can find them in the subscribers list.
-                                </p>
-                            </div>
-                            <div v-else-if="unread.type === 'App\\Notifications\\QueueJobFinished'" class="grow flex flex-col gap-1">
-                                <div class="flex items-center justify-between">
-                                    <p class="font-medium">Queued Job {{ unread.data.status === 'success' ? 'Finished' : 'Failed' }}</p>
-                                    <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
-                                </div>
-                                <div v-if="unread.data.status === 'success'">
+                            <div class="col-span-10">
+                                <div v-if="unread.type === 'App\\Notifications\\NewSubscriber'" class="grow flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <p class="font-medium">New Subscriber</p>
+                                        <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
+                                    </div>
                                     <p class="text-subtitle">
-                                        {{ unread.data.description }}.
-                                        Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
+                                        <span class="text-black">{{ unread.data.name }}</span> subscribed to your channel.
+                                        You can find them in the subscribers list.
                                     </p>
                                 </div>
-                                <div v-else class="">
-                                    <p class="text-subtitle">
-                                        {{ unread.data.description }}
-                                        Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
-                                        <span class="text-xs text-red-600">
+                                <div v-else-if="unread.type === 'App\\Notifications\\QueueJobFinished'" class="grow flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <p class="font-medium">Queued Job {{ unread.data.status === 'success' ? 'Finished' : 'Failed' }}</p>
+                                        <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
+                                    </div>
+                                    <div v-if="unread.data.status === 'success'">
+                                        <p class="text-subtitle">
+                                            {{ unread.data.description }}.
+                                            Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
+                                        </p>
+                                    </div>
+                                    <div v-else class="flex flex-col gap-1">
+                                        <p class="text-subtitle">
+                                            {{ unread.data.description }}
+                                            Time elapsed: {{ (unread.data.time / 10000).toFixed(2) }} sec
+                                        </p>
+                                        <p class="text-xs text-red-600">
                                             (Error code {{ unread.data.error.code }})
+                                        </p>
+                                    </div>
+                                </div>
+                                <div v-else-if="unread.type === 'App\\Notifications\\NewReminder'" class="grow flex flex-col gap-1">
+                                    <div class="flex items-center justify-between">
+                                        <p class="font-medium">Reminder Alert</p>
+                                        <h5 class="text-subtitle text-xs">{{ format(unread.created_at, 'my-locale') }}</h5>
+                                    </div>
+                                    <div class="flex flex-col gap-1">
+                                        <p class="text-subtitle">
+                                            {{ unread.data.description }}.
+                                        </p>
+                                        <p class="text-subtitle text-xs">
+                                            Priority
+                                            <span
+                                                class="font-medium"
+                                                :class="{
+                                                'text-red-600': unread.data.priority === 'High',
+                                                'text-yellow-600': unread.data.priority === 'Medium',
+                                                'text-gray-600': unread.data.priority === 'Low',
+                                            }"
+                                            >
+                                            {{ unread.data.priority }}
                                         </span>
-                                    </p>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -299,14 +386,14 @@
     import store from "../store"
     import router from "../router"
     import {
-        UserCircleIcon, BellIcon, RocketLaunchIcon, EllipsisHorizontalCircleIcon,
-        BookOpenIcon, ArrowRightIcon, CogIcon, ArrowPathRoundedSquareIcon,
-        ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon, WrenchIcon
+        UserCircleIcon, BellIcon, BellAlertIcon, InboxStackIcon, RocketLaunchIcon,
+        EllipsisHorizontalCircleIcon, BookOpenIcon, ArrowRightIcon, CogIcon,
+        ArrowPathRoundedSquareIcon, ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon, WrenchIcon
     } from "@heroicons/vue/24/outline"
     import {
         UserCircleIcon as UserCircleIconSolid, BellIcon as BellIconSolid,
-        RocketLaunchIcon as RocketLaunchIconSolid,
-        EllipsisHorizontalCircleIcon as EllipsisHorizontalCircleIconSolid
+        BellAlertIcon as BellAlertIconSolid, InboxStackIcon as InboxStackIconSolid,
+        RocketLaunchIcon as RocketLaunchIconSolid, EllipsisHorizontalCircleIcon as EllipsisHorizontalCircleIconSolid
     } from "@heroicons/vue/24/solid"
     import axios from "axios";
     import { local_time_ago } from "../utils";
@@ -323,10 +410,12 @@
     const viewQuickActionsMenu = ref(false)
     const viewQuickNavigationsMenu = ref(false)
     const viewHeaderMenu = ref(false)
+    const viewRemindersForm = ref(false)
     const headerMenu = ref(null)
     const notificationMenu = ref(null)
     const quickActionsMenu = ref(null)
     const quickNavigationsMenu = ref(null)
+    const remindersForm = ref(null)
 
     function toggleNotificationsView() {
         viewNotificationsMenu.value = !viewNotificationsMenu.value
@@ -334,6 +423,10 @@
 
     function toggleQuickActionsView() {
         viewQuickActionsMenu.value = !viewQuickActionsMenu.value
+    }
+
+    function toggleRemindersFormView() {
+        viewRemindersForm.value = !viewRemindersForm.value
     }
 
     function toggleQuickNavigationsView() {
@@ -374,6 +467,12 @@
         }
     })
 
+    onClickOutside(remindersForm, () => {
+        if (viewRemindersForm.value) {
+            toggleRemindersFormView()
+        }
+    })
+
     function settings() {
 
     }
@@ -403,6 +502,7 @@
 
         await axios.get('/api/notifications/unread')
             .then(response => {
+                console.log(response.data.data)
                 unreadNotifications.value = response.data.data
             })
             .catch(error => {

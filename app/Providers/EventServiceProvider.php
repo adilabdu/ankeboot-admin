@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ReminderReached;
 use App\Events\SubscriberRegistered;
+use App\Listeners\SendNewReminderNotifications;
 use App\Listeners\SendNewSubscriberNotifications;
 use App\Models\Book;
 use App\Models\StoreBook;
@@ -29,6 +31,10 @@ class EventServiceProvider extends ServiceProvider
 
         SubscriberRegistered::class => [
             SendNewSubscriberNotifications::class,
+        ],
+
+        ReminderReached::class => [
+            SendNewReminderNotifications::class,
         ]
     ];
 
