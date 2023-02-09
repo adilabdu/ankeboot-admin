@@ -1,6 +1,6 @@
 <template>
 
-    <div class="scrollbar-brand w-full h-screen overflow-y-auto py-12 sm:py-0 sm:overflow-hidden fixed bg-black/80 flex items-start sm:items-end justify-center z-[100]">
+    <div :class="[ appearFrom === 'bottom' ? 'sm:items-end' : 'sm:items-start' ]" class="scrollbar-brand w-full h-screen overflow-y-auto py-12 sm:py-0 sm:overflow-hidden fixed bg-black/80 flex items-start justify-center z-[100]">
 
         <slot />
 
@@ -11,6 +11,13 @@
 <script setup>
 
     import { onBeforeUnmount, onMounted } from "vue";
+
+    const props = defineProps({
+        appearFrom: {
+            type: String,
+            default: 'bottom'
+        }
+    })
 
     onMounted(() => {
         document.getElementById("contentPage").style.overflow = "hidden";
