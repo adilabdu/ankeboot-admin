@@ -38,6 +38,49 @@
             </svg>
         </InfoCard>
     </div>
+
+    <TableAJAX
+        url="/api/books/paginate"
+        title="Books"
+        :columns="['id', 'code', 'title', 'category', 'type', 'balance', 'created_at']"
+        :center="['code', 'balance']"
+        :right="[]"
+        :sortable="['category', 'code', 'balance', 'title', 'purchase_type', 'added_on']"
+        :searchable="['title', 'added_on', 'code']"
+        :hideable=false
+        :hide="['id']"
+        :hide-labels="['id']"
+        actions
+        @table-button-click="handleTableButton"
+        @edit="handleEdit"
+        @delete="handleDelete"
+        @new-item="goto('CreateBook')"
+        :mapper="mapBooks"
+    >
+
+        <template #description>
+            <p>
+                Complete list of books in the inventory
+            </p>
+        </template>
+
+        <template #rows="data">
+
+            <Cell name="code" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['code'].toLowerCase() }} </Cell>
+            <LinkCell class="w-[90%]" name="title" :main="true" :hide="data.hide" :value="data['record']['title']" :to="'books/' + data['record']['id']">
+                <RouterLink :to="'books/' + data['record']['id']">
+                    {{ data['record']['title'] }}
+                </RouterLink>
+            </LinkCell>
+            <Cell class="w-[2%]" name="category" :hide="data.hide">{{ data['record']['category'] }} </Cell>
+            <EnumCell class="w-[2%]" name="purchase_type" :hide="data.hide" :colors="['lime', 'stone']" :options="['consignment', 'cash']" :value="data['record']['purchase_type']" />
+            <Cell name="balance" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['balance'] }} </Cell>
+            <DateCell class="w-[2%]" name="added_on" :hide="data.hide" :value="data['record']['added_on']" />
+
+        </template>
+
+    </TableAJAX>
+
     <Table
         :loading="!! ! books"
         title="Books"
@@ -102,6 +145,7 @@
     import { onMounted, computed, ref, onBeforeUnmount } from "vue";
     import InfoCard from "../../components/InfoCard.vue"
     import Table from "../../components/Table/Table.vue"
+    import TableAJAX from "../../components/Table/TableAjax.vue"
     import Cell from "../../components/Table/Cell.vue"
     import LinkCell from "../../components/Table/LinkCell.vue"
     import EnumCell from "../../components/Table/EnumCell.vue"
@@ -186,6 +230,20 @@
 
     function goto(route) {
         router.push({ name: route })
+    }
+
+    const mapBooks = (book) => {
+
+        return {
+            id: book.id,
+            code: book.code,
+            title: book.title,
+            category: book.category,
+            purchase_type: book.type,
+            balance: book.balance,
+            added_on: new Date(book['created_at'])
+        }
+
     }
 
     onMounted(() => {
