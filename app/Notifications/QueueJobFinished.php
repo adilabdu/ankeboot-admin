@@ -42,6 +42,12 @@ class QueueJobFinished extends Notification
         return $this->job;
     }
 
+    /**
+     * Get the Telegram representation of the notification.
+     *
+     * @param $notifiable
+     * @return TelegramMessage
+     */
     public function toTelegram($notifiable): TelegramMessage
     {
         return TelegramMessage::create()

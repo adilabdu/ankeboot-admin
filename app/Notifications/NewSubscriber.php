@@ -3,10 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\MailingList;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class NewSubscriber extends Notification
 {
@@ -30,7 +32,7 @@ class NewSubscriber extends Notification
      */
     public function via(mixed $notifiable): array
     {
-        return ['database'];
+        return ['database', 'telegram'];
     }
 
     /**
@@ -59,5 +61,21 @@ class NewSubscriber extends Notification
             'phone' => $this->mailingList->phone,
             'created_at' => $this->mailingList->created_at
         ];
+    }
+
+    /**
+     * Get the Telegram representation of the notification.
+     *
+     * @param $notifiable
+     * @return TelegramMessage
+     */
+    public function toTelegram($notifiable): TelegramMessage
+    {
+        return TelegramMessage::create()
+            ->to($notifiable->telegram_chat_id)
+            ->view('telegram.subscriber', [
+                'name' => $this->mailingList->name,
+                'created_at' => $this->mailingList->created_at->format('d/m/Y H:i:s')
+            ]);
     }
 }
