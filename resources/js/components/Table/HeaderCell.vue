@@ -13,7 +13,7 @@
 
 <script setup>
 
-  import { ref } from "vue"
+  import { ref, computed } from "vue"
 
   const emit = defineEmits([
     'sort'
@@ -35,13 +35,18 @@
     right: {
       type: Boolean,
       default: false,
+    },
+    column: {
+        type: String,
+        default: null,
     }
   })
 
   const descending = ref(true)
+  const column = computed(() => (props.column) || props.header)
 
   function sortClick() {
-    emit('sort', { header: props.header, descending: descending.value })
+    emit('sort', { header: column.value, descending: descending.value })
     descending.value = !descending.value
   }
 
