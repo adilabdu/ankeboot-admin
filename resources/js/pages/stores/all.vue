@@ -16,7 +16,7 @@
                 <StoreItemCard :store="store" />
             </template>
 
-            <button @click="toggleModal" class="hover:bg-white hover:backdrop-blur transition-all duration-150 h-64 rounded-xl border-dashed border-2 border-subtitle flex flex-col gap-4 justify-center items-center">
+            <button @click="toggleModal" class="w-full sm:max-w-[248px] hover:bg-white hover:backdrop-blur transition-all duration-150 h-64 rounded-xl border-dashed border-2 border-subtitle flex flex-col gap-4 justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-subtitle w-12 h-12">
                     <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
                 </svg>
@@ -30,7 +30,7 @@
 
         <div class="flex sm:flex-col gap-4">
             <QuickTransferToShop />
-            <div class="w-1/2 sm:hidden"></div>
+            <div class="lg:hidden w-1/2 sm:hidden"></div>
         </div>
 
         <Teleport v-if="modalState" to="#top-view">
