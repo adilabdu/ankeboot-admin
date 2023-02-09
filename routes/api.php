@@ -8,6 +8,7 @@ use App\Http\Controllers\ConsignmentController;
 use App\Http\Controllers\ConsignmentReturnController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StoreController;
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
+        Route::get('/paginate', [BookController::class, 'paginate']);
         Route::get('/categories', [CategoryController::class, 'index']);
         Route::get('/statistics', [StatisticsController::class, 'books']);
         Route::get('/statistics/book', [StatisticsController::class, 'book']);
@@ -120,6 +122,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/sales', [StatisticsController::class, 'sales']);
         Route::get('/sales/consignments', [StatisticsController::class, 'consignmentSales']);
         Route::get('/purchases', [StatisticsController::class, 'purchases']);
+    });
+
+    Route::prefix('reminders')->group(function () {
+        Route::post('/', [ReminderController::class, 'post']);
     });
 
 });

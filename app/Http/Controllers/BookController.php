@@ -55,6 +55,35 @@ class BookController extends Controller
         }
     }
 
+    public function paginate(Request $request): Response|Application|ResponseFactory
+    {
+
+        $request->validate([
+            'page' => 'integer',
+            'per_page' => 'integer',
+            'order_by' => 'nullable|string',
+            'desc' => 'nullable|boolean'
+        ]);
+
+        try {
+
+            return response([
+                'message' => 'success',
+                'data' => Book::orderByDesc($request->input('order_by') ?? 'id')->paginate($request->input('per_page'))
+            ]);
+
+
+        } catch (Exception $exception) {
+
+            return response([
+                'message' => 'error',
+                'data' => $exception->getMessage()
+            ], 500);
+
+        }
+
+    }
+
     public function stores(Request $request): Response|Application|ResponseFactory
     {
 
