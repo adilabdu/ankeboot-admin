@@ -1,6 +1,6 @@
 <template>
 
-    <div class="w-1/2 flex flex-col gap-6 bg-white rounded-xl shadow-sm bor min-h-[12rem] p-6">
+    <div class="lg:w-full w-1/2 flex flex-col gap-6 bg-white rounded-xl shadow-sm bor min-h-[12rem] p-6">
 
         <div class="flex flex-col">
             <h3 class="font-medium text-base">Quick Transfer</h3>
