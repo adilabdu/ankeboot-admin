@@ -33,7 +33,7 @@ class UpdateDailySaleRequest extends FormRequest
             'deposits.*.amount' => 'required_with_all:deposits.*.type,deposits.*.deposited_on|numeric',
             'deposits.*.type' => [
                 'required_with_all:deposits.*.amount,deposits.*.deposited_on',
-                new Enum(DepositType::class)
+                new Enum(DepositType::class),
             ],
             'deposits.*.deposited_on' => 'required_with_all:deposits.*.type,deposits.*.amount|date_format:d-m-Y',
             'sales_receipts' => 'required',

@@ -35,7 +35,7 @@ class EventServiceProvider extends ServiceProvider
 
         ReminderReached::class => [
             SendNewReminderNotifications::class,
-        ]
+        ],
     ];
 
     /**

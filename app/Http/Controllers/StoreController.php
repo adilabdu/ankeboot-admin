@@ -16,32 +16,27 @@ use Illuminate\Support\Facades\DB;
 
 class StoreController extends Controller
 {
-
     public function index(Request $request): Response|Application|ResponseFactory
     {
         $request->validate([
-            'id' => 'nullable|exists:stores,id'
+            'id' => 'nullable|exists:stores,id',
         ]);
 
         try {
             $stores = ($request->has('id')) ?
                 Store::with('address')->find($request->input('id')) :
                 Store::with('address')->get();
-
         } catch (Exception $e) {
-
             return response([
                 'message' => 'error',
-                'data' => $e->getMessage()
+                'data' => $e->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => $stores
+            'data' => $stores,
         ], 200);
-
     }
 
     public function post(Request $request): Response|Application|ResponseFactory
@@ -59,7 +54,6 @@ class StoreController extends Controller
         ]);
 
         try {
-
             DB::beginTransaction();
 
             $newAddress = Address::create([
@@ -77,9 +71,7 @@ class StoreController extends Controller
             $store->save();
 
             DB::commit();
-
         } catch (Exception $exception) {
-
             DB::rollBack();
 
             return response([
@@ -92,49 +84,40 @@ class StoreController extends Controller
             'message' => 'success',
             'data' => $store,
         ], 200);
-
     }
 
     public function list(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
-            'store_id' => 'required|exists:stores,id'
+            'store_id' => 'required|exists:stores,id',
         ]);
 
         try {
-
             $storeList = StoreBook::with('book')->where([
-                'store_id' => $request->input('store_id')
+                'store_id' => $request->input('store_id'),
             ])->get();
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => $storeList
+            'data' => $storeList,
         ], 200);
-
     }
 
     public function history(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
-            'id' => 'required|exists:stores,id'
+            'id' => 'required|exists:stores,id',
         ]);
 
         try {
-
             $storeTransaction = StoreTransaction::with('transaction')->where([
-                'store_id' => $request->input('id')
+                'store_id' => $request->input('id'),
             ])->get();
 
             $storeTransfers = StoreTransfer::with('from', 'to')->where('from', $request->input('id'))
@@ -146,20 +129,16 @@ class StoreController extends Controller
                 ->sortBy('created_at')
                 ->values()
                 ->all();
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => $history
+            'data' => $history,
         ], 200);
-
     }
 }

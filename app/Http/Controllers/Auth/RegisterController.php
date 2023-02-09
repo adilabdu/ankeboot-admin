@@ -13,26 +13,22 @@ use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
-
     public function register(RegisterRequest $request): Response|Application|ResponseFactory
     {
         try {
-
-            $user =  User::create(array_merge(
+            $user = User::create(array_merge(
                 $request->validated(),
                 ['password' => Hash::make($request->input('password'))]
             ));
 
             return response([
                 'message' => 'ok',
-                'data' => $user
+                'data' => $user,
             ], 200);
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
         }
     }

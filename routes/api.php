@@ -8,15 +8,15 @@ use App\Http\Controllers\ConsignmentController;
 use App\Http\Controllers\ConsignmentReturnController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
+use App\Http\Controllers\MailingListController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreTransferController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\MailingListController;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -42,7 +42,6 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::prefix('books')->group(function () {
         Route::get('/', [BookController::class, 'index']);
         Route::get('/paginate', [BookController::class, 'paginate']);
@@ -127,7 +126,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('reminders')->group(function () {
         Route::post('/', [ReminderController::class, 'post']);
     });
-
 });
 
 Route::post('/mailing-list', [MailingListController::class, 'post']);

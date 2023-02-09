@@ -37,7 +37,6 @@ class DailySale extends Model
     }
 
     protected $casts = [
-        'date_of' => 'date'
+        'date_of' => 'date',
     ];
-
 }

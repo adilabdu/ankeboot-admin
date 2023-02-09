@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\ReminderReached;
 use App\Notifications\NewReminder;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
 
 class SendNewReminderNotifications
@@ -23,7 +21,7 @@ class SendNewReminderNotifications
     /**
      * Handle the event.
      *
-     * @param ReminderReached $event
+     * @param  ReminderReached  $event
      * @return void
      */
     public function handle(ReminderReached $event): void

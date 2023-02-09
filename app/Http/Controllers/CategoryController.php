@@ -7,28 +7,20 @@ use Exception;
 
 class CategoryController extends Controller
 {
-    
     public function index()
     {
-
         try {
-
             $categories = Book::pluck('category')->unique()->values();
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => $categories
+            'data' => $categories,
         ], 200);
-
     }
-
 }

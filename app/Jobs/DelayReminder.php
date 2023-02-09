@@ -4,10 +4,8 @@ namespace App\Jobs;
 
 use App\Events\ReminderReached;
 use App\Models\Reminder;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -36,14 +34,10 @@ class DelayReminder implements ShouldQueue
     public function handle(): void
     {
         try {
-
             ReminderReached::dispatch($this->reminder);
-
         } catch (Exception $exception) {
-
             Log::info('Error during DailyReminder');
             Log::info($exception);
-
         }
     }
 }

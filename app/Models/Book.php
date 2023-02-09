@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\ConsignmentAction;
 use App\Enums\PurchaseType;
 use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -11,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 class Book extends Model
@@ -22,7 +19,7 @@ class Book extends Model
     protected $guarded = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     public function transactions(): HasMany
@@ -47,11 +44,8 @@ class Book extends Model
 
     public function settled(): int
     {
-
         if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
-
             return $this['settlements']->pluck('quantity')->sum();
-
         }
 
         return -1;
@@ -60,9 +54,7 @@ class Book extends Model
     public function max_payable(): int|null
     {
         if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
-
             return $this['balance'] + $this->payable();
-
         }
 
         return null;
@@ -70,11 +62,8 @@ class Book extends Model
 
     public function max_returnable(): int|null
     {
-
         if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
-
             return $this['balance'] + min($this->payable(), 0);
-
         }
 
         return null;
@@ -82,18 +71,14 @@ class Book extends Model
 
     public function payable(): int|null
     {
-
         if (PurchaseType::from($this['type']) === PurchaseType::CONSIGNMENT) {
-
             return $this['transactions']->where(
                 'type', TransactionType::SALE
             )->sum(function ($transaction) {
                 return $transaction->quantity;
             }) - $this->settled();
-
         }
 
         return null;
     }
-
 }

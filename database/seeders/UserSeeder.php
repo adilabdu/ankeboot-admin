@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Exception;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -17,9 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-
         try {
-
             DB::table('users')->insertOrIgnore([
                 [
                     'name' => 'Test User',
@@ -27,7 +24,7 @@ class UserSeeder extends Seeder
                     'username' => 'testuser',
                     'phone_number' => '0912345678',
                     'password' => Hash::make('helloworld'),
-                    'telegram_chat_id' => '5783481231'
+                    'telegram_chat_id' => '5783481231',
                 ],
                 [
                     'name' => 'Adil Abdu Bushra',
@@ -35,13 +32,11 @@ class UserSeeder extends Seeder
                     'username' => 'adil',
                     'phone_number' => '0912272145',
                     'password' => Hash::make('helloworld'),
-                    'telegram_chat_id' => '340546535'
-                ]
+                    'telegram_chat_id' => '340546535',
+                ],
             ]);
-
         } catch (Exception $e) {
-            dd('Error: ' . $e->getMessage());
+            dd('Error: '.$e->getMessage());
         }
-
     }
 }

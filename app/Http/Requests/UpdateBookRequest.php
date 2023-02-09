@@ -28,12 +28,12 @@ class UpdateBookRequest extends FormRequest
             'code' => 'required|unique:books,code',
             'type' => [
                 'required',
-                new Enum(PurchaseType::class)
+                new Enum(PurchaseType::class),
             ],
             'title' => 'required|string',
             'author' => 'string|nullable',
             'category' => 'string',
-            'supplier_id' => 'exists:suppliers,id'
+            'supplier_id' => 'exists:suppliers,id',
         ];
     }
 }

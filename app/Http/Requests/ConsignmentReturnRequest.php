@@ -9,7 +9,6 @@ use Illuminate\Validation\Validator;
 
 class ConsignmentReturnRequest extends FormRequest
 {
-
     protected $stopOnFirstFailure = true;
 
     /**
@@ -35,20 +34,19 @@ class ConsignmentReturnRequest extends FormRequest
             'quantity.*.store_id' => 'required|exists:stores,id',
             'quantity.*.amount' => 'required|integer',
             'transaction_on' => 'required|date_format:d-m-Y',
-            'receipt' => 'string'
+            'receipt' => 'string',
         ];
     }
 
     /**
      * Configure the validator instance.
      *
-     * @param Validator $validator
+     * @param  Validator  $validator
      * @return void
      */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function ($validator) {
-
             // Throw error if any `store_id` has no balance of `book_id`
             // Throw error if `amount` is over available balance in corresponding `store_id`
             // Throw error if sum of `amount` is over `max_returnable`
@@ -57,34 +55,25 @@ class ConsignmentReturnRequest extends FormRequest
             $max_returnable = Book::find($this->input('book_id'))->max_returnable();
 
             foreach ($this->input('quantity') as $store) {
-
                 $sum += $store['amount'];
 
                 $storeBook = StoreBook::where([
                     'store_id' => $store['store_id'],
-                    'book_id' => $this->input('book_id')
+                    'book_id' => $this->input('book_id'),
                 ])->first();
 
                 if ($storeBook?->balance < $store['amount']) {
-
-                    $validator->errors()->add('quantity.*.store_id', 'Store (' . $storeBook->store->name . ') does not have enough balance in stock');
-
+                    $validator->errors()->add('quantity.*.store_id', 'Store ('.$storeBook->store->name.') does not have enough balance in stock');
                 }
-
             }
 
             if ($sum <= 0) {
-
                 $validator->errors()->add('quantity', 'The return amount must be greater than 0');
-
             }
 
             if ($sum > $max_returnable) {
-
-                $validator->errors()->add('quantity', 'The total return amount exceeds the maximum allowed returnable amount (' . $max_returnable .')');
-
+                $validator->errors()->add('quantity', 'The total return amount exceeds the maximum allowed returnable amount ('.$max_returnable.')');
             }
-
         });
     }
 }

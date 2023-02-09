@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DepositType : string
+enum DepositType: string
 {
     case CHEQUE = 'cheque';
     case WITHHOLDING = 'withholding';

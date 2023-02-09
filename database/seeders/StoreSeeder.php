@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Store;
 use Exception;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class StoreSeeder extends Seeder
@@ -16,7 +15,6 @@ class StoreSeeder extends Seeder
      */
     public function run(): void
     {
-
         try {
             Store::create([
                 'name' => 'Shop',
@@ -26,17 +24,16 @@ class StoreSeeder extends Seeder
                 'name' => 'Bole Store 1',
             ]);
             Store::create([
-                'name' => 'Bole Store 2'
+                'name' => 'Bole Store 2',
             ]);
             Store::create([
-                'name' => 'Bole Store 3'
+                'name' => 'Bole Store 3',
             ]);
             Store::create([
-                'name' => 'Welete Warehouse'
+                'name' => 'Welete Warehouse',
             ]);
         } catch (Exception $e) {
             dd('Error: ', $e->getMessage());
         }
-
     }
 }

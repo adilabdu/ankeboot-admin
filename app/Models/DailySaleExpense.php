@@ -12,7 +12,7 @@ class DailySaleExpense extends Model
 
     protected $guarded = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function daily_sale(): BelongsTo
@@ -21,7 +21,6 @@ class DailySaleExpense extends Model
     }
 
     protected $casts = [
-        'expense_from' => 'date'
+        'expense_from' => 'date',
     ];
-
 }

@@ -17,5 +17,4 @@ class Controller extends BaseController
     {
         DB::setDefaultConnection($request->header('database'));
     }
-
 }

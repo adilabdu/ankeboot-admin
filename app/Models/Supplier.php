@@ -16,7 +16,7 @@ class Supplier extends Model
     protected $guarded = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     public function address(): HasOne
@@ -29,10 +29,8 @@ class Supplier extends Model
         return $this->hasMany(Book::class);
     }
 
-
     public function logs(): MorphMany
     {
         return $this->morphMany(Log::class, 'loggable');
     }
-
 }

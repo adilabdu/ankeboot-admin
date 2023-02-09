@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PurchaseType : string
+enum PurchaseType: string
 {
     case CASH = 'cash';
     case CONSIGNMENT = 'consignment';

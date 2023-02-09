@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ConsignmentAction : string
+enum ConsignmentAction: string
 {
     case RECEIVED = 'received';
     case SOLD = 'sold';

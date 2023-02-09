@@ -11,37 +11,29 @@ use Illuminate\Http\Response;
 
 class SearchController extends Controller
 {
-
     public function books(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
-            'query' => 'required|string'
+            'query' => 'required|string',
         ]);
 
         try {
-
             $results = Book::search(
                 $request->input('query')
             )->get();
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
             'data' => [
                 'results' => $results,
-                'count' => $results->count()
-            ]
+                'count' => $results->count(),
+            ],
         ], 200);
-
     }
-
 }

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TransactionType : string
+enum TransactionType: string
 {
     case PURCHASE = 'purchase';
     case SALE = 'sale';

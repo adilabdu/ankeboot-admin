@@ -13,7 +13,7 @@ class Log extends Model
 
     protected $guarded = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function loggable(): MorphTo
@@ -22,6 +22,6 @@ class Log extends Model
     }
 
     protected $casts = [
-        'type' => ActivityType::class
+        'type' => ActivityType::class,
     ];
 }

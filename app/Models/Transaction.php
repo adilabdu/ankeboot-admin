@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,7 +17,7 @@ class Transaction extends Model
     protected $guarded = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     public function book(): BelongsTo
@@ -39,7 +38,6 @@ class Transaction extends Model
     {
         return $this->belongsTo(DailySale::class);
     }
-
 
     public function logs(): MorphMany
     {

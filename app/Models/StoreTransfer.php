@@ -12,7 +12,7 @@ class StoreTransfer extends Model
 
     protected $guarded = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function from(): BelongsTo

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ActivityType : string
+enum ActivityType: string
 {
     case CREATE = 'create';
     case UPDATE = 'update';

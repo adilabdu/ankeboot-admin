@@ -14,17 +14,13 @@ class LoginController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-
             $request->authenticate();
-
         } catch (ValidationException $e) {
-
             return response()
                 ->json([
                     'message' => 'error',
-                    'data' => $e->getMessage()
+                    'data' => $e->getMessage(),
                 ], 500);
-
         }
 
         // Create token for user
@@ -35,33 +31,28 @@ class LoginController extends Controller
                 'message' => 'ok',
                 'data' => [
                     'token' => $token->plainTextToken,
-                    'user' => auth()->user()
+                    'user' => auth()->user(),
                 ],
             ], 200);
     }
 
     public function logout()
     {
-
         try {
-
             Auth::user()->tokens()->delete();
             Auth::guard('web')->logout();
 
             return response()
                 ->json([
                     'message' => 'ok',
-                    'data' => []
+                    'data' => [],
                 ], 200);
-
         } catch (Exception $exception) {
-
             return response()
                 ->json([
                     'message' => 'error',
-                    'data' => $exception
+                    'data' => $exception,
                 ], 500);
-
         }
     }
 }

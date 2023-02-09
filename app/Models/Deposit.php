@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\DepositType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +14,7 @@ class Deposit extends Model
     protected $guarded = [
         'daily_sale_id',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function credit(): HasOne
@@ -29,7 +28,6 @@ class Deposit extends Model
     }
 
     protected $casts = [
-        'deposited_on' => 'date'
+        'deposited_on' => 'date',
     ];
-
 }

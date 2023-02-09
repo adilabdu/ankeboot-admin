@@ -13,7 +13,7 @@ class Address extends Model
 
     protected $guarded = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function supplier(): HasOne
@@ -30,5 +30,4 @@ class Address extends Model
     {
         return $this->morphMany(Log::class, 'loggable');
     }
-
 }

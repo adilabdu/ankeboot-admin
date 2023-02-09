@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Reminder;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
@@ -58,7 +57,7 @@ class NewReminder extends Notification
     {
         return [
             'description' => $this->reminder->description,
-            'priority' => $this->reminder->priority
+            'priority' => $this->reminder->priority,
         ];
     }
 
@@ -74,7 +73,7 @@ class NewReminder extends Notification
             ->to($notifiable->telegram_chat_id)
             ->view('telegram.reminder', [
                 'description' => $this->reminder->description,
-                'priority' => $this->reminder->priority
+                'priority' => $this->reminder->priority,
             ]);
     }
 }

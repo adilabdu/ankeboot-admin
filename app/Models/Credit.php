@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneOrMany;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Credit extends Model
 {
@@ -17,7 +14,7 @@ class Credit extends Model
         'settled_on',
         'deposit_id',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function deposit(): BelongsTo
@@ -26,7 +23,6 @@ class Credit extends Model
     }
 
     protected $casts = [
-        'settled_on' => 'date'
+        'settled_on' => 'date',
     ];
-
 }

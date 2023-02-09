@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ConsignmentAction;
 use App\Enums\PurchaseType;
 use App\Http\Requests\ConsignmentReturnRequest;
 use App\Models\Book;
@@ -16,30 +15,24 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ConsignmentController extends Controller
 {
     public function index(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
             'id' => 'nullable|exists:consignment_settlements,id|prohibits:book_id',
-            'book_id' => 'nullable|exists:books,id'
+            'book_id' => 'nullable|exists:books,id',
         ]);
 
         try {
-
             if ($request->has('id')) {
-
                 $consignmentRecords = ConsignmentSettlement::find($request->input('id'));
-
-            } else if ($request->has('book_id')) {
-
+            } elseif ($request->has('book_id')) {
                 if (PurchaseType::from(Book::find($request->input('book_id'))->type) === PurchaseType::CASH) {
                     return response([
                         'message' => 'error',
-                        'data' => 'Cash purchase books cannot be consigned'
+                        'data' => 'Cash purchase books cannot be consigned',
                     ], 400);
                 }
 
@@ -47,34 +40,25 @@ class ConsignmentController extends Controller
                     'book_id',
                     $request->input('book_id')
                 );
-
             } else {
-
                 $consignmentRecords = ConsignmentSettlement::all();
-
             }
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'body' => $exception->getMessage()
+                'body' => $exception->getMessage(),
             ]);
-
         }
 
         return response([
             'message' => 'ok',
-            'body' => $consignmentRecords
+            'body' => $consignmentRecords,
         ]);
-
     }
 
     public function books(): Response|Application|ResponseFactory
     {
-
         try {
-
             $consignments = Book::where(
                 'type',
                 PurchaseType::CONSIGNMENT
@@ -92,37 +76,32 @@ class ConsignmentController extends Controller
                     'deleted_at' => $consignment->deleted_at,
                 ];
             });
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => $consignments
+            'data' => $consignments,
         ]);
-
     }
 
-    public function history(Request $request) : Response|Application|ResponseFactory
+    public function history(Request $request): Response|Application|ResponseFactory
     {
         // TODO: get all the `transaction` and `settlement` history of a book
         $request->validate([
-            'book_id' => 'required|exists:books,id'
+            'book_id' => 'required|exists:books,id',
         ]);
 
         try {
-
             $book = Book::find($request->input('book_id'));
 
             if (PurchaseType::from($book->type) === PurchaseType::CASH) {
                 return response([
-                    'message' => '"' . $book->title . '" is a cash purchase'
+                    'message' => '"'.$book->title.'" is a cash purchase',
                 ], 422);
             }
 
@@ -148,14 +127,11 @@ class ConsignmentController extends Controller
                 ->sortBy('transaction_on')
                 ->values()
                 ->all();
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'body' => $exception->getMessage()
+                'body' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
@@ -164,100 +140,82 @@ class ConsignmentController extends Controller
                 'book' => Book::with('supplier')->find($request->input('book_id')),
                 'history' => $consignmentHistory,
                 'payable' => $book->payable(),
-                'settled' => $book->settled()
-            ]
+                'settled' => $book->settled(),
+            ],
         ]);
-
     }
 
     public function settle(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
             'book_id' => 'required|exists:books,id',
             'quantity' => 'required|integer|min:1',
             'transaction_on' => 'required|date_format:d-m-Y',
-            'receipt' => 'string'
+            'receipt' => 'string',
         ]);
 
         try {
-
             $max_payable = Book::find($request->input('book_id'))->max_payable();
 
             if ($request->input('quantity') > $max_payable) {
-
                 return response([
                     'message' => 'error',
-                    'data' => 'Maximum payable quantity is ' . $max_payable
+                    'data' => 'Maximum payable quantity is '.$max_payable,
                 ], 422);
-
             }
 
             $consignmentRecord = ConsignmentSettlement::create($request->all());
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'body' => $exception->getMessage()
+                'body' => $exception->getMessage(),
             ]);
-
         }
 
         return response([
             'message' => 'ok',
-            'body' => $consignmentRecord
+            'body' => $consignmentRecord,
         ]);
-
     }
 
     public function return(ConsignmentReturnRequest $request): Response|Application|ResponseFactory
     {
-
         try {
-
             DB::beginTransaction();
 
             $sum = 0;
 
             foreach ($request->input('quantity') as $store) {
-
                 $sum += $store['amount'];
 
                 $storeBook = StoreBook::where([
                     'store_id' => $store['store_id'],
-                    'book_id' => $request->input('book_id')
+                    'book_id' => $request->input('book_id'),
                 ])->first();
 
                 $storeBook->balance = $storeBook->balance - $store['amount'];
                 $storeBook->save();
-
             }
 
             $consignmentRecord = ConsignmentReturn::create(
                 array_merge($request->only('book_id', 'transaction_on', 'receipt'), [
-                    'quantity' => $sum
+                    'quantity' => $sum,
                 ])
             );
 
             DB::commit();
-
         } catch (Exception $exception) {
-
             DB::rollBack();
 
             return response([
                 'message' => 'error',
-                'body' => $exception->getMessage()
+                'body' => $exception->getMessage(),
             ]);
-
         }
 
         return response([
             'message' => 'ok',
-            'body' => $consignmentRecord
+            'body' => $consignmentRecord,
         ]);
-
     }
-
 }

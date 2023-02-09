@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -30,35 +30,30 @@ class LoginRequest extends FormRequest
     {
         return [
             'credential' => 'required',
-            'password' => 'required|string'
+            'password' => 'required|string',
         ];
     }
 
     public function getCredentials(): array
     {
         if (is_numeric($this->input('credential'))) {
-
             // handle phone number as credential
             return [
                 'phone_number' => $this->input('credential'),
-                'password' => $this->input('password')
+                'password' => $this->input('password'),
             ];
-
-        } else if (filter_var($this->input('credential'), FILTER_VALIDATE_EMAIL)) {
-
+        } elseif (filter_var($this->input('credential'), FILTER_VALIDATE_EMAIL)) {
             return [
                 'email' => $this->input('credential'),
-                'password' => $this->input('password')
+                'password' => $this->input('password'),
             ];
-
         }
 
         // handle username as credential
         return [
             'username' => $this->input('credential'),
-            'password' => $this->input('password')
+            'password' => $this->input('password'),
         ];
-
     }
 
     /**

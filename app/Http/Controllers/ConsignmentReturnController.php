@@ -13,50 +13,38 @@ use Illuminate\Http\Response;
 
 class ConsignmentReturnController extends Controller
 {
-
     public function index(Request $request): Response|Application|ResponseFactory
     {
-
         $request->validate([
-            'book_id' => 'exists:books,id'
+            'book_id' => 'exists:books,id',
         ]);
 
         try {
-
             if ($request->has('book_id')) {
-
                 $book = Book::find($request->input('book_id'));
 
                 if (PurchaseType::from($book->type) !== PurchaseType::CONSIGNMENT) {
-
                     return response([
                         'message' => 'error',
-                        'data' => 'Cannot get return data for non-consignment items'
+                        'data' => 'Cannot get return data for non-consignment items',
                     ], 422);
-
                 }
 
                 return response([
                     'message' => 'ok',
-                    'data' => ConsignmentReturn::where('book_id', $request->input('book_id'))->get()
+                    'data' => ConsignmentReturn::where('book_id', $request->input('book_id'))->get(),
                 ]);
-
             }
-
         } catch (Exception $exception) {
-
             return response([
                 'message' => 'error',
-                'data' => $exception->getMessage()
+                'data' => $exception->getMessage(),
             ], 500);
-
         }
 
         return response([
             'message' => 'ok',
-            'data' => ConsignmentReturn::all()
+            'data' => ConsignmentReturn::all(),
         ]);
-
     }
-
 }

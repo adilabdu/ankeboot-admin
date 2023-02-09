@@ -12,7 +12,7 @@ class ConsignmentSettlement extends Model
 
     protected $guarded = [
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function book(): BelongsTo
@@ -21,7 +21,6 @@ class ConsignmentSettlement extends Model
     }
 
     protected $casts = [
-        'transaction_on' => 'date'
+        'transaction_on' => 'date',
     ];
-
 }
