@@ -8,6 +8,8 @@ use App\Http\Controllers\ConsignmentController;
 use App\Http\Controllers\ConsignmentReturnController;
 use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
+use App\Http\Controllers\Google\GoogleAuthController;
+use App\Http\Controllers\Google\GoogleDocsController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReminderController;
@@ -126,6 +128,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('reminders')->group(function () {
         Route::post('/', [ReminderController::class, 'post']);
     });
+
+    Route::prefix('google')->group(function () {
+        Route::get('/login/url', [GoogleAuthController::class, 'getAuthURL']);
+        Route::get('/drive/files', [GoogleDocsController::class, 'getFiles']);
+    });
+
 });
 
 Route::post('/mailing-list', [MailingListController::class, 'post']);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Google\GoogleAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,5 @@ use Illuminate\Support\Facades\Route;
 
 // Set all routes to pass through the Vue app
 Route::view('/emails/welcome', 'emails.welcome');
+Route::get('/callback', [GoogleAuthController::class, 'callback']);
 Route::view('/{path}', 'app')->where('path', '.*');

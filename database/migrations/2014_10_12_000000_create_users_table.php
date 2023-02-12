@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('telegram_chat_id')->nullable();
             $table->string('password');
+            $table->text('google_access_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
