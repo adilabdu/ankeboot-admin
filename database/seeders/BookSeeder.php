@@ -16,7 +16,7 @@ class BookSeeder extends Seeder
     public function run(): void
     {
         try {
-            Book::factory()->count(20)->create();
+            Book::factory()->lastYear()->count(20)->create();
         } catch (Exception $e) {
             dd('Error: ', $e->getMessage());
         }

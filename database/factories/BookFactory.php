@@ -24,4 +24,18 @@ class BookFactory extends Factory
             'balance' => 0,
         ];
     }
+
+    /**
+     * Indicate that the books were registered last year.
+     *
+     * @return self
+     */
+    public function lastYear(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'created_at' => fake()->dateTimeBetween('-1 year', '-6 months'),
+            ];
+        });
+    }
 }

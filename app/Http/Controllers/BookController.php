@@ -7,14 +7,17 @@ use App\Enums\TransactionType;
 use App\Models\Book;
 use App\Models\StoreBook;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
+use Meilisearch\Endpoints\Indexes;
 
 class BookController extends Controller
 {
@@ -28,7 +31,7 @@ class BookController extends Controller
             if ($request->has('id')) {
                 $books = Book::with('supplier')
                     ->with('transactions')
-                    ->where('id', $request->input('id'))->first();
+                    ->find($request->input('id'));
             } else {
                 $books = Book::all();
             }
@@ -48,16 +51,25 @@ class BookController extends Controller
     public function paginate(Request $request): Response|Application|ResponseFactory
     {
         $request->validate([
+            'query' => 'nullable|string',
             'page' => 'integer',
             'per_page' => 'integer',
             'order_by' => 'nullable|string',
+            'from_date' => 'nullable|int',
+            'to_date' => 'nullable|int',
             'desc' => 'nullable|boolean',
         ]);
 
         try {
             return response([
                 'message' => 'success',
-                'data' => Book::orderByDesc($request->input('order_by') ?? 'id')->paginate($request->input('per_page')),
+                'data' => Book::search($request->input('query') ?? '', function (Indexes $meilisearch, string $query, array $options) use ($request) {
+                    $options['filter'] = 'created_at >= ' . ($request->input('from_date') ?? Carbon::createFromDate('01-01-2000')->timestamp) . ' AND created_at <= ' . ($request->input('to_date') ?? Carbon::now()->timestamp);
+                    return $meilisearch->search($query, $options);
+                })->orderBy(
+                    $request->input('order_by') ?? 'id',
+                    $request->input('desc') ? 'desc' : 'asc'
+                )->paginate($request->input('per_page'))->withQueryString(),
             ]);
         } catch (Exception $exception) {
             return response([
@@ -229,8 +241,7 @@ class BookController extends Controller
         ]);
 
         try {
-            $book = Book::query()
-                ->where('id', $request->input('id'))
+            $book = Book::find($request->input('id'))
                 ->delete();
         } catch (Exception $e) {
             return response([

@@ -32,7 +32,8 @@
             <div class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
 
                 <!-- Search -->
-                <SearchBar :placeholder="'Search'" :min-query-length="0" @type="" />
+<!--                <SearchBar :placeholder="'Search'" :min-query-length="0" @type="" />-->
+                <TextInput v-model="searchQuery" label="Search" label-position="left" placeholder="Search for items" />
 
                 <!-- Hide columns -->
                 <SelectMenu
@@ -54,7 +55,7 @@
             </div>
 
             <!-- Content -->
-            <div class="relative rounded-md overflow-auto min-h-[244.5px] border-[0.5px] border-border-light">
+            <div :class="[loading ? 'min-h-[244.5px]' : '']" class="relative rounded-md overflow-auto border-[0.5px] border-border-light">
 
                 <!-- Loading data -->
                 <div v-if="loading" class="z-10 absolute w-full h-full grid place-items-center top-0 left-0 backdrop-blur">
@@ -88,7 +89,7 @@
                                     :sortable="sortable.includes(name)"
                                     v-if="!hideColumns.includes(name)"
                                     :class="[hideLabels.includes(name) ? 'text-transparent' : '']"
-                                    @sort="sort(columns[index])"
+                                    @sort="sort"
                                 >
                                     {{ name.replaceAll('_', ' ') }}
                                 </HeaderCell>
@@ -115,6 +116,53 @@
 
                 </table>
 
+                <!-- Case: No search results -->
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-if="searchQuery !== null && !! data && data.length === 0">
+
+                    <slot name="search-empty">
+                        <div class="gap-4 flex flex-col items-center justify-center py-8">
+
+                            <svg width="18" height="18" viewBox="0 0 18 18" class="fill-brand-primary" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9ZM2.0144 9C2.0144 12.858 5.14196 15.9856 9 15.9856C12.858 15.9856 15.9856 12.858 15.9856 9C15.9856 5.14196 12.858 2.0144 9 2.0144C5.14196 2.0144 2.0144 5.14196 2.0144 9Z" />
+                                <rect x="8" y="5" width="2" height="5" />
+                                <rect x="8" y="11" width="2" height="2" />
+                            </svg>
+
+                            <div class="flex flex-col justify-center items-center gap-0.5">
+                                <p class="text-sm font-medium"> No item </p>
+                                <p class="text-sm text-subtitle"> No item was found in your search </p>
+                            </div>
+
+                        </div>
+                    </slot>
+
+                </div>
+
+                <!-- Case: No data -->
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="!! data && data.length === 0">
+
+                    <slot name="empty">
+                        <div class="gap-4 flex flex-col items-center justify-center py-8">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="fill-brand-primary"><path d="M3 8v11c0 2.201 1.794 3 3 3h15v-2H6.012C5.55 19.988 5 19.806 5 19c0-.101.009-.191.024-.273.112-.576.584-.717.988-.727H21V4c0-1.103-.897-2-2-2H6c-1.206 0-3 .799-3 3v3zm3-4h13v12H5V5c0-.806.55-.988 1-1z"></path><path d="M11 14h2v-3h3V9h-3V6h-2v3H8v2h3z"></path></svg>
+
+                            <div class="flex flex-col justify-center items-center gap-0.5">
+                                <p class="text-sm font-medium"> No item </p>
+                                <p class="text-sm text-subtitle"> Register a new item into inventory. </p>
+                            </div>
+
+                            <button @click="$emit('newItem')" class="bg-brand-primary flex items-center justify-around gap-2 px-2.5 my-2 rounded-md">
+
+                                <span class="text-white text-2xl font-light align-text-top inline-block pb-1">+</span>
+                                <span class="text-white font-medium">New Item</span>
+
+                            </button>
+
+                        </div>
+                    </slot>
+
+                </div>
+
             </div>
 
             <!-- Pagination -->
@@ -123,14 +171,15 @@
                 <p class="sm:py-0.5 sm:order-1 text-subtitle sm:w-full sm:text-right">
                     Showing
                     <span class="font-medium">
-                        {{ paginateFrom }}
+                        {{ paginateFrom ?? 0 }}
                     </span>
                     to
                     <span class="font-medium">
-                        {{ paginateTo }}
+                        {{ paginateTo ?? 0 }}
                     </span>
                     of
                     <span class="font-medium">
+                        <span :class="{ 'hidden': (totalItems < 1000) }">~</span>
                         {{ totalItems }}
                     </span>
                 </p>
@@ -166,6 +215,7 @@
     import Dropdown from "../Dropdown.vue";
     import SearchBar from "../SearchBar.vue";
     import DatePicker from "../Form/DatePicker.vue";
+    import TextInput from "../Form/TextInput.vue";
 
     const props = defineProps({
         condensed: {
@@ -238,6 +288,14 @@
             year: ''
         },
     })
+    watch(dateQuery, () => {
+        fetchData(1, showPerPage.value)
+    }, { deep: true })
+
+    const searchQuery = ref(null)
+    watch(searchQuery, () => {
+        fetchData(1, showPerPage.value)
+    })
 
     const showPerPage = ref(props.perPage)
     watch(showPerPage, () => {
@@ -285,7 +343,7 @@
     const handleError = (error) => {
         alert(`Error while loading paginated books ${error}`)
     }
-    function fetchData(page=1, per_page=10, sort_by='id') {
+    function fetchData(page=1, per_page=10, sort_by='id', descending=false) {
 
         loading.value = true
 
@@ -296,6 +354,24 @@
 
         if (sort_by !== 'id') {
             params.order_by = sort_by
+            params.desc = descending
+        }
+
+        if (searchQuery.value !== null) {
+            console.log(``)
+            params.query = searchQuery.value
+        }
+
+        if (dateQuery.value.start.date !== '') {
+            params.from_date = Math.floor(
+                new Date(dateQuery.value.start.year, dateQuery.value.start.month, dateQuery.value.start.date).valueOf() / 1000
+            )
+        }
+
+        if (dateQuery.value.end.date !== '') {
+            params.to_date = Math.floor(
+                new Date(dateQuery.value.end.year, dateQuery.value.end.month, (dateQuery.value.end.date + 1)).valueOf() / 1000
+            )
         }
 
         axios.get(props.url, {
@@ -339,8 +415,7 @@
 
     function sort(column) {
 
-        alert(`column is ${column.header}`)
-        fetchData(1, showPerPage.value, column.header)
+        fetchData(1, showPerPage.value, column.header, column.descending ? 1 : 0)
 
     }
 

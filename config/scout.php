@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Book;
+
 return [
 
     /*
@@ -41,7 +43,10 @@ return [
     |
     */
 
-    'queue' => env('SCOUT_QUEUE', false),
+    'queue' => [
+        'connection' => 'database',
+        'queue' => 'scout',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -132,6 +137,12 @@ return [
     'meilisearch' => [
         'host' => env('MEILISEARCH_HOST', 'http://localhost:7700'),
         'key' => env('MEILISEARCH_KEY', null),
+        'index-settings' => [
+            Book::class => [
+                'filterableAttributes' => ['title', 'alternate_title', 'author', 'category', 'balance', 'code', 'created_at',],
+                'sortableAttributes' => ['title', 'alternate_title', 'author', 'category', 'balance', 'code', 'created_at',],
+            ]
+        ]
     ],
 
 ];

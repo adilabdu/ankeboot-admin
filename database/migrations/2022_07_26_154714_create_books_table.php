@@ -26,8 +26,9 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
-            $table->timestamps();
-            $table->softDeletes();
+            $table->integer('created_at');
+            $table->integer('updated_at');
+            $table->integer('deleted_at')->nullable();
 
             $table->fullText(['title', 'alternate_title', 'author', 'category']);
         });

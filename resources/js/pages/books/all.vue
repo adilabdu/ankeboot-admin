@@ -81,47 +81,6 @@
 
     </TableAJAX>
 
-    <Table
-        :loading="!! ! books"
-        title="Books"
-        :data="books"
-        :center="['code', 'balance']"
-        :right="[]"
-        :sortable="['category', 'code', 'balance', 'title', 'purchase_type', 'added_on']"
-        :searchable="['title', 'added_on', 'code']"
-        :hideable=false
-        :hide="['id']"
-        :hide-labels="['id']"
-        :actions="true"
-        @table-button-click="handleTableButton"
-        @edit="handleEdit"
-        @delete="handleDelete"
-        @new-item="goto('CreateBook')"
-    >
-
-        <template #description>
-            <p>
-                Complete list of books in the inventory
-            </p>
-        </template>
-
-        <template #rows="data">
-
-            <Cell name="code" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['code'].toLowerCase() }} </Cell>
-            <LinkCell class="w-[90%]" name="title" :main="true" :hide="data.hide" :value="data['record']['title']" :to="'books/' + data['record']['id']">
-                <RouterLink :to="'books/' + data['record']['id']">
-                    {{ data['record']['title'] }}
-                </RouterLink>
-            </LinkCell>
-            <Cell class="w-[2%]" name="category" :hide="data.hide">{{ data['record']['category'] }} </Cell>
-            <EnumCell class="w-[2%]" name="purchase_type" :hide="data.hide" :colors="['lime', 'stone']" :options="['consignment', 'cash']" :value="data['record']['purchase_type']" />
-            <Cell name="balance" :hide="data.hide" class="w-[2%] text-xs font-semibold text-subtitle text-center">{{ data['record']['balance'] }} </Cell>
-            <DateCell class="w-[2%]" name="added_on" :hide="data.hide" :value="data['record']['added_on']" />
-
-        </template>
-
-    </Table>
-
     <ConfirmationModal
         :open="deleteModal"
         title="Delete book"
@@ -166,6 +125,7 @@
 
     function attemptDelete(id) {
         deleting.value = true
+        console.log(id)
         store.dispatch('deleteBook', id).then(() => {
             deleteModal.value = false
             deleting.value = false
@@ -206,6 +166,7 @@
     }
 
     function handleDelete(object) {
+        console.log(object)
         recordToDelete.value = object
         deleteModal.value = true
     }
@@ -241,7 +202,7 @@
             category: book.category,
             purchase_type: book.type,
             balance: book.balance,
-            added_on: new Date(book['created_at'])
+            added_on: new Date(book['created_at'] * 1000)
         }
 
     }
