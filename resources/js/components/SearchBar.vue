@@ -32,6 +32,10 @@
       type: String,
       default: 'Enter your search query',
     },
+    modelValue: {
+      type: String,
+      default: '',
+    }
   })
 
   const emit = defineEmits([

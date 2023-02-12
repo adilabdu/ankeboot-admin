@@ -85,14 +85,14 @@
                             </div>
                             <button v-else class="text-brand-primary text-xs cursor-pointer">Register a Supplier</button>
                         </ItemDescription>
-                        <ItemDescription :description="new Date(book['created_at']).toDateString()" label="registration date" />
-                        <ItemDescription :description="new Date(book['updated_at']).toDateString()" label="last updated" />
+                        <ItemDescription :description="new Date(book['created_at'] * 1000).toDateString()" label="registration date" />
+                        <ItemDescription :description="new Date(book['updated_at'] * 1000).toDateString()" label="last updated" />
                     </template>
 
                 </ItemCard>
             </div>
 
-            <div v-if="book && book.transactions.length > 0" class="w-1/2 sm:w-full flex flex-col gap-6">
+            <div v-if="book && book?.transactions?.length > 0" class="w-1/2 sm:w-full flex flex-col gap-6">
                 <div class="flex justify-center w-full">
                     <Toggle :labels="['Stock records', 'Store records']" colors="white" v-model="toggleStock" />
                 </div>
