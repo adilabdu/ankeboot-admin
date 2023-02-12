@@ -15,3 +15,8 @@ yarn-error.log
 /.idea
 /.vscode
 /.fleet
+
+/data.ms
+meilisearch
+
+google.config.json
