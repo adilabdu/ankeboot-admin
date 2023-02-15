@@ -29,7 +29,7 @@
 <!--                    second: `Percentage of consignment sales made within the past year (${getLastYear()} - ${new Date().toLocaleDateString()})`-->
 <!--                }"-->
 <!--            />-->
-            <LineChart :data="monthlySales" :loading="chartsLoading" />
+            <LineChart :data="monthlySales" :loading="monthlySalesLoading" />
         </div>
 
         <div class="min-h-fit">
@@ -99,6 +99,8 @@ import {computed, onMounted, ref} from "vue";
             })
 
     }
+
+    const monthlySalesLoading = computed(() => !! ! monthlySales.value)
 
     const chartsLoading = computed(() => {
         return !! ! monthlyPurchases.value &&

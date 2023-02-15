@@ -18,10 +18,20 @@
 
     </div>
 
-    <div class="relative flex grow max-h-[50%] -m-2 h-[8rem] relative">
+    <div class="relative flex grow max-h-[50%] -m-2 relative">
 
-        <canvas v-if="! itemCount" class="absolute max-w-full max-h-full" ref="canvas" id="canvas" />
-        <canvas v-else class="absolute max-w-full max-h-full" ref="canvasTwo" id="canvasTwo" />
+        <div class="w-full h-full flex flex-col" v-if="! itemCount">
+            <div v-if="noData.by_receipts" class="h-full text-subtitle flex flex-col items-center justify-center gap-1">
+                <p class="mb-8">No data to display</p>
+            </div>
+            <canvas class="absolute max-w-full max-h-full" ref="canvas" id="canvas" />
+        </div>
+        <div v-else class="w-full h-full">
+            <div v-if="noData.by_items" class="h-full text-subtitle flex flex-col items-center justify-center gap-1">
+                <p class="mb-8">No data to display</p>
+            </div>
+            <canvas class="absolute max-w-full max-h-full" ref="canvasTwo" id="canvasTwo" />
+        </div>
 
     </div>
 
@@ -64,6 +74,10 @@
 
     const fetching = computed(() => props.loading)
     const data = computed(() => props.data)
+    const noData = ref({
+        by_receipts: false,
+        by_items: false
+    })
     const values = computed(() => {
         if (props.data) {
 
@@ -87,6 +101,10 @@
     function renderCanvas(canvas, context, attribute) {
 
         context.value = canvas.value.getContext('2d')
+
+        console.log(`Rendering ${attribute}...`, data.value[attribute])
+
+        noData.value[attribute] = Object.values(data.value[attribute]).every(item => item === 0)
 
         myChart.value = new Chart(context.value, {
             type: 'line',
@@ -139,6 +157,8 @@
     watch(fetching, () => {
 
         if (! fetching.value) {
+
+            console.log(data.value)
 
             if (! itemCount.value) {
 
