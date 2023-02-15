@@ -20,7 +20,7 @@
 
     <div class="relative flex grow max-h-[50%] -m-2 relative">
 
-        <div class="w-full h-full flex flex-col" v-if="! itemCount">
+        <div v-if="! itemCount" class="w-full h-full">
             <div v-if="noData.by_receipts" class="h-full text-subtitle flex flex-col items-center justify-center gap-1">
                 <p class="mb-8">No data to display</p>
             </div>
