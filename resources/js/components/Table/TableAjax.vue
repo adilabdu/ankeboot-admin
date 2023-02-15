@@ -55,23 +55,7 @@
             </div>
 
             <!-- Content -->
-            <div :class="[loading ? 'min-h-[244.5px]' : '']" class="relative rounded-md overflow-auto border-[0.5px] border-border-light">
-
-                <!-- Loading data -->
-                <div v-if="loading" class="z-10 absolute w-full h-full grid place-items-center top-0 left-0 backdrop-blur">
-                    <div class="gap-4 flex flex-col items-center justify-center py-8">
-
-                        <svg class="animate-rotate" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M17.4706 5.94533C18.1987 5.55015 18.4769 4.63079 17.9774 3.96992C17.0157 2.69771 15.7589 1.66786 14.3065 0.974827C12.4006 0.0653761 10.2557 -0.217352 8.1792 0.167163C6.10271 0.551679 4.20125 1.5837 2.74734 3.11531C1.29344 4.64692 0.361732 6.59949 0.0857576 8.69317C-0.190217 10.7869 0.203708 12.9142 1.21108 14.7702C2.21844 16.6262 3.78753 18.1157 5.69346 19.0252C7.59939 19.9346 9.74431 20.2174 11.8208 19.8328C13.4032 19.5398 14.8839 18.8708 16.1424 17.8912C16.7961 17.3824 16.7656 16.4223 16.1648 15.852V15.852C15.5639 15.2816 14.621 15.3229 13.9359 15.7887C13.1386 16.3308 12.2332 16.7055 11.2746 16.883C9.82102 17.1521 8.31958 16.9542 6.98542 16.3176C5.65127 15.681 4.55291 14.6384 3.84775 13.3391C3.1426 12.0399 2.86685 10.5508 3.06003 9.08522C3.25321 7.61964 3.90541 6.25284 4.92314 5.18072C5.94087 4.10859 7.27189 3.38618 8.72544 3.11701C10.179 2.84785 11.6804 3.04576 13.0146 3.68238C13.8945 4.10224 14.6718 4.69872 15.3015 5.42894C15.8424 6.05634 16.7425 6.34051 17.4706 5.94533V5.94533Z" fill="#FF8100"/>
-                        </svg>
-
-                        <div class="flex flex-col justify-center items-center gap-0.5">
-                            <p class="text-sm font-medium"> Fetching results </p>
-                            <p class="text-sm text-subtitle"> Please wait, retrieving your data </p>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="rounded-md overflow-auto border-[0.5px] border-border-light">
 
                 <!-- Table -->
                 <table class="w-full bg-white shadow-sm">
@@ -102,7 +86,7 @@
                     </tr>
 
                     <!-- Data row -->
-                    <tr class="hover:bg-black/5 h-10 border-border-light border-b-[1px]" v-if="!! data && data.length > 0" v-for="(row, index) in data" :key="index">
+                    <tr class="hover:bg-black/5 h-10 border-border-light border-b-[1px]" v-if="!! data && ! loading && data.length > 0" v-for="(row, index) in data" :key="index">
                         <slot name="rows" v-if="row" :record="row" />
                         <slot v-if="actions" name="actions">
                             <Cell name="actions">
@@ -116,8 +100,28 @@
 
                 </table>
 
+                <!-- Case: Loading results -->
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-if="loading">
+
+                    <slot name="search-empty">
+                        <div class="gap-4 flex flex-col items-center justify-center py-8">
+
+                            <svg class="animate-rotate" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.4706 5.94533C18.1987 5.55015 18.4769 4.63079 17.9774 3.96992C17.0157 2.69771 15.7589 1.66786 14.3065 0.974827C12.4006 0.0653761 10.2557 -0.217352 8.1792 0.167163C6.10271 0.551679 4.20125 1.5837 2.74734 3.11531C1.29344 4.64692 0.361732 6.59949 0.0857576 8.69317C-0.190217 10.7869 0.203708 12.9142 1.21108 14.7702C2.21844 16.6262 3.78753 18.1157 5.69346 19.0252C7.59939 19.9346 9.74431 20.2174 11.8208 19.8328C13.4032 19.5398 14.8839 18.8708 16.1424 17.8912C16.7961 17.3824 16.7656 16.4223 16.1648 15.852V15.852C15.5639 15.2816 14.621 15.3229 13.9359 15.7887C13.1386 16.3308 12.2332 16.7055 11.2746 16.883C9.82102 17.1521 8.31958 16.9542 6.98542 16.3176C5.65127 15.681 4.55291 14.6384 3.84775 13.3391C3.1426 12.0399 2.86685 10.5508 3.06003 9.08522C3.25321 7.61964 3.90541 6.25284 4.92314 5.18072C5.94087 4.10859 7.27189 3.38618 8.72544 3.11701C10.179 2.84785 11.6804 3.04576 13.0146 3.68238C13.8945 4.10224 14.6718 4.69872 15.3015 5.42894C15.8424 6.05634 16.7425 6.34051 17.4706 5.94533V5.94533Z" fill="#FF8100"/>
+                            </svg>
+
+                            <div class="flex flex-col justify-center items-center gap-0.5">
+                                <p class="text-sm font-medium"> Fetching results </p>
+                                <p class="text-sm text-subtitle"> Please wait, retrieving your data </p>
+                            </div>
+
+                        </div>
+                    </slot>
+
+                </div>
+
                 <!-- Case: No search results -->
-                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-if="searchQuery !== null && !! data && data.length === 0">
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="searchQuery !== null && !! data && data.length === 0">
 
                     <slot name="search-empty">
                         <div class="gap-4 flex flex-col items-center justify-center py-8">
