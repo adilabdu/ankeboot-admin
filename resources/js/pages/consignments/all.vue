@@ -65,7 +65,7 @@
                         balance: book.balance,
                         payable: book.payable,
                         settled: book.settled,
-                        added_on: new Date(book['created_at'])
+                        added_on: new Date(book['created_at'] * 1000)
                     }
                 })
 

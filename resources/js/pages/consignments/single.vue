@@ -111,8 +111,8 @@
                     />
                     <ItemDescription ratio="5:7" :description="consignmentHistory.book.code" label="code" />
                     <ItemDescription ratio="5:7" :description="consignmentHistory.book.type" label="purchase type" />
-                    <ItemDescription ratio="5:7" :description="new Date(consignmentHistory.book['created_at']).toDateString()" label="registration date" />
-                    <ItemDescription ratio="5:7" :description="new Date(consignmentHistory.book['updated_at']).toDateString()" label="last updated" />
+                    <ItemDescription ratio="5:7" :description="new Date(consignmentHistory.book['created_at'] * 1000).toDateString()" label="registration date" />
+                    <ItemDescription ratio="5:7" :description="new Date(consignmentHistory.book['updated_at'] * 1000).toDateString()" label="last updated" />
                 </template>
 
             </ItemCard>
