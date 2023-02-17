@@ -40,7 +40,7 @@ class Store extends Model
         return $this->belongsTo(Address::class);
     }
 
-    public static function primary(): Store
+    public static function primary(): Store|null
     {
         return Store::where('primary', true)->first();
     }
