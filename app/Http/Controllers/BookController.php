@@ -63,8 +63,8 @@ class BookController extends Controller
         try {
             return response([
                 'message' => 'success',
-                'data' => Book::search($request->input('query') ?? '', function (Indexes $meilisearch, string $query, array $options) use ($request) {
-                    $options['filter'] = 'created_at >= ' . ($request->input('from_date') ?? Carbon::createFromDate('01-01-2000')->timestamp) . ' AND created_at <= ' . ($request->input('to_date') ?? Carbon::now()->timestamp);
+                'data' => Book::search($request->input('query', ''), function (Indexes $meilisearch, string $query, array $options) use ($request) {
+                    $options['filter'] = 'created_at >= ' . ($request->input('from_date', Carbon::createFromDate('01-01-1970')->timestamp)) . ' AND created_at <= ' . ($request->input('to_date', Carbon::createFromDate('01-01-3023')->timestamp));
                     return $meilisearch->search($query, $options);
                 })->orderBy(
                     $request->input('order_by') ?? 'id',
@@ -139,22 +139,24 @@ class BookController extends Controller
             $book_data = array_merge(
                 $request->only([
                     'code', 'type', 'title',
-                    'author', 'category',
+                    'author', 'category', 'supplier_id'
                 ]),
-                ['balance' => 0]
             );
-            $book = Book::create($book_data);
+            $book = Book::make($book_data);
+            $book->balance = 0;
+            $book->save();
 
-            if ($request->has('transaction_invoice')) {
-                $transaction = $book->transactions()
-                    ->save(new Transaction([
-                        'invoice' => $request->input('transaction_invoice'),
-                        'transaction_on' => $request->input('transaction_on'),
-                        'type' => TransactionType::PURCHASE,
-                        'quantity' => $request->input('transaction_quantity'),
-                    ])
-                    );
-            }
+//            // TODO: fix transaction creation logic
+//            if ($request->has('transaction_invoice')) {
+//                $transaction = $book->transactions()
+//                    ->save(new Transaction([
+//                        'invoice' => $request->input('transaction_invoice'),
+//                        'transaction_on' => $request->input('transaction_on'),
+//                        'type' => TransactionType::PURCHASE,
+//                        'quantity' => $request->input('transaction_quantity'),
+//                    ])
+//                    );
+//            }
 
             DB::commit();
         } catch (Exception $exception) {
@@ -163,7 +165,7 @@ class BookController extends Controller
             return response([
                 'message' => 'error',
                 'data' => $exception->getMessage(),
-            ]);
+            ], 500);
         }
 
         return response([
@@ -171,7 +173,7 @@ class BookController extends Controller
             'data' => Book::with('transactions')
                 ->where('id', $book->id)
                 ->first(),
-        ]);
+        ], 201);
     }
 
     public function update(Request $request): Response|Application|ResponseFactory
@@ -223,7 +225,7 @@ class BookController extends Controller
             return response([
                 'message' => 'error',
                 'data' => $exception->getMessage(),
-            ]);
+            ], 500);
         }
 
         return response([
@@ -231,7 +233,7 @@ class BookController extends Controller
             'data' => Book::with('transactions')
                 ->where('id', $book->id)
                 ->first(),
-        ]);
+        ], 200);
     }
 
     public function delete(Request $request): Response|Application|ResponseFactory
