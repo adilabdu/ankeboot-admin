@@ -16,20 +16,20 @@ class StoreSeeder extends Seeder
     public function run(): void
     {
         try {
-            Store::create([
+            Store::firstOrCreate([
                 'name' => 'Shop',
                 'primary' => true,
             ]);
-            Store::create([
+            Store::firstOrCreate([
                 'name' => 'Bole Store 1',
             ]);
-            Store::create([
+            Store::firstOrCreate([
                 'name' => 'Bole Store 2',
             ]);
-            Store::create([
+            Store::firstOrCreate([
                 'name' => 'Bole Store 3',
             ]);
-            Store::create([
+            Store::firstOrCreate([
                 'name' => 'Welete Warehouse',
             ]);
         } catch (Exception $e) {

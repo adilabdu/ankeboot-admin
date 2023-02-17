@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class BookFactory extends Factory
             'title' => fake()->sentence(4),
             'category' => fake()->word,
             'balance' => 0,
+            'supplier_id' => Supplier::factory()->create()->id,
         ];
     }
 
@@ -35,6 +37,19 @@ class BookFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'created_at' => fake()->dateTimeBetween('-1 year', '-6 months'),
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the book has no supplier.
+     *
+     */
+    public function noSupplier(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'supplier_id' => null,
             ];
         });
     }

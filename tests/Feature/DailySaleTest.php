@@ -1,32 +1,13 @@
 <?php
 
-namespace Tests\Feature;
+test('GET request returns 200', function () {
+    $response = $this->getWithHeaders('/api/daily-sales?limit=5');
 
-use App\Models\User;
-use Laravel\Sanctum\Sanctum;
-use Tests\TestCase;
+    $response->assertStatus(200);
+});
 
-class DailySaleTest extends TestCase
-{
-    public function test_daily_sale_get_request_returns_200_status_code(): void
-    {
-        Sanctum::actingAs(User::first());
+test('GET request returns 422 with invalid parameters', function () {
+    $response = $this->getWithHeaders( '/api/daily-sales?limit=5&id=1');
 
-        $response = $this->getWithHeaders(
-            '/api/daily-sales?limit=5'
-        );
-
-        $response->assertStatus(200);
-    }
-
-    public function test_daily_sale_get_request_returns_422_with_invalid_request_body(): void
-    {
-        Sanctum::actingAs(User::first());
-
-        $response = $this->getWithHeaders(
-            '/api/daily-sales?limit=5&id=1'
-        );
-
-        $response->assertStatus(422);
-    }
-}
+    $response->assertStatus(422);
+});

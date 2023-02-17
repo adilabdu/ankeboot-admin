@@ -14,10 +14,14 @@ class AddressFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'country' => fake()->randomElement([fake()->country, 'Ethiopia']),
+            'city' => fake()->randomElement([fake()->city, 'Addis Ababa']),
+            'sub_city' => fake()->words(2, true),
+            'kebele' => fake()->numberBetween(1, 30),
+            'house_number' => fake()->numberBetween(1, 100),
         ];
     }
 }
