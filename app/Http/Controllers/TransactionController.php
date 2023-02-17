@@ -12,6 +12,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 
@@ -77,6 +78,8 @@ class TransactionController extends Controller
         $validator->validate();
 
         try {
+            DB::beginTransaction();
+
             if (TransactionType::from($request->input('type')) === TransactionType::PURCHASE) {
                 // Get sum of quantities user is transacting
                 $quantity = 0;
@@ -143,7 +146,12 @@ class TransactionController extends Controller
                     'quantity' => $request->input('quantity'),
                 ]);
             }
+
+            DB::commit();
+
         } catch (Exception $exception) {
+            DB::rollBack();
+
             return response([
                 'message' => 'error',
                 'data' => $exception->getMessage(),
@@ -153,7 +161,7 @@ class TransactionController extends Controller
         return response([
             'message' => 'ok',
             'data' => $transaction,
-        ], 200);
+        ], 201);
     }
 
     public function update(Request $request): Response|Application|ResponseFactory
