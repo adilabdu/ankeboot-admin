@@ -163,7 +163,7 @@
                         category: book.book.category,
                         purchase_type: book.book.type,
                         in_store: book.balance,
-                        added_on: new Date(book.book['created_at'])
+                        added_on: new Date(book.book['created_at'] * 1000)
                     }
                 })
 
