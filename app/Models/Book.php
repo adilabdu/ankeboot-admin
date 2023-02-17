@@ -18,6 +18,7 @@ class Book extends Model
     use HasFactory, Searchable, SoftDeletes;
 
     protected $guarded = [
+        'balance',
         'created_at',
         'updated_at',
         'deleted_at',
