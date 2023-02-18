@@ -167,7 +167,7 @@
     ])
 
     const transactionType = ref({
-        type: false
+        type: true
     })
     const transactionData = ref({
         book_id: '',
