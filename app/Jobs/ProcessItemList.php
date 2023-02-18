@@ -55,12 +55,12 @@ class ProcessItemList implements ShouldQueue
                 Validator::validate($record, [
                     'code' => 'unique:books,code',
                 ], [
-                    'code.unique' => 'The code at #'.$i + 1 .' has already been taken',
+                    'code.unique' => 'The code at #'. $i + 1 .' has already been taken',
                 ]);
 
-                Book::create(array_merge($record, [
-                    'balance' => 0,
-                ]));
+                $item = Book::make($record);
+                $item->balance = 0;
+                $item->save();
             }
 
             Notification::send($this->user, new QueueJobFinished([
