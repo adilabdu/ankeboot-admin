@@ -96,7 +96,7 @@
     const contextTwo = ref(null)
     const myChart = ref(null)
 
-    const itemCount = ref(false)
+    const itemCount = ref(true)
 
     function renderCanvas(canvas, context, attribute) {
 

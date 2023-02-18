@@ -86,6 +86,10 @@
       hideLabelOnMobile: {
           type: Boolean,
           default: true,
+      },
+      selected: {
+          type: [String, null],
+          default: null
       }
     })
 
@@ -97,7 +101,7 @@
       showList.value = !showList.value
     }
 
-    const selected = ref(null)
+    const selected = ref(props.selected)
     function setChoice(index) {
       toggleHideList()
       if (props.resource_list) {

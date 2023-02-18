@@ -29,7 +29,7 @@
         <div class="flex flex-col gap-4">
 
             <!-- Filter Actions -->
-            <div class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
+            <div v-if="data.length > 0" class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
 
                 <!-- Search -->
 <!--                <SearchBar :placeholder="'Search'" :min-query-length="0" @type="" />-->
@@ -298,6 +298,7 @@
 
     const searchQuery = ref(null)
     watch(searchQuery, () => {
+        if (searchQuery.value === '') searchQuery.value = null
         fetchData(1, showPerPage.value)
     })
 
