@@ -19,6 +19,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreTransferController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UpdateTransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -61,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('transactions')->group(function () {
         Route::get('/', [TransactionController::class, 'index']);
         Route::post('/', [TransactionController::class, 'post']);
-        Route::post('/update', [TransactionController::class, 'update']);
+        Route::post('/update/{transaction}', [UpdateTransactionController::class, 'index']);
         Route::post('/csv', [CSVController::class, 'insertTransactions']);
     });
 
