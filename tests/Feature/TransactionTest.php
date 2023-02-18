@@ -4,6 +4,7 @@ use App\Models\Book;
 use App\Models\Store;
 use App\Models\StoreBook;
 use App\Models\Transaction;
+use Database\Seeders\StoreSeeder;
 
 test('GET request returns 200', function () {
     $response = $this->getWithHeaders('/api/transactions');
@@ -13,6 +14,8 @@ test('GET request returns 200', function () {
 
 test('POST purchase request returns 201', function () {
     $book = Book::factory()->create();
+    $this->seed(StoreSeeder::class);
+
     $primaryStore = Store::primary() ?? Store::factory()->primary()->create();
     $secondStore = Store::all()[rand(1, Store::count() - 1)];
 
@@ -80,6 +83,7 @@ test('POST purchase request updates book balance', function () {
 
 test('POST sale request returns 201', function () {
     $storeBook = StoreBook::where('store_id', Store::primary()->id)
+                ->where('balance', '>' , 0)
                 ->get()->random();
 
     $initialBalance = $storeBook->balance;
@@ -104,6 +108,21 @@ test('POST sale request returns 201', function () {
         'transaction_id' => $response['data']['id']
     ]);
     $response->assertCreated();
+});
+
+test('POST sale request with insufficient balance returns 422', function () {
+    $storeBook = StoreBook::where('store_id', Store::primary()->id)
+        ->get()->random();
+
+    $response = $this->postWithHeaders('/api/transactions', [
+        'invoice' => 'ank_trans_' . fake()->unique()->numberBetween(1, 1000),
+        'book_id' => $storeBook->book_id,
+        'transaction_on' => fake()->dateTimeBetween('-2 months')->format('d-m-Y'),
+        'type' => 'sale',
+        'quantity' => $storeBook->balance + rand(1, 100)
+    ]);
+
+    $response->assertStatus(422);
 });
 
 test('POST sale request updates book balance', function () {
