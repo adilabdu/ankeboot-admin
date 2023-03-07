@@ -29,7 +29,7 @@
         <div class="flex flex-col gap-4">
 
             <!-- Filter Actions -->
-            <div v-if="data.length > 0" class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
+            <div v-if="noSearchResults || data.length > 0" class="w-full flex sm:flex-col sm:gap-2 sm:flex-col-reverse justify-between items-center">
 
                 <!-- Search -->
 <!--                <SearchBar :placeholder="'Search'" :min-query-length="0" @type="" />-->
@@ -121,7 +121,7 @@
                 </div>
 
                 <!-- Case: No search results -->
-                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="searchQuery !== null && !! data && data.length === 0">
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="!! data && data.length === 0">
 
                     <slot name="search-empty">
                         <div class="gap-4 flex flex-col items-center justify-center py-8">
@@ -143,7 +143,7 @@
                 </div>
 
                 <!-- Case: No data -->
-                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="!! data && data.length === 0">
+                <div class="flex items-center justify-center min-h-[7.5rem] border-border-light border-b-[1px] w-full" v-else-if="noSearchResults">
 
                     <slot name="empty">
                         <div class="gap-4 flex flex-col items-center justify-center py-8">
@@ -363,7 +363,6 @@
         }
 
         if (searchQuery.value !== null) {
-            console.log(``)
             params.query = searchQuery.value
         }
 
@@ -375,7 +374,7 @@
 
         if (dateQuery.value.end.date !== '') {
             params.to_date = Math.floor(
-                new Date(dateQuery.value.end.year, dateQuery.value.end.month, (dateQuery.value.end.date + 1)).valueOf() / 1000
+                new Date(dateQuery.value.end.year, dateQuery.value.end.month, (parseInt(dateQuery.value.end.date) + 1)).valueOf() / 1000
             )
         }
 
@@ -423,6 +422,14 @@
         fetchData(1, showPerPage.value, column.header, column.descending ? 1 : 0)
 
     }
+
+    const noSearchResults = computed(() => {
+        return (searchQuery.value !== null || ! dateQueryEmpty.value) && data.value.length === 0
+    })
+
+    const dateQueryEmpty = computed(() => {
+        return (dateQuery.value.start.date === '') && (dateQuery.value.end.date === '')
+    })
 
     onMounted(() => {
 
