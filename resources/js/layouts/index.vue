@@ -1,5 +1,7 @@
 <template>
 
+    <div :class="progress.percentage === 0 ? 'opacity-0 duration-700 transition-opacity' : ''" :style="{ width:  (100 - progress.percentage) + '%' }" class="transition-all duration-300 fixed top-0 left-0 h-[0.2rem] bg-brand-primary z-50" />
+
     <div class="flex flex-row max-w-full relative overflow-x-hidden">
 
         <Navigation :minimize="miniNav" v-if="authenticated">
@@ -104,6 +106,7 @@
     const authenticated = computed(() => store.state.auth.isAuthenticated)
     const alerts = computed(() => store.state.alert.alerts)
     const miniNav = computed(() => store.state.ui.minimizeNavigation)
+    const progress = computed(() => store.state.ui.pageLoading)
 
     const remote = ref(
         localStorage.getItem('connection') === 'remote_mysql'
