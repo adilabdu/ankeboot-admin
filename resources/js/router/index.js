@@ -243,6 +243,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
+    store.dispatch("togglePageLoading", true).then()
+
     let loggedIn = store.getters.getAuthStatus
 
     if( to.matched.some( record => record.meta['requiresLogin'] ) ) {
@@ -254,6 +256,12 @@ router.beforeEach((to, from, next) => {
         if ( loggedIn ) next({ name: "Dashboard" })
         else next()
     }
+
+})
+
+router.afterEach(() => {
+
+    store.dispatch("togglePageLoading", false).then()
 
 })
 
