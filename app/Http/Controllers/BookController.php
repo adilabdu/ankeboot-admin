@@ -63,7 +63,7 @@ class BookController extends Controller
         try {
             return response([
                 'message' => 'success',
-                'data' => Book::search($request->input('query', ''), function (Indexes $meilisearch, string $query, array $options) use ($request) {
+                'data' => Book::search($request->input('query') ?? '', function (Indexes $meilisearch, string $query, array $options) use ($request) {
                     $options['filter'] = 'created_at >= ' . ($request->input('from_date', Carbon::createFromDate('01-01-1970')->timestamp)) . ' AND created_at <= ' . ($request->input('to_date', Carbon::createFromDate('01-01-3023')->timestamp));
                     return $meilisearch->search($query, $options);
                 })->orderBy(
