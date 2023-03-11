@@ -15,6 +15,6 @@ class Controller extends BaseController
 
     public function __construct(Request $request)
     {
-        DB::setDefaultConnection($request->header('database') ?? env('DB_DEFAULT_DRIVER'));
+        DB::setDefaultConnection($request->header('database') ?? env('DB_DEFAULT_DRIVER', 'mysql'));
     }
 }
