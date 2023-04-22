@@ -65,7 +65,7 @@ The above command will create a new test user with these credentials you can use
 - Password `helloworld`
 
 #### Setting up Meilisearch
-This project uses Meilisearch as its search engine. To set it up, follow the installation guide outline [in their documentation](https://meilisearch.com/docs/learn/getting_started/quick_start). 
+This project uses Meilisearch as its search engine. To set it up, follow the installation guide outlined [in their documentation](https://meilisearch.com/docs/learn/getting_started/quick_start). 
 Next, update the following environmental variables in `.env`
 ```shell
 SCOUT_DRIVER=meilisearch
@@ -94,7 +94,7 @@ php artisan serve
 The project should now be available on `localhost` with port number set by the PHP dev server (commonly `localhost:8000`)
 
 #### Job workers
-Run the following commands to start the job workers. The default queue is used for mailables and notifications, while 
+Run the following commands to start the job workers. The default queue is used for mailables notifications and batch imports, while 
 the `scout` queue is used for indexing models into Meilisearch
 ```shell
 php artisan queue:work
