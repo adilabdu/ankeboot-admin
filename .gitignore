@@ -20,3 +20,5 @@ yarn-error.log
 meilisearch
 
 google.config.json
+
+.DS_Store

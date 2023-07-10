@@ -19,11 +19,11 @@
       <div :class="[modelValue ? 'opacity-50' : '']" class="text-subtitle flex">
         <label>
           <span class="font-semibold text-brand-primary ">Upload a file</span>
-          <input @change="getFileFromUpload" id="file-upload" name="file-upload" type="file" accept="text/csv" class="sr-only" />
+          <input @change="getFileFromUpload" id="file-upload" name="file-upload" type="file" :accept="accept" class="sr-only" />
         </label>
         <p class="font-medium">&nbsp;or drag and drop</p>
       </div>
-      <p v-if="!modelValue" class="text-subtitle"> Only <span class="font-mono">CSV</span> file types are supported. </p>
+      <p v-if="!modelValue" class="text-subtitle"> Only <span class="font-mono">{{ acceptedTypes }}</span> file types are supported. </p>
       <div v-else class="flex items-center gap-1.5">
         <p class="text-subtitle font-medium"> <span class="font-mono text-brand-primary">{{ modelValue.name }}</span> uploaded </p>
         <button @click="resetFile" class="z-10 bg-subtitle p-1 rounded-md cursor-pointer">
@@ -45,6 +45,10 @@
   const props = defineProps({
       modelValue: {
           type: File,
+      },
+      accept: {
+          type: String,
+          default: 'text/csv'
       }
   })
   const emit = defineEmits(['update:modelValue'])
@@ -52,6 +56,18 @@
   const dragOverText = ref(false)
   const dragRegionActivated = ref(false)
   const file = computed(() => props.modelValue)
+
+  const acceptedTypesList = computed(() => {
+      return props.accept.split(',')
+  })
+
+  const acceptedTypes = computed(() => {
+      return props.accept.split(',').map((type) => `.${formatFileType(type)}`).join(' ')
+  })
+
+  function formatFileType(type) {
+      return type.split('/')[1]
+  }
 
   function toggleRegionActivation(event, activate) {
     if (!activate && dragOverText.value) return
@@ -61,7 +77,7 @@
 
   function getFileFromDrop(event) {
 
-    if (event.dataTransfer.items[0].getAsFile().type === 'text/csv') {
+    if (acceptedTypesList.value.includes(event.dataTransfer.items[0].getAsFile().type)) {
       dragRegionActivated.value = false
       emit('update:modelValue', event.dataTransfer.items[0].getAsFile())
 

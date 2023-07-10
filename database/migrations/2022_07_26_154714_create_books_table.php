@@ -18,10 +18,19 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->enum('type', ['cash', 'consignment']);
             $table->string('title');
+            $table->string('subtitle')->nullable();
             $table->string('alternate_title')->nullable();
             $table->string('author')->nullable();
+            $table->string('language')->default('English');
+            $table->string('script')->default('English');
+            $table->string('publisher')->nullable();
+            $table->string('print_house')->nullable();
+            $table->string('publishing_year')->nullable();
+            $table->string('edition')->nullable();
             $table->string('category')->nullable();
             $table->integer('balance');
+            $table->string('front_cover')->nullable();
+            $table->string('back_cover')->nullable();
             $table->foreignId('supplier_id')
                 ->nullable()
                 ->constrained()

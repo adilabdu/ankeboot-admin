@@ -10,6 +10,7 @@ use App\Http\Controllers\CSVController;
 use App\Http\Controllers\DailySaleController;
 use App\Http\Controllers\Google\GoogleAuthController;
 use App\Http\Controllers\Google\GoogleDocsController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MailingListController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReminderController;
@@ -57,6 +58,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/update', [BookController::class, 'update']);
         Route::post('/delete', [BookController::class, 'delete']);
         Route::post('/csv', [CSVController::class, 'insertBooks']);
+        Route::post('/covers', [ImageController::class, 'uploadBookCovers']);
     });
 
     Route::prefix('transactions')->group(function () {
@@ -107,6 +109,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('suppliers')->group(function () {
         Route::get('/', [SupplierController::class, 'index']);
         Route::post('/', [SupplierController::class, 'post']);
+    });
+
+    Route::prefix('images')->group(function () {
+        Route::get('/', [ImageController::class, 'index']);
+        Route::post('/', [ImageController::class, 'upload']);
     });
 
     Route::prefix('stores')->group(function () {

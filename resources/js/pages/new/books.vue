@@ -22,6 +22,10 @@
             <SwitchInput class="px-3" label-location="top" v-model="bookData.type" label="Consignment"/>
         </div>
 
+        <Collapsable :open="true" collapse-direction="down" @open="toggleBookMetadataRegistration" :label="['Additional information', 'Additional information']">
+
+        </Collapsable>
+
         <Collapsable :open="false" collapse-direction="down" @open="toggleTransactionRegistration" :label="['Register first transaction', 'Register first transaction']">
 
             <div class="bg-wallpaper rounded-md text-subtitle font-medium flex gap-2 items-center w-full h-48 items-center justify-center">
@@ -233,6 +237,15 @@
 
         })
             .finally(() => {})
+    }
+
+    /**
+     * Additional metadata
+     */
+    const registerMetadata = ref(true)
+
+    function toggleBookMetadataRegistration() {
+        registerMetadata.value = !registerMetadata.value
     }
 
     onMounted(() => {

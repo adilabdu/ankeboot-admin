@@ -9,6 +9,7 @@
         "google/apiclient": "^2.13",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
+        "intervention/image": "^2.7",
         "laravel-notification-channels/telegram": "^2.1",
         "laravel/framework": "^9.3.1",
         "laravel/sanctum": "^2.14.1",

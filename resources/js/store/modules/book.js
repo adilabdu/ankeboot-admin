@@ -162,6 +162,8 @@ const actions = {
                         alternate_title: response.data.data.alternate_title,
                         category: response.data.data.category,
                         balance: response.data.data.balance,
+                        front_cover: response.data.data['front_cover'],
+                        back_cover: response.data.data['back_cover'],
                         supplier: response.data.data.supplier,
                         transactions: [
                             ...response.data.data.transactions,
@@ -297,6 +299,8 @@ const mutations = {
             title: payload.title,
             author: payload.author,
             alternate_title: payload.alternate_title,
+            front_cover: payload['front_cover'],
+            back_cover: payload['back_cover'],
             category: payload.category,
             balance: payload.balance,
             supplier: payload.supplier,
