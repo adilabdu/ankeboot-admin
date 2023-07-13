@@ -4,15 +4,15 @@
 
         <Form class="container max-w-4xl mx-auto" modal title-layout="contained" :submit="submitCovers" title="Upload Book Covers" subtitle="Upload the front and back covers of the book">
 
-            <div class="flex gap-4 w-full">
+            <div class="flex md:flex-col gap-4 w-full">
 
                 <div class="flex flex-col w-full gap-2">
                     <h3 class="font-semibold text-subtitle">Front cover</h3>
                     <template v-if="!!!covers['front_cover'] || !!replaceFrontCover">
-                        <FileInput v-model="frontCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem]" />
+                        <FileInput v-model="frontCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem] md:!h-fit" />
                     </template>
                     <template v-else>
-                        <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] border-border-light rounded-md p-4">
+                        <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] md:h-fit border-border-light rounded-md p-4">
 
                             <button @click="replaceFrontCover=true" type="button" class="absolute grid place-items-center right-4 top-4 bg-brand-secondary opacity-0 group-hover:opacity-100 hover:bg-brand-primary rounded-full w-5 h-5">
                                 <span class="w-[2px] h-3 bg-white rotate-45 absolute" />
@@ -27,10 +27,10 @@
                 <div class="flex flex-col w-full gap-2">
                     <h3 class="font-semibold text-subtitle">Back cover</h3>
                     <template v-if="!!!covers['back_cover'] || !!replaceBackCover">
-                        <FileInput v-model="backCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem]" />
+                        <FileInput v-model="backCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem] md:!h-fit" />
                     </template>
                     <template v-else>
-                        <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] border-border-light rounded-md p-4">
+                        <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] md:h-fit border-border-light rounded-md p-4">
 
                             <button @click="replaceBackCover=true" type="button" class="absolute grid place-items-center right-4 top-4 bg-brand-secondary opacity-0 group-hover:opacity-100 hover:bg-brand-primary rounded-full w-5 h-5">
                                 <span class="w-[2px] h-3 bg-white rotate-45 absolute" />
