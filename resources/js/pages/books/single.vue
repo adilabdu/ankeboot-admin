@@ -203,11 +203,13 @@
         </svg>
     </p>
 
-    <UploadBookCoversModal
-        @success="setOpenUploadCoversForm(false)"
-        v-model:show="openUploadCoversForm"
-        :covers="covers"
-    />
+    <div v-if="openUploadCoversForm">
+        <UploadBookCoversModal
+            @success="setOpenUploadCoversForm(false)"
+            v-model:show="openUploadCoversForm"
+            :covers="covers"
+        />
+    </div>
 
 </template>
 

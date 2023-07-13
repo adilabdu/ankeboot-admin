@@ -9,7 +9,7 @@
                 <div class="flex flex-col w-full gap-2">
                     <h3 class="font-semibold text-subtitle">Front cover</h3>
                     <template v-if="!!!covers['front_cover'] || !!replaceFrontCover">
-                        <FileInput v-model="frontCover" accept="image/png,image/jpeg,image/jpg" class="h-[28rem]" />
+                        <FileInput v-model="frontCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem]" />
                     </template>
                     <template v-else>
                         <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] border-border-light rounded-md p-4">
@@ -27,7 +27,7 @@
                 <div class="flex flex-col w-full gap-2">
                     <h3 class="font-semibold text-subtitle">Back cover</h3>
                     <template v-if="!!!covers['back_cover'] || !!replaceBackCover">
-                        <FileInput v-model="backCover" accept="image/png,image/jpeg,image/jpg" class="h-[28rem]" />
+                        <FileInput v-model="backCover" accept="image/png,image/jpeg,image/jpg" class="!h-[28rem]" />
                     </template>
                     <template v-else>
                         <div class="group bg-wallpaper border-2 border-dashed grid place-items-center relative h-[28rem] border-border-light rounded-md p-4">

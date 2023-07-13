@@ -1,6 +1,6 @@
 <template>
 
-    <div class="grid grid-cols-4 gap-2 sm:flex sm:min-h-[112px] -mx-[8px] px-[8px] sm:snap-mandatory sm:snap-x">
+    <div class="grid grid-cols-4 gap-2 sm:flex sm:min-h-[112px] -mx-[8px] px-[8px] sm:overflow-auto sm:snap-mandatory sm:snap-x">
         <InfoCard class="col-span-1 sm:min-w-full sm:snap-center" label="Total Books">
             <span v-if="statistics" class="">{{ formatNumber(statistics.count) ?? 0 }}</span>
             <svg v-else class="animate-rotate my-2" width="19" height="20" viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
