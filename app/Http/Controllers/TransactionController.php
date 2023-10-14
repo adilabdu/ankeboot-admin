@@ -115,9 +115,9 @@ class TransactionController extends Controller
                 $onShelf = StoreBook::firstOrCreate([
                     'book_id' => $request->input('book_id'),
                     'store_id' => Store::primary()->id,
-                ])->balance;
+                ]);
 
-                if ($onShelf < $request->input('quantity')) {
+                if ($onShelf->balance < $request->input('quantity')) {
                     return response([
                         'message' => 'error',
                         'data' => 'Sale quantity exceeds primary store balance',
@@ -132,13 +132,8 @@ class TransactionController extends Controller
                     'quantity' => $request->input('quantity'),
                 ]);
 
-                $storeBook = StoreBook::where([
-                    'store_id' => Store::primary()->id,
-                    'book_id' => $request->input('book_id'),
-                ])->first();
-
-                $storeBook->balance = $storeBook->balance - $request->input('quantity');
-                $storeBook->save();
+                $onShelf->balance = $onShelf->balance - $request->input('quantity');
+                $onShelf->save();
 
                 StoreTransaction::create([
                     'store_id' => Store::primary()->id,
