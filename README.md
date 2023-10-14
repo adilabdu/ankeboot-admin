@@ -64,6 +64,19 @@ The above command will create a new test user with these credentials you can use
 - Phone `0912345678`
 - Password `helloworld`
 
+#### Job workers
+Run the following commands to start the job workers. The default queue is used for mailables notifications and batch imports, while
+the `scout` queue is used for indexing models into Meilisearch
+```shell
+php artisan queue:work
+php artisan queue:work --queue=scout
+```
+
+Before running the queue workers, make sure to update the following environmental variables in `.env`
+```shell
+QUEUE_CONNECTION=database
+```
+
 #### Setting up Meilisearch
 This project uses Meilisearch as its search engine. To set it up, follow the installation guide outlined [in their documentation](https://meilisearch.com/docs/learn/getting_started/quick_start). 
 Next, update the following environmental variables in `.env`
@@ -92,14 +105,6 @@ php artisan serve
 ```
 
 The project should now be available on `localhost` with port number set by the PHP dev server (commonly `localhost:8000`)
-
-#### Job workers
-Run the following commands to start the job workers. The default queue is used for mailables notifications and batch imports, while 
-the `scout` queue is used for indexing models into Meilisearch
-```shell
-php artisan queue:work
-php artisan queue:work --queue=scout
-```
 
 #### Note 
 If port `8000` is in use and the PHP dev server assigns the project onto another port number `XXXX` eg. (`8001`, `8002`... ), 
