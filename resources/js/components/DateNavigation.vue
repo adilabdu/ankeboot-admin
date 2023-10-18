@@ -9,7 +9,7 @@
             ]"
                 >
                     <!-- Date Cards -->
-                    <template v-if="(! dataLoading) && (!! dailySales)" v-for="i in 6">
+                    <template v-if="(! dataLoading) && (!! dailySales)" v-for="i in Math.min(6, dailySales.length)">
 
                         <DateLinkCard :daily-sale="dailySales[i-1]"/>
 
@@ -22,17 +22,17 @@
 
                     </template>
 
-        <!-- TODO: find better pagination implementation -->
-        <!--            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute left-0 z-20 rounded-full" v-if="previous" @click="previousPage">-->
-        <!--                <svg width="12" height="19" viewBox="0 0 12 19" class="rotate-180" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-        <!--                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
-        <!--                </svg>-->
-        <!--            </button>-->
-        <!--            <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute right-0 z-20 rounded-full" v-if="next" @click="nextPage">-->
-        <!--                <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">-->
-        <!--                    <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
-        <!--                </svg>-->
-        <!--            </button>-->
+<!--&lt;!&ndash;         TODO: find better pagination implementation &ndash;&gt;-->
+<!--                    <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute left-0 z-20 rounded-full" v-if="previous" @click="previousPage">-->
+<!--                        <svg width="12" height="19" viewBox="0 0 12 19" class="rotate-180" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                            <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
+<!--                        </svg>-->
+<!--                    </button>-->
+<!--                    <button class="h-12 w-12 m-1 hover:bg-black/10 transition-all flex items-center justify-center group-hover:opacity-100 opacity-0 transition-opacity duration-300 focus:outline-none active:scale-75 absolute right-0 z-20 rounded-full" v-if="next" @click="nextPage">-->
+<!--                        <svg width="12" height="19" viewBox="0 0 12 19" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                            <path d="M2.52286 18.293L11.5229 9.29303L2.52286 0.29303L0.292969 2.52292L7.06308 9.29303L0.292969 16.0631L2.52286 18.293Z" fill="#6A727F"/>-->
+<!--                        </svg>-->
+<!--                    </button>-->
 
         </div>
         <!-- Loading indicator -->

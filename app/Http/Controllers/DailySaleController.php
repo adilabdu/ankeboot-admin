@@ -57,7 +57,7 @@ class DailySaleController extends Controller
             DailySale::latest('date_of')
                 ->first()
                 ->date_of ??
-            'August 09, 2021'
+            env('DAILY_SALE_START_DATE')
         );
         $count = 0;
 

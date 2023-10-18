@@ -342,20 +342,24 @@
                     <UserCircleIconSolid v-else class="w-7 h-7 fill-subtitle" />
                 </div>
 
-                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="divide-y-[1.5px] divide-border-dark flex flex-col animate-appear-down text-subtitle font-medium right-0 -mr-3 -mb-6 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 min-w-[14rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
-                    <li class="grid place-items-center h-10 whitespace-nowrap px-4 bg-wallpaper">
-                        <span class="truncate flex items-center justify-center gap-1 w-full">
-                            Hello,
-                            <span class="text-black">{{ user.name.split(' ')[0] }}!</span>
-                        </span>
+                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="flex flex-col animate-appear-down text-subtitle font-medium right-0 -mr-3 -mb-6 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 min-w-[14rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
+<!--                    <li class="grid place-items-center h-10 whitespace-nowrap px-4 border-b shadow bg-wallpaper">-->
+<!--                        <span class="truncate flex items-center justify-center gap-1 w-full">-->
+<!--                            Hello,-->
+<!--                            <span class="text-black">{{ user.name.split(' ')[0] }}!</span>-->
+<!--                        </span>-->
+<!--                    </li>-->
+                    <li @click="personal" class="hover:bg-wallpaper hover:text-brand flex justify-between gap-4 items-center h-10 px-4 group cursor-pointer">
+                        <IdentificationIcon class="w-5 h-5 min-w-[1rem] min-h-[1rem] stroke-subtitle" />
+                        <p class="capitalize text-sm">Personal Information</p>
                     </li>
-                    <li @click="settings" class="hover:bg-wallpaper hover:text-brand flex justify-start gap-4 items-center h-10 px-4 group cursor-pointer">
-                        <WrenchScrewdriverIcon class="w-4 h-4 stroke-subtitle" />
-                        <p class="capitalize">Settings</p>
+                    <li @click="settings" class="hover:bg-wallpaper hover:text-brand flex justify-between gap-4 items-center h-10 px-4 group cursor-pointer">
+                        <WrenchScrewdriverIcon class="w-5 h-5 stroke-subtitle" />
+                        <p class="capitalize text-sm">Account Settings</p>
                     </li>
-                    <li @click="attemptLogout" class="hover:bg-red-50 text-red-600 hover:text-brand flex justify-start gap-5 items-center h-10 px-4 group cursor-pointer">
-                        <XCircleIcon class="w-4 h-4 stroke-red-600 stroke-2" />
-                        <p class="capitalize">Log out</p>
+                    <li @click="attemptLogout" class="hover:bg-red-50 text-red-600 hover:text-brand flex justify-between gap-5 items-center h-10 px-4 group cursor-pointer">
+                        <XCircleIcon class="w-5 h-5 stroke-red-600 stroke-2" />
+                        <p class="capitalize text-sm">Log out</p>
                     </li>
                 </ul>
 
@@ -388,7 +392,8 @@
     import {
         UserCircleIcon, BellIcon, BellAlertIcon, InboxStackIcon, RocketLaunchIcon,
         EllipsisHorizontalCircleIcon, BookOpenIcon, ArrowRightIcon, CogIcon,
-        ArrowPathRoundedSquareIcon, ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon, WrenchIcon
+        ArrowPathRoundedSquareIcon, ArrowPathIcon, WrenchScrewdriverIcon, XCircleIcon, WrenchIcon,
+        IdentificationIcon
     } from "@heroicons/vue/24/outline"
     import {
         UserCircleIcon as UserCircleIconSolid, BellIcon as BellIconSolid,
@@ -472,6 +477,10 @@
             toggleRemindersFormView()
         }
     })
+
+    function personal() {
+
+    }
 
     function settings() {
 
