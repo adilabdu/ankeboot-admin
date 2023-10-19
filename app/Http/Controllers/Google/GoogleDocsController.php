@@ -18,7 +18,9 @@ class GoogleDocsController extends GoogleController
         $client = parent::getUserClient();
 
         $service = new Drive($client);
-        $results = $service->files->get("1Q3-JJey-4QFSHyFx9Ee8l5XPownHAEO8HDySwzlfGUQ");
+        $results = $service->files->listFiles([
+            'pageSize' => 10,
+        ]);
 
         return response([
             'data' => $results
