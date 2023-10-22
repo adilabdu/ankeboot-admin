@@ -57,7 +57,7 @@
 
         </Navigation>
 
-        <div :class="[authenticated ? miniNav ? 'w-[calc(100%-63px)]' : 'w-[calc(100%-16rem)]' : 'w-full']" class="min-h-screen h-[100dvh] xl:w-full flex flex-col">
+        <div :class="[authenticated ? miniNav ? 'w-[calc(100%-63px)]' : 'w-[calc(100%-16rem)]' : 'w-full']" class="min-h-full xl:w-full flex flex-col">
 
             <Header />
 

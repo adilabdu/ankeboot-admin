@@ -22,6 +22,7 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnDelete();
             $table->integer('quantity');
+            $table->date('transferred_on');
             $table->timestamps();
 
             $table->foreign('from')

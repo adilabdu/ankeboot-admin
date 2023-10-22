@@ -1,6 +1,6 @@
 <template>
 
-    <div id="contentPage" class="scrollbar-brand overflow-y-auto grow px-12 py-8 sm:px-4 xs:px-2 gap-8 flex flex-col w-full max-w-[1920px]">
+    <div id="contentPage" class="scrollbar-brand overflow-y-auto grow px-12 py-8 sm:px-4 xs:px-2 gap-8 flex flex-col w-full">
         <div class="print:hidden px-4 gap-3 -mb-3 bg-white w-fit min-h-[2rem] flex items-center justify-center border border-border-light shadow-sm rounded-lg">
             <template v-for="(route, index) in routes">
                 <RouterLink class="hover:text-brand-primary focus:outline-none" v-if="route === '' && index !== routes.length - 1" :to="{ name: 'Dashboard' }">Home</RouterLink>
@@ -9,7 +9,9 @@
             </template>
         </div>
 
-        <slot />
+        <div class="max-w-[1535px] flex flex-col gap-8">
+            <slot />
+        </div>
 
     </div>
 

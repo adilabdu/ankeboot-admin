@@ -20,6 +20,7 @@ class GoogleDocsController extends GoogleController
         $service = new Drive($client);
         $results = $service->files->listFiles([
             'pageSize' => 10,
+            'fields' => 'files(webViewLink, mimeType, modifiedTime, id, name, thumbnailLink, iconLink)'
         ]);
 
         return response([

@@ -3,12 +3,14 @@
     <ContentPage>
         <router-view />
 
-        <button v-if="loginViaGoogle" @click="loginWithGoogle" class="shadow-sm flex gap-2 items-center justify-center bg-white rounded-md border-[1.75px] border-border-dark font-medium px-4 py-2.5 w-fit text-black/90">
+        <button v-if="!isLoggedIn" @click="loginWithGoogle" class="shadow-sm flex gap-2 items-center justify-center bg-white rounded-md border-[1.75px] border-border-dark font-medium px-4 py-2.5 w-fit text-black/90">
             <img class="w-4" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"  alt="Google Logo"/>
             <span>Sign in with Google</span>
         </button>
 
-        Files: <pre>{{ files }}</pre>
+        <div v-if="files" class="grid grid-cols-5 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+            <GoogleDriveFileLink v-for="file in files" :file="file" />
+        </div>
 
     </ContentPage>
 
@@ -16,22 +18,14 @@
 
 <script setup>
 
-    import { onMounted, ref } from "vue"
-    import axios from "axios";
+    import { computed, watch } from "vue"
     import ContentPage from "../../layouts/content-page.vue";
+    import GoogleDriveFileLink from "../../views/GoogleDriveFileLink.vue";
+    import axios from "axios";
+    import store from "../../store";
 
-    const files = ref([])
-    const loginViaGoogle = ref(false)
-
-    function fetchDriveFiles() {
-        axios.get('/api/google/drive/files')
-            .then((response) => {
-                files.value = response.data
-            })
-            .catch((error) => {
-                loginViaGoogle.value = true
-            })
-    }
+    const files = computed(() => store.state.googleDriveFiles.files)
+    const isLoggedIn = computed(() => store.state.googleDriveFiles.isLoggedIn)
 
     function loginWithGoogle() {
 
@@ -45,8 +39,11 @@
 
     }
 
-    onMounted(() => {
-        fetchDriveFiles()
+    watch(isLoggedIn, () => {
+        if (isLoggedIn.value)
+            store.dispatch('getDriveFiles')
+    }, {
+        immediate: true
     })
 
 </script>

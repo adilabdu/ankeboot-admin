@@ -2,7 +2,7 @@
 
     <div class="grid grid-cols-4 gap-2 sm:flex sm:overflow-auto sm:snap-mandatory sm:snap-x">
         <InfoCard class="group col-span-1 sm:min-w-full sm:snap-center" label="Store information">
-            <div v-if="store" class="text-sm font-normal flex flex-col">
+            <div v-if="store" class="text-sm font-normal flex flex-col overflow-hidden">
                 <div class="flex items-center gap-4">
                     <p class="text-xl font-medium">{{ store.name }}</p>
                 </div>
@@ -38,14 +38,14 @@
             </svg>
         </InfoCard>
         <InfoCard class="group col-span-1 sm:min-w-full sm:snap-center" label="Latest Transaction">
-            <div class="text-sm font-normal flex flex-col" v-if="statistics">
+            <div class="text-sm font-normal flex flex-col overflow-hidden" v-if="statistics">
                 <template v-if="statistics['latest_transaction']">
                     <div class="flex items-center gap-4">
                         <p class="text-xl font-medium whitespace-nowrap max-w-[18rem] truncate">{{ statistics['latest_transaction']['book_title'] }}</p>
                         <svg v-if="statistics['latest_transaction']['type'] === 'sale'" class="stroke-2 stroke-red-600 w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        <svg v-else class="w-5 h-5 stroke-2 stroke-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <svg v-else class="w-5 h-5 min-w-[1.25rem] min-h-[1.25rem] stroke-2 stroke-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>

@@ -1,6 +1,8 @@
 <template>
 
-  <nav ref="navigation" :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full', mini ? 'w-16' : 'min-w-[16rem]']" class="z-20 h-screen bg-white sm:border-t border-r border-border-light xl:absolute xl:top-0 xl:left-0 flex flex-col transition-transform duration-300">
+  <div :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full', mini ? 'w-16' : 'min-w-[16rem]']" class="h-full xl:absolute" />
+
+  <nav ref="navigation" :class="[navigationOpened ? 'xl:-translate-x-0' : 'xl:-translate-x-full', mini ? 'w-16' : 'min-w-[16rem]']" class="z-20 fixed top-0 left-0 bottom-0 h-full bg-white border-r border-border-light xl:fixed xl:top-0 xl:left-0 flex flex-col transition-transform duration-300">
 
       <div class="w-full min-h-[4rem] flex items-center" :class="[mini ? 'justify-center' : 'px-4 justify-between']">
 

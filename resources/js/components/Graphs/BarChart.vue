@@ -1,6 +1,6 @@
 <template>
 
-  <div class="flex flex-col gap-4 bg-white rounded-md border border-border-light shadow-sm min-h-[16rem]">
+  <div id="barChart" class="chart-child snap-center min-w-[362.68px] flex flex-col gap-4 bg-white rounded-md border border-border-light shadow-sm min-h-[16rem] max-h-[256px]">
 
     <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>

@@ -2,7 +2,7 @@
 
     <ContentPage>
 
-        <div class="grid grid-cols-3 gap-2 sm:grid-rows-3 sm:grid-cols-1">
+        <div class="flex overflow-auto lg:snap-x lg:snap-mandatory scrollbar-brand gap-2 sm:grid-rows-3 sm:grid-cols-1">
             <BarChart
                 :data="monthlyPurchases"
                 :loading="chartsLoading"
@@ -128,5 +128,23 @@ import {computed, onMounted, ref} from "vue";
 </script>
 
 <style scoped>
+
+    @media (min-width: 1456px) {
+        .chart-child {
+            @apply w-full;
+        }
+    }
+
+    @media (max-width: 1200px), (max-width: 1455px) and (min-width: 1280px) {
+        .chart-child {
+            @apply min-w-[calc(50%-8px)] w-1/2;
+        }
+    }
+
+    @media (max-width: 770px) {
+        .chart-child {
+            @apply min-w-full;
+        }
+    }
 
 </style>

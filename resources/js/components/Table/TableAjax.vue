@@ -86,7 +86,7 @@
                     </tr>
 
                     <!-- Data row -->
-                    <tr class="hover:bg-black/5 h-10 border-border-light border-b-[1px]" v-if="!! data && ! loading && data.length > 0" v-for="(row, index) in data" :key="index">
+                    <tr class="hover:bg-black/5 h-10 border-border-light border-b-[1px] last:border-b-0" v-if="!! data && ! loading && data.length > 0" v-for="(row, index) in data" :key="index">
                         <slot name="rows" v-if="row" :record="row" />
                         <slot v-if="actions" name="actions">
                             <Cell name="actions">

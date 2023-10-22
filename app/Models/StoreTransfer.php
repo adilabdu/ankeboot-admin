@@ -29,4 +29,8 @@ class StoreTransfer extends Model
     {
         return $this->belongsTo(Book::class);
     }
+
+    protected $casts = [
+        'transferred_on' => 'date',
+    ];
 }

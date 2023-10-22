@@ -11,6 +11,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class StoreTransferController extends Controller
 {
@@ -21,6 +22,7 @@ class StoreTransferController extends Controller
             'from' => 'required|exists:stores,id',
             'to' => 'nullable|exists:stores,id|different:from',
             'quantity' => 'required|integer',
+            'transferred_on' => 'required|date_format:d-m-Y'
         ]);
 
         $to = $request->input('to') ?? Store::primary()->id;
@@ -42,11 +44,14 @@ class StoreTransferController extends Controller
 
             DB::beginTransaction();
 
+            Log::channel('single')->info(`Transferred on `. $request->input('transferred_on'));
+
             $storeTransfer = StoreTransfer::create([
                 'book_id' => $request->input('book_id'),
                 'from' => $request->input('from'),
                 'to' => $to,
                 'quantity' => $request->input('quantity'),
+                'transferred_on' => $request->input('transferred_on')
             ]);
             $incomingStore = StoreBook::firstOrCreate([
                 'store_id' => $to,
@@ -63,6 +68,8 @@ class StoreTransferController extends Controller
             DB::commit();
         } catch (Exception $exception) {
             DB::rollBack();
+
+            Log::info(`Error creating store transfer: {$exception->getMessage()}`);
 
             return response([
                 'message' => 'error',

@@ -41,6 +41,8 @@
                 label="Transfer Amount"
             />
 
+            <DatePicker drop-direction="up" class="w-full" label="Transferred on" required v-model="formData.transferred_on" />
+
             <div class="w-full flex justify-between items-center mt-2">
                 <p class="text-subtitle text-xs px-2">
                     <span class="text-red-600 text-sm">*</span>
@@ -77,11 +79,18 @@
     import Dropdown from "../components/Dropdown.vue"
     import TextInput from "../components/Form/TextInput.vue"
     import store from "../store"
+    import DatePicker from "../components/Form/DatePicker.vue";
+    import {formatDate} from "../utils";
 
     const formData = ref({
         from: '',
         book_id: '',
-        quantity: ''
+        quantity: '',
+        transferred_on: {
+            date: '',
+            month: '',
+            year: ''
+        },
     })
     const book_title = ref('')
     const stores = ref([])
@@ -170,7 +179,10 @@
 
         console.log(formData.value)
 
-        axios.post('/api/stores/transfer', formData.value)
+        axios.post('/api/stores/transfer', {
+            ...formData.value,
+            transferred_on: formatDate(formData.value.transferred_on)
+        })
             .then(response => {
 
                 if (response.data.message === 'ok') {

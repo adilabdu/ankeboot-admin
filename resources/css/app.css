@@ -8,6 +8,18 @@
         font-family: -apple-system, 'Inter', sans-serif;
     }
 
+    html {
+        @apply h-full;
+    }
+
+    body {
+        @apply h-full;
+    }
+
+    html, body {
+        overscroll-behavior: none;
+    }
+
     .scrollbar-brand::-webkit-scrollbar {
         width: 16px;
     }
@@ -31,14 +43,14 @@
         background-color: #ffffff00;
     }
 
-    .scrollbar-brand:hover .scrollbar-brand::-webkit-scrollbar-thumb {
+    .scrollbar-brand::-webkit-scrollbar-thumb:hover {
         background-color: rgba(116,116,116,1) !important;
     }
 
 }
 
 * {
-    @apply select-none sm:focus:outline-none focus:outline focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 focus:outline-2 font-basic;
+    @apply focus:outline focus:outline-brand-primary sm:focus:outline-none focus:outline-offset-2 focus:outline-2 font-basic;
 }
 
 body {

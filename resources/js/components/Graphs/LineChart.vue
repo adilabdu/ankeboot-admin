@@ -1,6 +1,6 @@
 <template>
 
-  <div class="flex flex-col justify-between gap-4 bg-white rounded-md border border-border-light shadow-sm overflow-hidden">
+  <div id="lineChart" class="chart-child snap-center min-w-[362.68px] flex flex-col justify-between gap-4 bg-white rounded-md border border-border-light shadow-sm overflow-hidden max-h-[256px] min-h-[16rem]">
 
     <div class="leading-none flex justify-between items-center px-6 pt-6">
       <div>
@@ -18,7 +18,7 @@
 
     </div>
 
-    <div class="relative flex grow max-h-[50%] -m-2 relative">
+    <div class="relative flex grow max-h-[50%] -m-2">
 
         <div v-if="! itemCount" class="w-full h-full">
             <div v-if="noData.by_receipts" class="h-full text-subtitle flex flex-col items-center justify-center gap-1">

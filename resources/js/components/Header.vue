@@ -1,15 +1,15 @@
 <template>
 
-  <div class="flex flex-col w-full bg-white shadow-sm sm:border-t border-b border-border-light">
+  <div class="flex flex-col w-full bg-white shadow-sm border-b border-border-light">
     <header :class="[authenticated ? 'justify-between' : 'justify-end']" class="sm:px-4 w-full min-h-[4rem] flex items-center px-12">
 
         <!-- Burger -->
-        <svg v-if="authenticated" class="hidden xl:inline w-6 h-6 stroke-subtitle stroke-[1.5]" @click="toggleNavigation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <svg v-if="authenticated" class="hidden xl:inline xl:mr-4 sm:mr-0 w-6 h-6 stroke-subtitle stroke-[1.5]" @click="toggleNavigation" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
 
         <!-- Search field -->
-        <div v-if="authenticated" class="sm:pl-12 sm:justify-end flex flex-row-reverse items-center justify-center gap-4 h-full grow">
+        <div v-if="authenticated" class="sm:pl-4 sm:justify-end flex flex-row-reverse items-center justify-center gap-4 h-full grow">
             <input ref="searchInput" @focusout="toggleInputFocus(false)" @focus="toggleInputFocus(true)" class="sm:w-[24px] peer h-full selection:text-white selection:bg-brand-primary focus:outline-none placeholder-subtitle grow" type="text" placeholder="Search... (CTRL + K)" />
             <svg class="sm:hidden peer-focus:fill-brand-primary fill-subtitle transition-all duration-150 scale-90 peer-focus:scale-100" width="19" height="19" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 16C9.77498 15.9996 11.4988 15.4054 12.897 14.312L17.293 18.708L18.707 17.294L14.311 12.898C15.405 11.4997 15.9996 9.77544 16 8C16 3.589 12.411 0 8 0C3.589 0 0 3.589 0 8C0 12.411 3.589 16 8 16ZM8 2C11.309 2 14 4.691 14 8C14 11.309 11.309 14 8 14C4.691 14 2 11.309 2 8C2 4.691 4.691 2 8 2Z" />
@@ -342,16 +342,10 @@
                     <UserCircleIconSolid v-else class="w-7 h-7 fill-subtitle" />
                 </div>
 
-                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="flex flex-col animate-appear-down text-subtitle font-medium right-0 -mr-3 -mb-6 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 min-w-[14rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
-<!--                    <li class="grid place-items-center h-10 whitespace-nowrap px-4 border-b shadow bg-wallpaper">-->
-<!--                        <span class="truncate flex items-center justify-center gap-1 w-full">-->
-<!--                            Hello,-->
-<!--                            <span class="text-black">{{ user.name.split(' ')[0] }}!</span>-->
-<!--                        </span>-->
-<!--                    </li>-->
+                <ul ref="headerMenu" :class="[viewHeaderMenu ? '' : 'hidden']" class="flex flex-col animate-appear-down text-subtitle font-medium right-0 -mr-3 -mb-6 z-50 bottom-0 translate-y-full overflow-auto absolute max-h-72 min-w-[16rem] bg-white shadow-md rounded-md border-[0.5px] border-border-light">
                     <li @click="personal" class="hover:bg-wallpaper hover:text-brand flex justify-between gap-4 items-center h-10 px-4 group cursor-pointer">
                         <IdentificationIcon class="w-5 h-5 min-w-[1rem] min-h-[1rem] stroke-subtitle" />
-                        <p class="capitalize text-sm">Personal Information</p>
+                        <p class="capitalize text-sm">{{ user.name }}</p>
                     </li>
                     <li @click="settings" class="hover:bg-wallpaper hover:text-brand flex justify-between gap-4 items-center h-10 px-4 group cursor-pointer">
                         <WrenchScrewdriverIcon class="w-5 h-5 stroke-subtitle" />

@@ -1,6 +1,6 @@
 <template>
 
-    <div :class="[ appearFrom === 'bottom' ? 'sm:items-end' : 'sm:items-start' ]" class="scrollbar-brand w-full h-screen overflow-y-auto py-12 sm:py-0 sm:overflow-hidden fixed bg-black/80 flex items-start justify-center z-[100]">
+    <div :class="[ appearFrom === 'bottom' ? 'sm:items-end' : 'sm:items-start' ]" class="scrollbar-brand w-full h-full overflow-y-auto py-12 sm:py-0 sm:overflow-hidden fixed bg-black/80 flex items-start justify-center z-[100]">
 
         <slot />
 
