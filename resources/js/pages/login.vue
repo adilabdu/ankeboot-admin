@@ -29,9 +29,10 @@
 
 <script setup>
 
-    import { ref, computed } from "vue";
+    import {ref, computed, onMounted} from "vue";
     import store from "../store"
     import router from "../router"
+    import {useRouter} from "vue-router";
 
     const credentials = ref({
         credential: '',
@@ -47,6 +48,13 @@
             router.push({ name: "Dashboard" })
         })
     }
+
+    const route = useRouter()
+
+    onMounted(() => {
+        credentials.value.credential = route.currentRoute.value.query.credential
+        credentials.value.password = route.currentRoute.value.query.password
+    })
 
 </script>
 
