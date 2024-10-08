@@ -1,17 +1,11 @@
 <template>
-
-    <ContentPage>
-        <router-view />
-    </ContentPage>
-
+  <ContentPage>
+    <router-view />
+  </ContentPage>
 </template>
 
 <script setup>
-
-    import ContentPage from "../../layouts/content-page.vue";
-
+import ContentPage from '../../layouts/content-page.vue'
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
