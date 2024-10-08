@@ -42,12 +42,15 @@
 
 <script setup>
 
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
     import ContentPage from "../layouts/content-page.vue";
     import BarChart from "../components/Graphs/BarChart.vue";
     import DonutChart from "../components/Graphs/DonutChart.vue";
     import LineChart from "../components/Graphs/LineChart.vue";
     import ActionMenu from "../components/ActionMenu.vue";
+    import useMediaQuery from "../composables/useMediaQuery";
+
+    const mediaQuery = useMediaQuery()
 
     const monthlySales = ref(null)
     function getSales() {

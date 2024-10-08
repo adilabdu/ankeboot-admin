@@ -13,7 +13,7 @@
     }
 
     body {
-        @apply h-full;
+        @apply h-full scrollbar-brand overflow-overlay;
     }
 
     html, body {
@@ -22,6 +22,7 @@
 
     .scrollbar-brand::-webkit-scrollbar {
         width: 16px;
+        display: block;
     }
     .scrollbar-brand::-webkit-scrollbar-corner {
         background: rgba(0,0,0,0);

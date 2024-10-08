@@ -1,6 +1,6 @@
 <template>
 
-    <div id="donutChart" class="chart-child snap-center min-w-[362.68px] flex flex-col bg-white rounded-md border border-border-light shadow-sm gap-4 min-h-[16rem] max-h-[256px]">
+    <div ref="donutChart" id="donutChart" class="overflow-auto chart-child snap-center min-w-[362.68px] flex flex-col bg-white rounded-md border border-border-light shadow-sm gap-4 min-h-[16rem] max-h-[256px]">
 
         <div class="leading-none flex justify-between items-center px-6 pt-6">
             <div>
@@ -20,7 +20,7 @@
                 <canvas class="top-0 left-0 absolute -rotate-90" width="125" height="125" ref="donutCanvas" />
             </div>
 
-            <div ref="legendWrapper" class="grow relative scrollbar-chart snap-x snap-mandatory h-full pt-8 pb-4 px-4 flex overflow-auto gap-4">
+            <div ref="legendWrapper" class="grow relative scrollbar-chart snap-x snap-mandatory lg:pt-0 pt-8 pb-4 px-4 flex flex-col overflow-auto gap-4">
 
                 <div
                     :class="{ 'order-2': legends['first'].length < legends['second'].length }"
@@ -59,6 +59,7 @@
 
     import { ref, computed, onMounted, watch } from "vue"
     import { delay } from "../../utils";
+    import useChildOverflow from "../../composables/useChildOverflow";
 
     const props = defineProps({
         title: {
@@ -82,6 +83,9 @@
             required: true
         }
     })
+
+    const donutChart = ref(null)
+    const childOverflow = useChildOverflow(donutChart)
 
     const data = computed(() => props.ratio)
     const fetching = computed(() => props.loading)

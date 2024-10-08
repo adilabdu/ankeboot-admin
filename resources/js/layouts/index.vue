@@ -2,7 +2,7 @@
 
     <div :class="progress.percentage === 0 ? 'opacity-0 duration-700 transition-opacity' : ''" :style="{ width:  (100 - progress.percentage) + '%' }" class="transition-all duration-300 fixed top-0 left-0 h-[0.25rem] bg-brand-primary z-50" />
 
-    <div class="flex flex-row max-w-full relative overflow-x-hidden">
+    <div class="flex flex-row max-w-full relative">
 
         <Navigation :minimize="miniNav" v-if="authenticated">
 
@@ -57,11 +57,11 @@
 
         </Navigation>
 
-        <div :class="[authenticated ? miniNav ? 'w-[calc(100%-63px)]' : 'w-[calc(100%-16rem)]' : 'w-full']" class="min-h-full xl:w-full flex flex-col">
+        <div :class="[authenticated ? miniNav ? 'w-[calc(100%-63px)]' : 'w-[calc(100%-16rem)]' : 'w-full']" class="h-full xl:w-full flex flex-col">
 
             <Header />
 
-            <div class="grow overflow-y-auto flex flex-col relative overflow-overlay">
+            <div class="grow flex flex-col relative">
 
                 <div class="h-fit max-h-full min-w-96 m-2 absolute right-0 flex flex-col items-end gap-2 z-50">
                     <Alert :key="alert" v-for="alert in alerts" :type="alert.type" :message="alert.message" />
