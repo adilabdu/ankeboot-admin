@@ -65,11 +65,13 @@ class BookController extends Controller
                 'message' => 'success',
                 'data' => Book::search($request->input('query') ?? '', function (Indexes $meilisearch, string $query, array $options) use ($request) {
                     $options['filter'] = 'created_at >= ' . ($request->input('from_date', Carbon::createFromDate('01-01-1970')->timestamp)) . ' AND created_at <= ' . ($request->input('to_date', Carbon::createFromDate('01-01-3023')->timestamp));
+                    $options['attributesToHighlight'] = ['title', 'author', 'category'];
+
                     return $meilisearch->search($query, $options);
                 })->orderBy(
                     $request->input('order_by') ?? 'id',
                     $request->input('desc') ? 'desc' : 'asc'
-                )->paginate($request->input('per_page'))->withQueryString(),
+                )->paginateRaw($request->input('per_page'))->withQueryString(),
             ]);
         } catch (Exception $exception) {
             return response([

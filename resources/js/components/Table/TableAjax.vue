@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col sm:gap-4" :class="[title ? 'gap-4' : '']">
+  <div class="highlightable w-full flex flex-col sm:gap-4" :class="[title ? 'gap-4' : '']">
     <!-- Title section -->
     <div
       v-if="!condensed"
@@ -402,7 +402,7 @@ const paginateTo = ref(0)
 
 const handleResponse = (response) => {
   console.log(response.data.data)
-  data.value = response.data.data.data.map(props.mapper)
+  data.value = response.data.data.data['hits'].map(props.mapper)
   previousPage.value = response.data.data['prev_page_url']
   nextPage.value = response.data.data['next_page_url']
   totalItems.value = response.data.data.total

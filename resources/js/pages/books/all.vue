@@ -133,7 +133,8 @@
         name="code"
         :hide="data.hide"
         class="w-[2%] text-xs font-semibold text-subtitle text-center"
-        >{{ data['record']['code'].toLowerCase() }}
+        >
+          <span v-html="data['record']['code'].toLowerCase()"></span>
       </Cell>
       <LinkCell
         class="w-[90%]"
@@ -144,11 +145,12 @@
         :to="'books/' + data['record']['id']"
       >
         <RouterLink :to="'books/' + data['record']['id']">
-          {{ data['record']['title'] }}
+            <span v-html="data['record']['title']"></span>
         </RouterLink>
       </LinkCell>
       <Cell class="w-[2%]" name="category" :hide="data.hide"
-        >{{ data['record']['category'] }}
+        >
+          <span v-html="data['record']['category']"></span>
       </Cell>
       <EnumCell
         class="w-[2%]"
@@ -162,7 +164,8 @@
         name="balance"
         :hide="data.hide"
         class="w-[2%] text-xs font-semibold text-subtitle text-center"
-        >{{ data['record']['balance'] }}
+        >
+          <span v-html="data['record']['balance']"></span>
       </Cell>
       <DateCell
         class="w-[2%]"
@@ -270,14 +273,15 @@ function goto(route) {
 }
 
 const mapBooks = (book) => {
+    console.log(book)
   return {
-    id: book.id,
-    code: book.code,
-    title: book.title,
-    category: book.category,
-    purchase_type: book.type,
-    balance: book.balance,
-    added_on: new Date(book['created_at'] * 1000)
+    id: book['_formatted'].id,
+    code: book['_formatted'].code,
+    title: book['_formatted'].title,
+    category: book['_formatted'].category,
+    purchase_type: book['_formatted'].type,
+    balance: book['_formatted'].balance,
+    added_on: new Date(book['_formatted']['created_at'] * 1000)
   }
 }
 

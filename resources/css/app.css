@@ -46,6 +46,13 @@
   .scrollbar-brand::-webkit-scrollbar-thumb:hover {
     background-color: rgba(116, 116, 116, 1) !important;
   }
+
+  .highlightable em {
+    font-style: normal;
+    font-weight: bold;
+    color: #FF8100;
+    background-color: #FF810020;
+  }
 }
 
 * {
